@@ -34,4 +34,12 @@ public class Room {
     public void setRoomCapacity(int roomCapacity) {
         this.roomCapacity = roomCapacity;
     }
+
+    //na testa
+    @Override
+    public String toString() {
+        return "roomNumber=" + roomNumber +
+                ", basePrice=" + basePrice +
+                ", roomCapacity=" + roomCapacity;
+    }
 }
