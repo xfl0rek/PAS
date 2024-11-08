@@ -12,7 +12,6 @@ public class User {
     private UserRole userRole;
 
     public User(String firstName, String lastName, String login, String email, String password) {
-        this.personalId = personalId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.login = login;
