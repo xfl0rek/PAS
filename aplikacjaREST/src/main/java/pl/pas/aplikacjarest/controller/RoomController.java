@@ -1,18 +1,20 @@
 package pl.pas.aplikacjarest.controller;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.model.Room;
 
-@RestController
-@RequestMapping("/rooms")
+@Controller
+@RequestMapping("/room")
 public class RoomController {
 
     public RoomController() {}
 
-    @GetMapping
-    public String room(@RequestParam long roomNumber,
-                       @RequestParam int basePrice,
-                       @RequestParam int roomCapacity) {
-        return new Room(roomNumber, basePrice, roomCapacity).toString();
+    @GetMapping("/{roomNumber}")
+    public String getRoom(@PathVariable long roomNumber, Model model) {
+        Room room = new Room(roomNumber, 1000, 2);
+        model.addAttribute("room", room);
+        return "room";
     }
 }
