@@ -4,17 +4,17 @@ public class User {
     private long personalId;
     private String firstName;
     private String lastName;
-    private String login;
+    private String username;
     private String email;
     private String password;
     private boolean isActive = false;
 
     private UserRole userRole;
 
-    public User(String firstName, String lastName, String login, String email, String password) {
+    public User(String firstName, String lastName, String username, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.login = login;
+        this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -31,8 +31,8 @@ public class User {
         return lastName;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUsername() {
+        return username;
     }
 
     public String getEmail() {
@@ -63,8 +63,8 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setEmail(String email) {
