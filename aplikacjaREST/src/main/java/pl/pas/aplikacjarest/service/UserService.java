@@ -2,6 +2,8 @@ package pl.pas.aplikacjarest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.pas.aplikacjarest.dto.ClientCreateDTO;
+import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.repository.UserRepository;
 
@@ -30,8 +32,11 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void registerUser(String firstName, String lastName, String login, String email, String password) {
-        User user = new User(firstName, lastName, login, email, password);
-        userRepository.save(user);
+    public Client registerClient(ClientCreateDTO clientCreateDTO) {
+        Client client = new Client(clientCreateDTO.getFirstName(), clientCreateDTO.getLastName(),
+                                clientCreateDTO.getUsername(), clientCreateDTO.getEmail(),
+                                clientCreateDTO.getPassword(), clientCreateDTO.getClientType());
+        userRepository.save(client);
+        return client;
     }
 }

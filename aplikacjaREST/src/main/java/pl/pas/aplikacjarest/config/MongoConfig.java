@@ -16,7 +16,7 @@ public class MongoConfig {
     @Bean
     public MongoClient mongoClient() {
         ConnectionString connectionString = new ConnectionString(
-                "mongodb://mongodb1:27017,mongodb2:27018,mongodb3:27019/?replicaSet=replica_set_single"
+                "mongodb://admin:adminpassword@mongodb1:27017,mongodb2:27018,mongodb3:27019/?replicaSet=replica_set_single"
         );
 
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()

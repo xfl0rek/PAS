@@ -1,31 +1,24 @@
-package pl.pas.aplikacjarest.model;
+package pl.pas.aplikacjarest.dto;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import pl.pas.aplikacjarest.model.ClientType;
 
-@Document(collection = "users")
-public class User {
-    @Id
-    private long id;
+public class ClientCreateDTO {
     private String firstName;
     private String lastName;
     private String username;
     private String email;
     private String password;
-    private boolean isActive = false;
 
-    private UserRole userRole;
+    private ClientType clientType;
 
-    public User(String firstName, String lastName, String username, String email, String password) {
+    public ClientCreateDTO(String firstName, String lastName, String username,
+                           String email, String password, ClientType clientType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public long getId() {
-        return id;
+        this.clientType = clientType;
     }
 
     public String getFirstName() {
@@ -48,16 +41,8 @@ public class User {
         return password;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public UserRole getUserRole() {
-        return userRole;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public ClientType getClientType() {
+        return clientType;
     }
 
     public void setFirstName(String firstName) {
@@ -80,11 +65,7 @@ public class User {
         this.password = password;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public void setUserRole(UserRole userRole) {
-        this.userRole = userRole;
+    public void setClientType(ClientType clientType) {
+        this.clientType = clientType;
     }
 }
