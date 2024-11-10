@@ -10,7 +10,6 @@ import pl.pas.aplikacjarest.dto.client.ClientCreateDTO;
 import pl.pas.aplikacjarest.dto.client.ClientDTO;
 import pl.pas.aplikacjarest.dto.manager.ManagerCreateDTO;
 import pl.pas.aplikacjarest.dto.manager.ManagerDTO;
-import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.service.UserService;
 
 @RestController
@@ -40,11 +39,9 @@ public class AuthController {
         return ResponseEntity.ok().body(adminDTO);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/client/login")
     public ResponseEntity<ClientDTO> loginClient(@RequestBody LoginDTO loginDTO) {
-        Client client = userService.loginClient(loginDTO);
-        ClientDTO clientDTO = new ClientDTO(client.getFirstName(), client.getLastName(),
-                client.getUsername(), client.getEmail(), client.getType());
+        ClientDTO clientDTO = userService.loginClient(loginDTO);
         return ResponseEntity.ok().body(clientDTO);
     }
 }

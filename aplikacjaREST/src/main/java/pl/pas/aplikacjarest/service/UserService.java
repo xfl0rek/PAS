@@ -24,40 +24,66 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //to tak chyba byc nie moze z tym rzutowaniem
-    //TODO: poprawic pozniej
-    public Client loginClient(LoginDTO loginDTO) {
+    public ClientDTO loginClient(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername());
         if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
-            return (Client) user;
+            if (user instanceof Client client) {
+                return new ClientDTO(
+                        client.getFirstName(),
+                        client.getLastName(),
+                        client.getUsername(),
+                        client.getEmail(),
+                        client.getType()
+                );
+            }
         }
         return null;
     }
 
     public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
-        Client client = new Client(clientCreateDTO.getFirstName(), clientCreateDTO.getLastName(),
-                                clientCreateDTO.getUsername(), clientCreateDTO.getEmail(),
-                                clientCreateDTO.getPassword(), clientCreateDTO.getClientType());
+        Client client = new Client(
+                clientCreateDTO.getFirstName(),
+                clientCreateDTO.getLastName(),
+                clientCreateDTO.getUsername(),
+                clientCreateDTO.getEmail(),
+                clientCreateDTO.getPassword(),
+                clientCreateDTO.getClientType());
         userRepository.save(client);
-        return new ClientDTO(client.getFirstName(), client.getLastName(),
-                                client.getUsername(), client.getEmail(), client.getType());
+        return new ClientDTO(
+                client.getFirstName(),
+                client.getLastName(),
+                client.getUsername(),
+                client.getEmail(),
+                client.getType());
     }
 
     public ManagerDTO registerManager(ManagerCreateDTO managerCreateDTO) {
-        Manager manager = new Manager(managerCreateDTO.getFirstName(), managerCreateDTO.getLastName(),
-                                        managerCreateDTO.getUsername(), managerCreateDTO.getEmail(),
-                                        managerCreateDTO.getPassword());
+        Manager manager = new Manager(
+                managerCreateDTO.getFirstName(),
+                managerCreateDTO.getLastName(),
+                managerCreateDTO.getUsername(),
+                managerCreateDTO.getEmail(),
+                managerCreateDTO.getPassword());
         userRepository.save(manager);
-        return new ManagerDTO(manager.getFirstName(), manager.getLastName(),
-                                manager.getUsername(), manager.getEmail());
+        return new ManagerDTO(
+                manager.getFirstName(),
+                manager.getLastName(),
+                manager.getUsername(),
+                manager.getEmail());
     }
 
     public AdminDTO registerAdmin(AdminCreateDTO adminCreateDTO) {
-        Admin admin = new Admin(adminCreateDTO.getFirstName(), adminCreateDTO.getLastName(),
-                                    adminCreateDTO.getUsername(), adminCreateDTO.getEmail(),
-                                    adminCreateDTO.getPassword());
+        Admin admin = new Admin(
+                adminCreateDTO.getFirstName(),
+                adminCreateDTO.getLastName(),
+                adminCreateDTO.getUsername(),
+                adminCreateDTO.getEmail(),
+                adminCreateDTO.getPassword());
         userRepository.save(admin);
-        return new AdminDTO(admin.getFirstName(), admin.getLastName(),
-                                admin.getUsername(), admin.getEmail());
+        return new AdminDTO(
+                admin.getFirstName(),
+                admin.getLastName(),
+                admin.getUsername(),
+                admin.getEmail());
     }
 }
