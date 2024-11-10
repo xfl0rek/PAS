@@ -1,18 +1,16 @@
-package pl.pas.aplikacjarest.dto;
+package pl.pas.aplikacjarest.dto.manager;
 
-public class ManagerCreateDTO {
+public class ManagerDTO {
     private String firstName;
     private String lastName;
     private String username;
     private String email;
-    private String password;
 
-    public ManagerCreateDTO(String firstName, String lastName, String username, String email, String password) {
+    public ManagerDTO(String firstName, String lastName, String username, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -31,10 +29,6 @@ public class ManagerCreateDTO {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -49,9 +43,5 @@ public class ManagerCreateDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

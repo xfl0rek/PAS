@@ -3,6 +3,13 @@ package pl.pas.aplikacjarest.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.*;
+import pl.pas.aplikacjarest.dto.admin.AdminCreateDTO;
+import pl.pas.aplikacjarest.dto.admin.AdminDTO;
+import pl.pas.aplikacjarest.dto.client.ClientCreateDTO;
+import pl.pas.aplikacjarest.dto.client.ClientDTO;
+import pl.pas.aplikacjarest.dto.manager.ManagerCreateDTO;
+import pl.pas.aplikacjarest.dto.manager.ManagerDTO;
+import pl.pas.aplikacjarest.model.Admin;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.Manager;
 import pl.pas.aplikacjarest.model.User;
@@ -43,5 +50,14 @@ public class UserService {
         userRepository.save(manager);
         return new ManagerDTO(manager.getFirstName(), manager.getLastName(),
                                 manager.getUsername(), manager.getEmail());
+    }
+
+    public AdminDTO registerAdmin(AdminCreateDTO adminCreateDTO) {
+        Admin admin = new Admin(adminCreateDTO.getFirstName(), adminCreateDTO.getLastName(),
+                                    adminCreateDTO.getUsername(), adminCreateDTO.getEmail(),
+                                    adminCreateDTO.getPassword());
+        userRepository.save(admin);
+        return new AdminDTO(admin.getFirstName(), admin.getLastName(),
+                                admin.getUsername(), admin.getEmail());
     }
 }

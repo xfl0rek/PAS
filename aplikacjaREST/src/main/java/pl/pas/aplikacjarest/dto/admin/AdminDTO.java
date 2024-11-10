@@ -1,21 +1,16 @@
-package pl.pas.aplikacjarest.dto;
+package pl.pas.aplikacjarest.dto.admin;
 
-import pl.pas.aplikacjarest.model.ClientType;
-
-public class ClientDTO {
+public class AdminDTO {
     private String firstName;
     private String lastName;
     private String username;
     private String email;
 
-    private ClientType clientType;
-
-    public ClientDTO(String firstName, String lastName, String username, String email, ClientType clientType) {
+    public AdminDTO(String firstName, String lastName, String username, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.clientType = clientType;
     }
 
     public String getFirstName() {
@@ -34,10 +29,6 @@ public class ClientDTO {
         return email;
     }
 
-    public ClientType getClientType() {
-        return clientType;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -52,9 +43,5 @@ public class ClientDTO {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setClientType(ClientType clientType) {
-        this.clientType = clientType;
     }
 }

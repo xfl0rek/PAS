@@ -1,4 +1,4 @@
-package pl.pas.aplikacjarest.dto;
+package pl.pas.aplikacjarest.dto.client;
 
 import pl.pas.aplikacjarest.model.ClientType;
 
