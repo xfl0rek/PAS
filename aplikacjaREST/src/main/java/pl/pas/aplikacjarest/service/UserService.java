@@ -36,11 +36,12 @@ public class UserService {
 //        return userRepository.findByEmail(email);
 //    }
 
-    public Client registerClient(ClientCreateDTO clientCreateDTO) {
+    public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client(clientCreateDTO.getFirstName(), clientCreateDTO.getLastName(),
                                 clientCreateDTO.getUsername(), clientCreateDTO.getEmail(),
                                 clientCreateDTO.getPassword(), clientCreateDTO.getClientType());
         userRepository.save(client);
-        return client;
+        return new ClientDTO(client.getFirstName(), client.getLastName(),
+                                client.getUsername(), client.getEmail(), client.getType());
     }
 }

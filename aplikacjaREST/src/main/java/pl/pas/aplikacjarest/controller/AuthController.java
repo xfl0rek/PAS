@@ -20,9 +20,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<ClientDTO> registerClient(@RequestBody ClientCreateDTO clientCreateDTO) {
-        Client client = userService.registerClient(clientCreateDTO);
-        ClientDTO clientDTO = new ClientDTO(client.getFirstName(), client.getLastName(),
-                                            client.getEmail(), client.getPassword(), client.getType());
+        ClientDTO clientDTO = userService.registerClient(clientCreateDTO);
         return ResponseEntity.ok().body(clientDTO);
     }
 
@@ -30,7 +28,7 @@ public class AuthController {
     public ResponseEntity<ClientDTO> loginClient(@RequestBody LoginDTO loginDTO) {
         Client client = userService.loginClient(loginDTO);
         ClientDTO clientDTO = new ClientDTO(client.getFirstName(), client.getLastName(),
-                client.getEmail(), client.getPassword(), client.getType());
+                client.getUsername(), client.getEmail(), client.getType());
         return ResponseEntity.ok().body(clientDTO);
     }
 }
