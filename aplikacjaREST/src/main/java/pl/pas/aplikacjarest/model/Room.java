@@ -1,6 +1,11 @@
 package pl.pas.aplikacjarest.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection="rooms")
 public class Room {
+    @Id
     private long roomNumber;
     private int basePrice;
     private int roomCapacity;

@@ -116,4 +116,14 @@ public class UserService {
                 admin.getUsername(),
                 admin.getEmail());
     }
+
+    public ClientDTO getClient(String username) {
+        Client client = userRepository.findClientByUsername(username);
+        return new ClientDTO(
+                client.getFirstName(),
+                client.getLastName(),
+                client.getUsername(),
+                client.getEmail(),
+                client.getType());
+    }
 }
