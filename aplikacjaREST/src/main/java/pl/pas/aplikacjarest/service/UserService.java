@@ -40,6 +40,36 @@ public class UserService {
         return null;
     }
 
+    public ManagerDTO loginManager(LoginDTO loginDTO) {
+        User user = userRepository.findByUsername(loginDTO.getUsername());
+        if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
+            if (user instanceof Manager manager) {
+                return new ManagerDTO(
+                        manager.getFirstName(),
+                        manager.getLastName(),
+                        manager.getUsername(),
+                        manager.getEmail()
+                );
+            }
+        }
+        return null;
+    }
+
+    public AdminDTO loginAdmin(LoginDTO loginDTO) {
+        User user = userRepository.findByUsername(loginDTO.getUsername());
+        if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
+            if (user instanceof Admin admin) {
+                return new AdminDTO(
+                        admin.getFirstName(),
+                        admin.getLastName(),
+                        admin.getUsername(),
+                        admin.getEmail()
+                );
+            }
+        }
+        return null;
+    }
+
     public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client(
                 clientCreateDTO.getFirstName(),

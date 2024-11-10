@@ -44,4 +44,16 @@ public class AuthController {
         ClientDTO clientDTO = userService.loginClient(loginDTO);
         return ResponseEntity.ok().body(clientDTO);
     }
+
+    @PostMapping("/manager/login")
+    public ResponseEntity<ManagerDTO> loginManager(@RequestBody LoginDTO loginDTO) {
+        ManagerDTO managerDTO = userService.loginManager(loginDTO);
+        return ResponseEntity.ok().body(managerDTO);
+    }
+
+    @PostMapping("/admin/login")
+    public ResponseEntity<AdminDTO> loginAdmin(@RequestBody LoginDTO loginDTO) {
+        AdminDTO adminDTO = userService.loginAdmin(loginDTO);
+        return ResponseEntity.ok().body(adminDTO);
+    }
 }
