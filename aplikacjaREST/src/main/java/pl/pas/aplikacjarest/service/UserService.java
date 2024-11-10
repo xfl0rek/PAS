@@ -3,6 +3,8 @@ package pl.pas.aplikacjarest.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.ClientCreateDTO;
+import pl.pas.aplikacjarest.dto.ClientDTO;
+import pl.pas.aplikacjarest.dto.LoginDTO;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.repository.UserRepository;
@@ -16,21 +18,23 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
+    //to tak chyba byc nie moze z tym rzutowaniem
+    //TODO: poprawic pozniej
+    public Client loginClient(LoginDTO loginDTO) {
+        User user = userRepository.findByUsername(loginDTO.getUsername());
+        if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
+            return (Client) user;
         }
         return null;
     }
 
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+//    public User getUserByUsername(String username) {
+//        return userRepository.findByUsername(username);
+//    }
+//
+//    public User getUserByEmail(String email) {
+//        return userRepository.findByEmail(email);
+//    }
 
     public Client registerClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client(clientCreateDTO.getFirstName(), clientCreateDTO.getLastName(),
