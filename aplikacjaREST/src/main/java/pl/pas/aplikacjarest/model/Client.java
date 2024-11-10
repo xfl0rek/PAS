@@ -8,6 +8,7 @@ public class Client extends User {
         super(firstName, lastName, username, email, password);
         this.setUserRole(UserRole.CLIENT);
         this.type = type;
+        setActive(true);
     }
 
     public ClientType getType() {
