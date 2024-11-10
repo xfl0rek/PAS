@@ -2,10 +2,9 @@ package pl.pas.aplikacjarest.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.pas.aplikacjarest.dto.ClientCreateDTO;
-import pl.pas.aplikacjarest.dto.ClientDTO;
-import pl.pas.aplikacjarest.dto.LoginDTO;
+import pl.pas.aplikacjarest.dto.*;
 import pl.pas.aplikacjarest.model.Client;
+import pl.pas.aplikacjarest.model.Manager;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.repository.UserRepository;
 
@@ -28,14 +27,6 @@ public class UserService {
         return null;
     }
 
-//    public User getUserByUsername(String username) {
-//        return userRepository.findByUsername(username);
-//    }
-//
-//    public User getUserByEmail(String email) {
-//        return userRepository.findByEmail(email);
-//    }
-
     public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client(clientCreateDTO.getFirstName(), clientCreateDTO.getLastName(),
                                 clientCreateDTO.getUsername(), clientCreateDTO.getEmail(),
@@ -43,5 +34,14 @@ public class UserService {
         userRepository.save(client);
         return new ClientDTO(client.getFirstName(), client.getLastName(),
                                 client.getUsername(), client.getEmail(), client.getType());
+    }
+
+    public ManagerDTO registerManager(ManagerCreateDTO managerCreateDTO) {
+        Manager manager = new Manager(managerCreateDTO.getFirstName(), managerCreateDTO.getLastName(),
+                                        managerCreateDTO.getUsername(), managerCreateDTO.getEmail(),
+                                        managerCreateDTO.getPassword());
+        userRepository.save(manager);
+        return new ManagerDTO(manager.getFirstName(), manager.getLastName(),
+                                manager.getUsername(), manager.getEmail());
     }
 }

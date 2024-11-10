@@ -3,9 +3,7 @@ package pl.pas.aplikacjarest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.pas.aplikacjarest.dto.ClientCreateDTO;
-import pl.pas.aplikacjarest.dto.ClientDTO;
-import pl.pas.aplikacjarest.dto.LoginDTO;
+import pl.pas.aplikacjarest.dto.*;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.service.UserService;
 
@@ -18,10 +16,16 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/client/register")
     public ResponseEntity<ClientDTO> registerClient(@RequestBody ClientCreateDTO clientCreateDTO) {
         ClientDTO clientDTO = userService.registerClient(clientCreateDTO);
         return ResponseEntity.ok().body(clientDTO);
+    }
+
+    @PostMapping("/manager/register")
+    public ResponseEntity<ManagerDTO> registerManager(@RequestBody ManagerCreateDTO managerCreateDTO) {
+        ManagerDTO managerDTO = userService.registerManager(managerCreateDTO);
+        return ResponseEntity.ok().body(managerDTO);
     }
 
     @PostMapping("/login")
