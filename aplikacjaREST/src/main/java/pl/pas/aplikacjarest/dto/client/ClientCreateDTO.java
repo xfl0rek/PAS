@@ -12,13 +12,13 @@ public class ClientCreateDTO {
     private ClientType clientType;
 
     public ClientCreateDTO(String firstName, String lastName, String username,
-                           String email, String password, ClientType clientType) {
+                           String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.clientType = clientType;
+        this.clientType = ClientType.Default;
     }
 
     public String getFirstName() {
