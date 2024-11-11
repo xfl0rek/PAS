@@ -12,6 +12,10 @@ import pl.pas.aplikacjarest.dto.manager.ManagerDTO;
 import pl.pas.aplikacjarest.model.*;
 import pl.pas.aplikacjarest.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
     UserRepository userRepository;
@@ -143,4 +147,48 @@ public class UserService {
         }
         return null;
     }
+
+    public List<ClientDTO> findAllClientsByClientType(ClientType clientType) {
+        List<User> users = userRepository.findAllClientsByClientType(clientType);
+        List<Client> clients = new ArrayList<>();
+        for(User user : users) {
+            if (user instanceof Client client) {
+                clients.add(client);
+            }
+        }
+        return clients.stream()
+                .map(client -> new ClientDTO(
+                        client.getFirstName(),
+                        client.getLastName(),
+                        client.getUsername(),
+                        client.getEmail(),
+                        client.getType()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public void activateAccount(String username) {
+        userRepository.activateUser(username);
+    }
+
+    public void deactivateAccount(String username) {
+        userRepository.deactivateUser(username);
+    }
+
+//    public List<ClientDTO> findAllClients() {
+//        List<User> clients = userRepository.findAll(UserRole.CLIENT);
+//        return clients.stream()
+//                .map(client -> new ClientDTO(
+//                        client.getFirstName(),
+//                        client.getLastName(),
+//                        client.getUsername(),
+//                        client.getEmail(),
+//                        client.getType()
+//                ))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<ManagerDTO> findAllManagers() {
+//        List<User> managers = userRepository.findAll(UserRole.MANAGER);
+//    }
 }

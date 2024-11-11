@@ -10,6 +10,8 @@ import pl.pas.aplikacjarest.dto.client.ClientDTO;
 import pl.pas.aplikacjarest.model.ClientType;
 import pl.pas.aplikacjarest.service.UserService;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     private final UserService userService;
@@ -31,4 +33,29 @@ public class UserController {
         ClientDTO clientDTO = userService.setClientType(username, clientType);
         return ResponseEntity.ok(clientDTO);
     }
+
+    @GetMapping("/admin/getAllClientsByClientType")
+    public ResponseEntity<List<ClientDTO>> getAllClientsByClientType(@RequestParam ClientType clientType) {
+        List<ClientDTO> clientDTOs = userService.findAllClientsByClientType(clientType);
+        return ResponseEntity.ok(clientDTOs);
+    }
+
+    @PostMapping("/admin/activateAccount")
+    public void activateAccount(@RequestParam String username) {
+        userService.activateAccount(username);
+    }
+
+
+    @PostMapping("/admin/deactivateAccount")
+    public void deactivateAccount(@RequestParam String username) {
+        userService.deactivateAccount(username);
+    }
+
+
+
+//    @GetMapping("/admin/getAllUsersByRole")
+//    public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
+//        List<UserDTO> userDTOs = userService.findAllUsersByUserRole(userRole);
+//        return ResponseEntity.ok(userDTOs);
+//    }
 }
