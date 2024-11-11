@@ -3,6 +3,7 @@ package pl.pas.aplikacjarest.dto.client;
 import pl.pas.aplikacjarest.model.ClientType;
 
 public class ClientDTO {
+    private final long id;
     private String firstName;
     private String lastName;
     private String username;
@@ -10,12 +11,17 @@ public class ClientDTO {
 
     private ClientType clientType;
 
-    public ClientDTO(String firstName, String lastName, String username, String email, ClientType clientType) {
+    public ClientDTO(long id, String firstName, String lastName, String username, String email, ClientType clientType) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.clientType = clientType;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {

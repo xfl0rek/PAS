@@ -29,6 +29,7 @@ public class UserService {
         if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
             if (user instanceof Client client) {
                 return new ClientDTO(
+                        client.getId(),
                         client.getFirstName(),
                         client.getLastName(),
                         client.getUsername(),
@@ -37,6 +38,7 @@ public class UserService {
                 );
             }
         }
+        System.out.println("User not found");
         return null;
     }
 
@@ -45,6 +47,7 @@ public class UserService {
         if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
             if (user instanceof Manager manager) {
                 return new ManagerDTO(
+                        manager.getId(),
                         manager.getFirstName(),
                         manager.getLastName(),
                         manager.getUsername(),
@@ -60,6 +63,7 @@ public class UserService {
         if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
             if (user instanceof Admin admin) {
                 return new AdminDTO(
+                        admin.getId(),
                         admin.getFirstName(),
                         admin.getLastName(),
                         admin.getUsername(),
@@ -72,6 +76,7 @@ public class UserService {
 
     public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
         Client client = new Client(
+                clientCreateDTO.getId(),
                 clientCreateDTO.getFirstName(),
                 clientCreateDTO.getLastName(),
                 clientCreateDTO.getUsername(),
@@ -80,6 +85,7 @@ public class UserService {
                 clientCreateDTO.getClientType());
         userRepository.save(client);
         return new ClientDTO(
+                client.getId(),
                 client.getFirstName(),
                 client.getLastName(),
                 client.getUsername(),
@@ -89,6 +95,7 @@ public class UserService {
 
     public ManagerDTO registerManager(ManagerCreateDTO managerCreateDTO) {
         Manager manager = new Manager(
+                managerCreateDTO.getId(),
                 managerCreateDTO.getFirstName(),
                 managerCreateDTO.getLastName(),
                 managerCreateDTO.getUsername(),
@@ -96,6 +103,7 @@ public class UserService {
                 managerCreateDTO.getPassword());
         userRepository.save(manager);
         return new ManagerDTO(
+                manager.getId(),
                 manager.getFirstName(),
                 manager.getLastName(),
                 manager.getUsername(),
@@ -104,6 +112,7 @@ public class UserService {
 
     public AdminDTO registerAdmin(AdminCreateDTO adminCreateDTO) {
         Admin admin = new Admin(
+                adminCreateDTO.getId(),
                 adminCreateDTO.getFirstName(),
                 adminCreateDTO.getLastName(),
                 adminCreateDTO.getUsername(),
@@ -111,15 +120,18 @@ public class UserService {
                 adminCreateDTO.getPassword());
         userRepository.save(admin);
         return new AdminDTO(
+                admin.getId(),
                 admin.getFirstName(),
                 admin.getLastName(),
                 admin.getUsername(),
                 admin.getEmail());
     }
 
+    //TODO: ogarnac rzutowanie
     public ClientDTO getClient(String username) {
-        Client client = userRepository.findClientByUsername(username);
+        Client client = (Client) userRepository.findByUsername(username);
         return new ClientDTO(
+                client.getId(),
                 client.getFirstName(),
                 client.getLastName(),
                 client.getUsername(),

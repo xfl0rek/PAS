@@ -1,22 +1,38 @@
 package pl.pas.aplikacjarest.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.codecs.pojo.annotations.BsonCreator;
+import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-@Document(collection = "users")
+//@Document(collection = "users")
+@BsonDiscriminator("user")
 public class User {
-    @Id
-    private String id;
+    @BsonId
+    private long id;
+    @BsonProperty("firstname")
     private String firstName;
+    @BsonProperty("lastname")
     private String lastName;
+    @BsonProperty("username")
     private String username;
+    @BsonProperty("email")
     private String email;
+    @BsonProperty("password")
     private String password;
+    @BsonProperty("isActive")
     private boolean isActive = false;
 
     private UserRole userRole;
 
-    public User(String firstName, String lastName, String username, String email, String password) {
+    @BsonCreator
+    public User(@BsonId long id,
+                @BsonProperty("firstname") String firstName,
+                @BsonProperty("lastname") String lastName,
+                @BsonProperty("username") String username,
+                @BsonProperty("email") String email,
+                @BsonProperty("password") String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -24,7 +40,10 @@ public class User {
         this.password = password;
     }
 
-    public String getId() {
+    public User() {
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -56,9 +75,6 @@ public class User {
         return userRole;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

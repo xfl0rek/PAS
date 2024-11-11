@@ -1,16 +1,21 @@
 package pl.pas.aplikacjarest.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-@Document(collection="rooms")
+
+
 public class Room {
-    @Id
+    @BsonId
     private long roomNumber;
+    @BsonProperty("baseprice")
     private int basePrice;
+    @BsonProperty("roomcapacity")
     private int roomCapacity;
 
-    public Room(long roomNumber, int basePrice, int roomCapacity) {
+    public Room(@BsonId long roomNumber,
+                @BsonProperty("baseprice") int basePrice,
+                @BsonProperty("roomcapacity") int roomCapacity) {
         this.roomNumber = roomNumber;
         this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;
