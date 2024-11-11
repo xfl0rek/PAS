@@ -9,10 +9,7 @@ import pl.pas.aplikacjarest.dto.client.ClientCreateDTO;
 import pl.pas.aplikacjarest.dto.client.ClientDTO;
 import pl.pas.aplikacjarest.dto.manager.ManagerCreateDTO;
 import pl.pas.aplikacjarest.dto.manager.ManagerDTO;
-import pl.pas.aplikacjarest.model.Admin;
-import pl.pas.aplikacjarest.model.Client;
-import pl.pas.aplikacjarest.model.Manager;
-import pl.pas.aplikacjarest.model.User;
+import pl.pas.aplikacjarest.model.*;
 import pl.pas.aplikacjarest.repository.UserRepository;
 
 @Service
@@ -118,14 +115,32 @@ public class UserService {
                 admin.getEmail());
     }
 
-    //TODO: ogarnac rzutowanie
     public ClientDTO getClient(String username) {
-        Client client = (Client) userRepository.findByUsername(username);
-        return new ClientDTO(
-                client.getFirstName(),
-                client.getLastName(),
-                client.getUsername(),
-                client.getEmail(),
-                client.getType());
+        User user = userRepository.findByUsername(username);
+        if (user instanceof Client client) {
+            return new ClientDTO(
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getUsername(),
+                    client.getEmail(),
+                    client.getType());
+        }
+        return null;
+    }
+
+    public ClientDTO setClientType(String username, ClientType clientType) {
+        User user = userRepository.findByUsername(username);
+        if (user instanceof Client client) {
+            client.setType(clientType);
+            userRepository.update(client);
+            return new ClientDTO(
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getUsername(),
+                    client.getEmail(),
+                    client.getType()
+            );
+        }
+        return null;
     }
 }

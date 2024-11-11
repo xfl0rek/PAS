@@ -46,7 +46,7 @@ public class UserRepository extends AbstractMongoRepository {
     public void update(User user) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
         BasicDBObject update = new BasicDBObject();
-        update.put("_id", user.getId());
+        update.put("username", user.getUsername());
         collection.replaceOne(update, user);
     }
 
