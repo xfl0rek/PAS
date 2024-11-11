@@ -23,6 +23,7 @@ public class User {
     @BsonProperty("isActive")
     private boolean isActive = false;
 
+    @BsonProperty("userRole")
     private UserRole userRole;
 
     @BsonCreator

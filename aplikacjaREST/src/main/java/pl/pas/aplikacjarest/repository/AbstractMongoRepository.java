@@ -11,7 +11,9 @@ import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import pl.pas.aplikacjarest.model.Admin;
 import pl.pas.aplikacjarest.model.Client;
+import pl.pas.aplikacjarest.model.Manager;
 import pl.pas.aplikacjarest.model.User;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
     private CodecRegistry pojoCodecRegistry = CodecRegistries.fromProviders(
             PojoCodecProvider.builder()
-                    .register(User.class, Client.class)
+                    .register(User.class, Client.class, Manager.class, Admin.class)
                     .automatic(true)
                     .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
                     .build()

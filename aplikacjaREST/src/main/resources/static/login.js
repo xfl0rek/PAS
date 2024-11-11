@@ -2,7 +2,9 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData.entries());
+
+    console.log('Form data:', data);
 
     fetch('/client/login', {
         method: 'POST',

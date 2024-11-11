@@ -1,8 +1,13 @@
 package pl.pas.aplikacjarest.dto;
 
 public class LoginDTO {
-    String username;
-    String password;
+    private String username;
+    private String password;
+
+    public LoginDTO(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public String getUsername() {
         return username;
