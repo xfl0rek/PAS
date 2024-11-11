@@ -4,12 +4,12 @@ import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
 
-//@Document(collection = "users")
 @BsonDiscriminator("user")
 public class User {
     @BsonId
-    private long id;
+    private ObjectId id;
     @BsonProperty("firstname")
     private String firstName;
     @BsonProperty("lastname")
@@ -27,13 +27,12 @@ public class User {
     private UserRole userRole;
 
     @BsonCreator
-    public User(@BsonId long id,
-                @BsonProperty("firstname") String firstName,
+    public User(@BsonProperty("firstname") String firstName,
                 @BsonProperty("lastname") String lastName,
                 @BsonProperty("username") String username,
                 @BsonProperty("email") String email,
                 @BsonProperty("password") String password) {
-        this.id = id;
+        this.id = new ObjectId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -44,7 +43,7 @@ public class User {
     public User() {
     }
 
-    public long getId() {
+    public ObjectId getId() {
         return id;
     }
 

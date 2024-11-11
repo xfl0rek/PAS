@@ -1,22 +1,16 @@
 package pl.pas.aplikacjarest.dto.manager;
 
 public class ManagerDTO {
-    private long id;
     private String firstName;
     private String lastName;
     private String username;
     private String email;
 
-    public ManagerDTO(long id, String firstName, String lastName, String username, String email) {
-        this.id = id;
+    public ManagerDTO(String firstName, String lastName, String username, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFirstName() {

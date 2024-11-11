@@ -3,7 +3,6 @@ package pl.pas.aplikacjarest.dto.client;
 import pl.pas.aplikacjarest.model.ClientType;
 
 public class ClientCreateDTO {
-    private final long id;
     private String firstName;
     private String lastName;
     private String username;
@@ -12,19 +11,14 @@ public class ClientCreateDTO {
 
     private ClientType clientType;
 
-    public ClientCreateDTO(long id, String firstName, String lastName, String username,
+    public ClientCreateDTO(String firstName, String lastName, String username,
                            String email, String password) {
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
         this.clientType = ClientType.Default;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFirstName() {
