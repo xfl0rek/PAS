@@ -4,6 +4,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 import pl.pas.aplikacjarest.model.ClientType;
 import pl.pas.aplikacjarest.model.User;
@@ -31,6 +33,11 @@ public class UserRepository extends AbstractMongoRepository {
     public User findByEmail(String email) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
         return collection.find(Filters.eq("email", email)).first();
+    }
+
+    public User findByID(ObjectId userID) {
+        MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
+        return collection.find(Filters.eq("_id", userID)).first();
     }
 
     public List<User> findAll(UserRole userRole) {
@@ -69,6 +76,13 @@ public class UserRepository extends AbstractMongoRepository {
         collection.updateOne(Filters.eq("username", username), Updates.set("active", true));
     }
 
+    public List<User> findUsersByPartialUsername(String partialUsername) {
+        MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
+        Bson filter = Filters.regex("username", partialUsername, "i");
+        List<User> users = new ArrayList<>();
+        collection.find(filter).into(users);
+        return users;
+    }
 
 //    Client findClientByUsername(String username);
 }

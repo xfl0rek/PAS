@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.controller;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,13 @@ public class UserController {
         return ResponseEntity.ok(clientDTO);
     }
 
+    @GetMapping("/manager/getUsersByPartialUsername")
+    public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
+        List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
+        return ResponseEntity.ok(userDTOs);
+    }
+
+
     @PostMapping("/admin/setClientType")
     public ResponseEntity<ClientDTO> setClientType(@RequestParam String username,
                                                    @RequestParam ClientType clientType) {
@@ -53,11 +61,15 @@ public class UserController {
         userService.deactivateAccount(username);
     }
 
-
-
     @GetMapping("/admin/getAllUsersByRole")
     public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
         List<UserDTO> userDTOs = userService.findAll(userRole);
         return ResponseEntity.ok(userDTOs);
+    }
+
+    @GetMapping("/admin/getUserByID")
+    public ResponseEntity<UserDTO> getUserByID(@RequestParam ObjectId userID) {
+        UserDTO userDTO = userService.getUserByID(userID);
+        return ResponseEntity.ok(userDTO);
     }
 }

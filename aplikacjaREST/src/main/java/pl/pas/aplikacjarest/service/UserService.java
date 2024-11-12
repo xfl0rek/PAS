@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.service;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.*;
@@ -144,6 +145,38 @@ public class UserService {
         return null;
     }
 
+    public List<UserDTO> getUsersByPartialUsername(String partialUsername) {
+        List<User> users = userRepository.findUsersByPartialUsername(partialUsername);
+        return users.stream()
+                .map(user -> {
+                    if (user instanceof Client client) {
+                        return new ClientDTO(
+                                client.getFirstName(),
+                                client.getLastName(),
+                                client.getUsername(),
+                                client.getEmail(),
+                                client.getType()
+                        );
+                    } else if (user instanceof Manager manager) {
+                        return new ManagerDTO(
+                                manager.getFirstName(),
+                                manager.getLastName(),
+                                manager.getUsername(),
+                                manager.getEmail()
+                        );
+                    } else if (user instanceof Admin admin) {
+                        return new AdminDTO(
+                                admin.getFirstName(),
+                                admin.getLastName(),
+                                admin.getUsername(),
+                                admin.getEmail()
+                        );
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
+    }
+
     public ClientDTO setClientType(String username, ClientType clientType) {
         User user = userRepository.findByUsername(username);
         if (user instanceof Client client) {
@@ -217,6 +250,35 @@ public class UserService {
                     return null;
                 })
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO getUserByID(ObjectId userID) {
+
+        User user = userRepository.findByID(userID);
+        if (user instanceof Client client) {
+            return new ClientDTO(
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getUsername(),
+                    client.getEmail(),
+                    client.getType()
+            );
+        } else if (user instanceof Manager manager) {
+            return new ManagerDTO(
+                    manager.getFirstName(),
+                    manager.getLastName(),
+                    manager.getUsername(),
+                    manager.getEmail()
+            );
+        } else if (user instanceof Admin admin) {
+            return new AdminDTO(
+                    admin.getFirstName(),
+                    admin.getLastName(),
+                    admin.getUsername(),
+                    admin.getEmail()
+            );
+        }
+        return null;
     }
 
 //    public List<ClientDTO> findAllClients() {
