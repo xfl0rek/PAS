@@ -73,50 +73,62 @@ public class UserService {
     }
 
     public ClientDTO registerClient(ClientCreateDTO clientCreateDTO) {
-        Client client = new Client(
-                clientCreateDTO.getFirstName(),
-                clientCreateDTO.getLastName(),
-                clientCreateDTO.getUsername(),
-                clientCreateDTO.getEmail(),
-                clientCreateDTO.getPassword(),
-                clientCreateDTO.getClientType());
-        userRepository.save(client);
-        return new ClientDTO(
-                client.getFirstName(),
-                client.getLastName(),
-                client.getUsername(),
-                client.getEmail(),
-                client.getType());
+        User user = userRepository.findByUsername(clientCreateDTO.getUsername());
+        if (user == null) {
+            Client client = new Client(
+                    clientCreateDTO.getFirstName(),
+                    clientCreateDTO.getLastName(),
+                    clientCreateDTO.getUsername(),
+                    clientCreateDTO.getEmail(),
+                    clientCreateDTO.getPassword(),
+                    clientCreateDTO.getClientType());
+            userRepository.save(client);
+            return new ClientDTO(
+                    client.getFirstName(),
+                    client.getLastName(),
+                    client.getUsername(),
+                    client.getEmail(),
+                    client.getType());
+        }
+        return null;
     }
 
     public ManagerDTO registerManager(ManagerCreateDTO managerCreateDTO) {
-        Manager manager = new Manager(
-                managerCreateDTO.getFirstName(),
-                managerCreateDTO.getLastName(),
-                managerCreateDTO.getUsername(),
-                managerCreateDTO.getEmail(),
-                managerCreateDTO.getPassword());
-        userRepository.save(manager);
-        return new ManagerDTO(
-                manager.getFirstName(),
-                manager.getLastName(),
-                manager.getUsername(),
-                manager.getEmail());
+        User user = userRepository.findByUsername(managerCreateDTO.getUsername());
+        if (user == null) {
+            Manager manager = new Manager(
+                    managerCreateDTO.getFirstName(),
+                    managerCreateDTO.getLastName(),
+                    managerCreateDTO.getUsername(),
+                    managerCreateDTO.getEmail(),
+                    managerCreateDTO.getPassword());
+            userRepository.save(manager);
+            return new ManagerDTO(
+                    manager.getFirstName(),
+                    manager.getLastName(),
+                    manager.getUsername(),
+                    manager.getEmail());
+        }
+        return null;
     }
 
     public AdminDTO registerAdmin(AdminCreateDTO adminCreateDTO) {
-        Admin admin = new Admin(
-                adminCreateDTO.getFirstName(),
-                adminCreateDTO.getLastName(),
-                adminCreateDTO.getUsername(),
-                adminCreateDTO.getEmail(),
-                adminCreateDTO.getPassword());
-        userRepository.save(admin);
-        return new AdminDTO(
-                admin.getFirstName(),
-                admin.getLastName(),
-                admin.getUsername(),
-                admin.getEmail());
+        User user = userRepository.findByUsername(adminCreateDTO.getUsername());
+        if (user == null) {
+            Admin admin = new Admin(
+                    adminCreateDTO.getFirstName(),
+                    adminCreateDTO.getLastName(),
+                    adminCreateDTO.getUsername(),
+                    adminCreateDTO.getEmail(),
+                    adminCreateDTO.getPassword());
+            userRepository.save(admin);
+            return new AdminDTO(
+                    admin.getFirstName(),
+                    admin.getLastName(),
+                    admin.getUsername(),
+                    admin.getEmail());
+        }
+        return null;
     }
 
     public ClientDTO getClient(String username) {
@@ -173,6 +185,38 @@ public class UserService {
 
     public void deactivateAccount(String username) {
         userRepository.deactivateUser(username);
+    }
+
+    public List<UserDTO> findAll(UserRole userRole) {
+        List<User> users = userRepository.findAll(userRole);
+        return users.stream()
+                .map(user -> {
+                    if (user instanceof Client client) {
+                        return new ClientDTO(
+                                client.getFirstName(),
+                                client.getLastName(),
+                                client.getUsername(),
+                                client.getEmail(),
+                                client.getType()
+                        );
+                    } else if (user instanceof Manager manager) {
+                        return new ManagerDTO(
+                                manager.getFirstName(),
+                                manager.getLastName(),
+                                manager.getUsername(),
+                                manager.getEmail()
+                        );
+                    } else if (user instanceof Admin admin) {
+                        return new AdminDTO(
+                                admin.getFirstName(),
+                                admin.getLastName(),
+                                admin.getUsername(),
+                                admin.getEmail()
+                        );
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
     }
 
 //    public List<ClientDTO> findAllClients() {

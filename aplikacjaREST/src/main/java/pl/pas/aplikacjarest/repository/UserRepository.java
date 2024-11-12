@@ -5,7 +5,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
 import org.springframework.stereotype.Repository;
-import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.ClientType;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.model.UserRole;

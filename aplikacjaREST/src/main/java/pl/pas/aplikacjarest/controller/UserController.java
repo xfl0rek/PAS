@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.pas.aplikacjarest.dto.UserDTO;
 import pl.pas.aplikacjarest.dto.client.ClientDTO;
 import pl.pas.aplikacjarest.model.ClientType;
+import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.service.UserService;
 
 import java.util.List;
@@ -53,9 +55,9 @@ public class UserController {
 
 
 
-//    @GetMapping("/admin/getAllUsersByRole")
-//    public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
-//        List<UserDTO> userDTOs = userService.findAllUsersByUserRole(userRole);
-//        return ResponseEntity.ok(userDTOs);
-//    }
+    @GetMapping("/admin/getAllUsersByRole")
+    public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
+        List<UserDTO> userDTOs = userService.findAll(userRole);
+        return ResponseEntity.ok(userDTOs);
+    }
 }
