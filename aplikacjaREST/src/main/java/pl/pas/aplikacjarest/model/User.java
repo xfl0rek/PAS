@@ -20,7 +20,7 @@ public class User {
     private String email;
     @BsonProperty("password")
     private String password;
-    @BsonProperty("isActive")
+    @BsonProperty("active")
     private boolean isActive = false;
 
     @BsonProperty("userRole")

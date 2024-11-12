@@ -62,14 +62,12 @@ public class UserRepository extends AbstractMongoRepository {
 
     public void deactivateUser(String username) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        collection.updateOne(Filters.eq("username", username), Updates.set("isActive", false));
+        collection.updateOne(Filters.eq("username", username), Updates.set("active", false));
     }
 
     public void activateUser(String username) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        BasicDBObject update = new BasicDBObject();
-        update.put("username", username);
-        collection.updateOne(Filters.eq("username", username), new BasicDBObject("$set", new BasicDBObject("isActive", true)));
+        collection.updateOne(Filters.eq("username", username), Updates.set("active", true));
     }
 
 
