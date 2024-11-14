@@ -15,13 +15,22 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-//    public RoomDTO createRoom(RoomDTO roomDTO) {
-//        Room room = new Room(
-//
-//        )
-//    }
-
-    public Room getRoom(long id) {
-        return new Room(id, 1000, 2);
+    public RoomDTO createRoom(RoomDTO roomDTO) {
+        Room room = roomRepository.findByRoomNumber(roomDTO.getRoomNumber());
+        if (room == null) {
+            Room newRoom = new Room(
+                    roomDTO.getRoomNumber(),
+                    roomDTO.getBasePrice(),
+                    roomDTO.getRoomCapacity()
+            );
+            roomRepository.save(newRoom);
+            return new RoomDTO(
+                    newRoom.getRoomNumber(),
+                    newRoom.getBasePrice(),
+                    newRoom.getRoomCapacity()
+            );
+        }
+        return null;
     }
+
 }

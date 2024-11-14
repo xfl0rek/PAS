@@ -1,16 +1,15 @@
 package pl.pas.aplikacjarest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import pl.pas.aplikacjarest.model.Room;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.service.RoomService;
 
-@Controller
-@RequestMapping("/room")
+@RestController
 public class RoomController {
-
     RoomService roomService;
 
     @Autowired
@@ -18,10 +17,9 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @GetMapping("/{roomNumber}")
-    public String getRoom(@PathVariable long roomNumber, Model model) {
-        Room room = roomService.getRoom(roomNumber);
-        model.addAttribute("room", room);
-        return "room";
+    @PostMapping("/manager/createRoom")
+    public ResponseEntity<RoomDTO> createRoom(@RequestBody RoomDTO createdRoom) {
+        RoomDTO roomDTO = roomService.createRoom(createdRoom);
+        return ResponseEntity.ok(roomDTO);
     }
 }
