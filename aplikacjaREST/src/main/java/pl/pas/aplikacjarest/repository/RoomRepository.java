@@ -38,13 +38,6 @@ public class RoomRepository extends AbstractMongoRepository {
         collection.replaceOne(update, room);
     }
 
-    public void delete(long id) {
-        BasicDBObject query = new BasicDBObject();
-        query.put("_id", id);
-        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
-        collection.deleteOne(query);
-    }
-
     public Room findByRoomNumber(int roomNumber) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         return collection.find(Filters.eq("roomNumber", roomNumber)).first();
@@ -53,5 +46,12 @@ public class RoomRepository extends AbstractMongoRepository {
     public void save(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         collection.insertOne(room);
+    }
+
+    public void delete(int roomNumber) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("roomNumber", roomNumber);
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        collection.deleteOne(query);
     }
 }

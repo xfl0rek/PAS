@@ -24,6 +24,10 @@ public class Room {
         this.roomCapacity = roomCapacity;
     }
 
+    public Room() {
+
+    }
+
     public ObjectId getId() {
         return id;
     }

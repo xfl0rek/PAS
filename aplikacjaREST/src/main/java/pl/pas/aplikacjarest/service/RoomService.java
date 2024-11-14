@@ -33,4 +33,10 @@ public class RoomService {
         return null;
     }
 
+    public void deleteRoom(int roomNumber) {
+        Room room = roomRepository.findByRoomNumber(roomNumber);
+        if (room != null) {
+            roomRepository.delete(roomNumber);
+        }
+    }
 }
