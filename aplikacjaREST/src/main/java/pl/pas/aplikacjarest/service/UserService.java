@@ -3,6 +3,7 @@ package pl.pas.aplikacjarest.service;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.pas.aplikacjarest.converter.UserConverter;
 import pl.pas.aplikacjarest.dto.*;
 import pl.pas.aplikacjarest.dto.admin.AdminCreateDTO;
 import pl.pas.aplikacjarest.dto.admin.AdminDTO;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     UserRepository userRepository;
+    UserConverter userConverter = new UserConverter();
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -147,34 +149,7 @@ public class UserService {
 
     public List<UserDTO> getUsersByPartialUsername(String partialUsername) {
         List<User> users = userRepository.findUsersByPartialUsername(partialUsername);
-        return users.stream()
-                .map(user -> {
-                    if (user instanceof Client client) {
-                        return new ClientDTO(
-                                client.getFirstName(),
-                                client.getLastName(),
-                                client.getUsername(),
-                                client.getEmail(),
-                                client.getType()
-                        );
-                    } else if (user instanceof Manager manager) {
-                        return new ManagerDTO(
-                                manager.getFirstName(),
-                                manager.getLastName(),
-                                manager.getUsername(),
-                                manager.getEmail()
-                        );
-                    } else if (user instanceof Admin admin) {
-                        return new AdminDTO(
-                                admin.getFirstName(),
-                                admin.getLastName(),
-                                admin.getUsername(),
-                                admin.getEmail()
-                        );
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
+        return userConverter.userListToUserDTOListConverter(users);
     }
 
     public ClientDTO setClientType(String username, ClientType clientType) {
@@ -222,79 +197,11 @@ public class UserService {
 
     public List<UserDTO> findAll(UserRole userRole) {
         List<User> users = userRepository.findAll(userRole);
-        return users.stream()
-                .map(user -> {
-                    if (user instanceof Client client) {
-                        return new ClientDTO(
-                                client.getFirstName(),
-                                client.getLastName(),
-                                client.getUsername(),
-                                client.getEmail(),
-                                client.getType()
-                        );
-                    } else if (user instanceof Manager manager) {
-                        return new ManagerDTO(
-                                manager.getFirstName(),
-                                manager.getLastName(),
-                                manager.getUsername(),
-                                manager.getEmail()
-                        );
-                    } else if (user instanceof Admin admin) {
-                        return new AdminDTO(
-                                admin.getFirstName(),
-                                admin.getLastName(),
-                                admin.getUsername(),
-                                admin.getEmail()
-                        );
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
+        return userConverter.userListToUserDTOListConverter(users);
     }
 
     public UserDTO getUserByID(ObjectId userID) {
-
         User user = userRepository.findByID(userID);
-        if (user instanceof Client client) {
-            return new ClientDTO(
-                    client.getFirstName(),
-                    client.getLastName(),
-                    client.getUsername(),
-                    client.getEmail(),
-                    client.getType()
-            );
-        } else if (user instanceof Manager manager) {
-            return new ManagerDTO(
-                    manager.getFirstName(),
-                    manager.getLastName(),
-                    manager.getUsername(),
-                    manager.getEmail()
-            );
-        } else if (user instanceof Admin admin) {
-            return new AdminDTO(
-                    admin.getFirstName(),
-                    admin.getLastName(),
-                    admin.getUsername(),
-                    admin.getEmail()
-            );
-        }
-        return null;
+        return userConverter.userToUserDTOConverter(user);
     }
-
-//    public List<ClientDTO> findAllClients() {
-//        List<User> clients = userRepository.findAll(UserRole.CLIENT);
-//        return clients.stream()
-//                .map(client -> new ClientDTO(
-//                        client.getFirstName(),
-//                        client.getLastName(),
-//                        client.getUsername(),
-//                        client.getEmail(),
-//                        client.getType()
-//                ))
-//                .collect(Collectors.toList());
-//    }
-//
-//    public List<ManagerDTO> findAllManagers() {
-//        List<User> managers = userRepository.findAll(UserRole.MANAGER);
-//    }
 }
