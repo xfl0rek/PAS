@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.service.RoomService;
 
+import java.util.List;
+
 @RestController
 public class RoomController {
     RoomService roomService;
@@ -36,5 +38,11 @@ public class RoomController {
     @PostMapping("/admin/deleteRoom")
     public void deleteRoom(@RequestParam int roomNumber) {
         roomService.deleteRoom(roomNumber);
+    }
+
+    @GetMapping("/manager/getRoomsByRoomCapacity")
+    public ResponseEntity<List<RoomDTO>> getRoomsByRoomCapacity(@RequestParam int roomCapacity) {
+        List<RoomDTO> roomDTOs = roomService.getRoomsByRoomCapacity(roomCapacity);
+        return ResponseEntity.ok(roomDTOs);
     }
 }

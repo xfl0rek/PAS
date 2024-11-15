@@ -8,6 +8,7 @@ import pl.pas.aplikacjarest.model.Room;
 import pl.pas.aplikacjarest.repository.RoomRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
@@ -57,5 +58,16 @@ public class RoomService {
         room.setBasePrice(roomDTO.getBasePrice());
         room.setRoomCapacity(roomDTO.getRoomCapacity());
         roomRepository.save(room);
+    }
+
+    public List<RoomDTO> getRoomsByRoomCapacity(int roomCapacity) {
+        List<Room> rooms = roomRepository.getRoomsByRoomCapacity(roomCapacity);
+        return rooms.stream()
+                .map(room -> new RoomDTO(
+                        room.getRoomNumber(),
+                        room.getBasePrice(),
+                        room.getRoomCapacity()
+                ))
+                .collect(Collectors.toList());
     }
 }

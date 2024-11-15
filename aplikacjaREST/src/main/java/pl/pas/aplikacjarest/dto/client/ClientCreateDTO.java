@@ -1,12 +1,18 @@
 package pl.pas.aplikacjarest.dto.client;
 
+import jakarta.validation.constraints.Size;
 import pl.pas.aplikacjarest.model.ClientType;
 
 public class ClientCreateDTO {
+    @Size(min = 3, max = 30)
     private String firstName;
+    @Size(min = 3, max = 30)
     private String lastName;
+    @Size(min = 5, max = 30)
     private String username;
+    @Size(min = 10, max = 50)
     private String email;
+    @Size(min = 8, max = 50)
     private String password;
 
     private ClientType clientType;

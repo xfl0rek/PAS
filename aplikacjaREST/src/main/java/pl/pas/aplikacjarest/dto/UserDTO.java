@@ -1,11 +1,16 @@
 package pl.pas.aplikacjarest.dto;
 
+import jakarta.validation.constraints.Size;
 import pl.pas.aplikacjarest.model.UserRole;
 
 public abstract class UserDTO {
+    @Size(min = 3, max = 30)
     private String firstName;
+    @Size(min = 3, max = 30)
     private String lastName;
+    @Size(min = 5, max = 30)
     private String username;
+    @Size(min = 10, max = 50)
     private String email;
     private UserRole userRole;
 

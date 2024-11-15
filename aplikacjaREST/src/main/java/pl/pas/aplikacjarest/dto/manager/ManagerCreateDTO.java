@@ -1,10 +1,17 @@
 package pl.pas.aplikacjarest.dto.manager;
 
+import jakarta.validation.constraints.Size;
+
 public class ManagerCreateDTO {
+    @Size(min = 3, max = 30)
     private String firstName;
+    @Size(min = 3, max = 30)
     private String lastName;
+    @Size(min = 5, max = 30)
     private String username;
+    @Size(min = 10, max = 50)
     private String email;
+    @Size(min = 8, max = 50)
     private String password;
 
     public ManagerCreateDTO(String firstName, String lastName, String username, String email, String password) {

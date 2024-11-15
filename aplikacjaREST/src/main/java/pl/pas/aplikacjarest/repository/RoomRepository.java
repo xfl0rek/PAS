@@ -5,7 +5,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
+import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.model.Room;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class RoomRepository extends AbstractMongoRepository {
@@ -59,5 +63,10 @@ public class RoomRepository extends AbstractMongoRepository {
     public Room getRoomByID(ObjectId id) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         return collection.find(Filters.eq("_id", id)).first();
+    }
+
+    public List<Room> getRoomsByRoomCapacity(int roomCapacity) {
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        return collection.find(Filters.eq("roomcapacity", roomCapacity)).into(new ArrayList<>());
     }
 }

@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.model;
 
+import jakarta.validation.constraints.Size;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
@@ -11,14 +12,19 @@ public class User {
     @BsonId
     private ObjectId id;
     @BsonProperty("firstname")
+    @Size(min = 3, max = 30)
     private String firstName;
     @BsonProperty("lastname")
+    @Size(min = 3, max = 30)
     private String lastName;
     @BsonProperty("username")
+    @Size(min = 5, max = 30)
     private String username;
     @BsonProperty("email")
+    @Size(min = 10, max = 50)
     private String email;
     @BsonProperty("password")
+    @Size(min = 8, max = 50)
     private String password;
     @BsonProperty("active")
     private boolean isActive = false;
