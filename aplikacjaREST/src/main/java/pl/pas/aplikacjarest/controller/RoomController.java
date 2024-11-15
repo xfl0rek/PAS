@@ -45,4 +45,10 @@ public class RoomController {
         List<RoomDTO> roomDTOs = roomService.getRoomsByRoomCapacity(roomCapacity);
         return ResponseEntity.ok(roomDTOs);
     }
+
+    @GetMapping("/manager/getRoomsByBasePrice")
+    public ResponseEntity<List<RoomDTO>> getRoomsByBasePrice(@RequestParam int basePrice) {
+        List<RoomDTO> roomDTOs = roomService.getRoomsByBasePrice(basePrice);
+        return ResponseEntity.ok(roomDTOs);
+    }
 }

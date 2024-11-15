@@ -70,4 +70,15 @@ public class RoomService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public List<RoomDTO> getRoomsByBasePrice(int basePrice) {
+        List<Room> rooms = roomRepository.getRoomsByBasePrice(basePrice);
+        return rooms.stream()
+                .map(room -> new RoomDTO(
+                        room.getRoomNumber(),
+                        room.getBasePrice(),
+                        room.getRoomCapacity()
+                ))
+                .collect(Collectors.toList());
+    }
 }

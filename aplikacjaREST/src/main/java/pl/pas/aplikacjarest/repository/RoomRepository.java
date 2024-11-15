@@ -69,4 +69,9 @@ public class RoomRepository extends AbstractMongoRepository {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         return collection.find(Filters.eq("roomcapacity", roomCapacity)).into(new ArrayList<>());
     }
+
+    public List<Room> getRoomsByBasePrice(int basePrice) {
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        return collection.find(Filters.eq("baseprice", basePrice)).into(new ArrayList<>());
+    }
 }
