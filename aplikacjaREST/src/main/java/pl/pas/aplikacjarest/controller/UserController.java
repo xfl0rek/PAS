@@ -55,7 +55,6 @@ public class UserController {
         userService.activateAccount(username);
     }
 
-
     @PostMapping("/admin/deactivateAccount")
     public void deactivateAccount(@RequestParam String username) {
         userService.deactivateAccount(username);

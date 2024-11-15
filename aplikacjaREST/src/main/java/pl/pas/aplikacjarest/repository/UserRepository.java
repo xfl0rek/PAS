@@ -84,5 +84,4 @@ public class UserRepository extends AbstractMongoRepository {
         return users;
     }
 
-//    Client findClientByUsername(String username);
 }

@@ -3,6 +3,7 @@ package pl.pas.aplikacjarest.repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 import pl.pas.aplikacjarest.model.Room;
 
@@ -53,5 +54,10 @@ public class RoomRepository extends AbstractMongoRepository {
         query.put("roomNumber", roomNumber);
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         collection.deleteOne(query);
+    }
+
+    public Room getRoomByID(ObjectId id) {
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        return collection.find(Filters.eq("_id", id)).first();
     }
 }
