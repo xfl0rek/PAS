@@ -1,25 +1,37 @@
 package pl.pas.aplikacjarest.model;
 
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonProperty;
+import org.bson.types.ObjectId;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Rent {
-    private long id;
+    @BsonId
+    private ObjectId id;
+    @BsonProperty("client")
     private Client client;
+    @BsonProperty("room")
     private Room room;
+    @BsonProperty("begintime")
     private LocalDateTime beginTime;
+    @BsonProperty("endtime")
     private LocalDateTime endTime;
+    @BsonProperty("rentcost")
     private double rentCost;
+    @BsonProperty("isarchive")
     private boolean isArchive;
 
-    public Rent(long id, Client client, Room room, LocalDateTime beginTime) {
-        this.id = id;
+    public Rent(@BsonProperty("client") Client client,
+                @BsonProperty("room") Room room,
+                @BsonProperty("begintime") LocalDateTime beginTime) {
         this.client = client;
         this.room = room;
         this.beginTime = beginTime;
     }
 
-    public long getId() {
+    public ObjectId getId() {
         return id;
     }
 
@@ -47,7 +59,7 @@ public class Rent {
         return isArchive;
     }
 
-    public void setId(long id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 

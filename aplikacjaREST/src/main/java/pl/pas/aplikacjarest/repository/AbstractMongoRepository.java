@@ -6,16 +6,22 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ValidationOptions;
+import org.bson.BsonType;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
+import org.bson.conversions.Bson;
 import pl.pas.aplikacjarest.model.Admin;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.Manager;
 import pl.pas.aplikacjarest.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractMongoRepository implements AutoCloseable {
@@ -50,10 +56,31 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         base = mongoClient.getDatabase("hotelpas");
+        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
+            createRoomsCollection();
+        }
+    }
+
+    private void createRoomsCollection() {
+        Bson isRentedType = Filters.type("rented", BsonType.INT32);
+        Bson isRentedMin = Filters.gte("rented", 0);
+        Bson isRentedMax = Filters.lte("rented", 1);
+        Bson isRented = Filters.and(isRentedType, isRentedMin, isRentedMax);
+
+        ValidationOptions validationOptions = new ValidationOptions()
+                .validator(isRented);
+
+        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
+                .validationOptions(validationOptions);
+        getDatabase().createCollection("rooms", createCollectionOptions);
     }
 
     public MongoDatabase getDatabase() {
         return base;
+    }
+
+    public MongoClient getMongoClient() {
+        return mongoClient;
     }
 }
 

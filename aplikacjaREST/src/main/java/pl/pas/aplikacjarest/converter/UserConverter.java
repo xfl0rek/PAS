@@ -49,4 +49,17 @@ public class UserConverter {
         }
         return null;
     }
+//TODO zrobic
+//    public User userDTOToUser(UserDTO userDTO) {
+//        if (userDTO instanceof ClientDTO) {
+//            return new Client(
+//                    userDTO.getFirstName(),
+//                    userDTO.getLastName(),
+//                    userDTO.getUsername(),
+//                    userDTO.getEmail(),
+//                    userDTO.
+//                    ((ClientDTO) userDTO).getClientType()
+//            )
+//        }
+//    }
 }

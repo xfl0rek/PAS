@@ -1,11 +1,13 @@
 package pl.pas.aplikacjarest.dto;
 
+import org.bson.types.ObjectId;
 import pl.pas.aplikacjarest.dto.client.ClientDTO;
 import pl.pas.aplikacjarest.dto.RoomDTO;
 
 import java.time.LocalDateTime;
 
 public class RentDTO {
+    private ObjectId id;
     private ClientDTO client;
     private RoomDTO room;
     private LocalDateTime beginTime;
@@ -16,6 +18,10 @@ public class RentDTO {
         this.room = room;
         this.beginTime = beginTime;
         this.endTime = endTime;
+    }
+
+    public ObjectId getId() {
+        return id;
     }
 
     public ClientDTO getClient() {

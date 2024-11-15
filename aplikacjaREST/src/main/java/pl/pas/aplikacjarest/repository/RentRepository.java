@@ -1,9 +1,14 @@
 package pl.pas.aplikacjarest.repository;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import org.bson.conversions.Bson;
 import org.springframework.stereotype.Repository;
 import pl.pas.aplikacjarest.model.Rent;
+import pl.pas.aplikacjarest.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +25,24 @@ public class RentRepository extends AbstractMongoRepository {
     }
 
     public void create(Rent rent) {
-        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
-        collection.insertOne(rent);
+        ClientSession clientSession = getMongoClient().startSession();
+        try (clientSession) {
+            clientSession.startTransaction();
+
+            MongoCollection<Room> roomCollection = getDatabase().getCollection("rooms", Room.class);
+            Bson filter = Filters.eq("_id", rent.getRoom().getRoomNumber());
+            Bson update = Updates.inc("rented", 1);
+            roomCollection.updateOne(clientSession, filter, update);
+
+            MongoCollection<Rent> rentCollection = getDatabase().getCollection("rents", Rent.class);
+            rentCollection.insertOne(clientSession, rent);
+
+            clientSession.commitTransaction();
+        } catch (Exception e) {
+            if (clientSession.hasActiveTransaction())
+                clientSession.abortTransaction();
+            throw e;
+        }
     }
 
     public Rent findByID(long id) {
@@ -50,4 +71,7 @@ public class RentRepository extends AbstractMongoRepository {
         collection.deleteOne(query);
     }
 
+    public MongoCollection<Rent> readAll() {
+        return getDatabase().getCollection("rents", Rent.class);
+    }
 }
