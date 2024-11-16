@@ -8,8 +8,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ValidationAction;
 import com.mongodb.client.model.ValidationOptions;
 import org.bson.BsonType;
+import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -56,9 +58,12 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         base = mongoClient.getDatabase("hotelpas");
-//        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
-//            createRoomsCollection();
-//        }
+        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
+            createRoomsCollection();
+        }
+        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rents")) {
+           createRentCollection();
+        }
     }
 
     private void createRoomsCollection() {
@@ -74,6 +79,41 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                 .validationOptions(validationOptions);
         getDatabase().createCollection("rooms", createCollectionOptions);
     }
+
+    private void createRentCollection() {
+        ValidationOptions validationOptions = new ValidationOptions().validator(
+                Document.parse("""
+                        {
+                        $jsonSchema: {
+                            bsonType: "object",
+                            required: ["_id", "begintime", "client", "room"],
+                            properties: {
+                                _id: {
+                                    bsonType: "objectId"
+                                },
+                                begintime: {
+                                    bsonType: "date"
+                                },
+                                endtime: {
+                                    bsonType: ["date", "null"]
+                                },
+                                client: {
+                                    bsonType: "object"
+                                },
+                                room: {
+                                    bsonType: "object"
+                                }
+}}}
+
+
+                        """
+
+                )).validationAction(ValidationAction.ERROR);
+        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
+                .validationOptions(validationOptions);
+        getDatabase().createCollection("rents", createCollectionOptions);
+    }
+
 
     public MongoDatabase getDatabase() {
         return base;

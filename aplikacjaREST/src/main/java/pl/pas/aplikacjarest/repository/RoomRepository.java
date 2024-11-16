@@ -22,19 +22,11 @@ public class RoomRepository extends AbstractMongoRepository {
         this.initDBConnection();
     }
 
-    public void create(Room room) {
-        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
-        collection.insertOne(room);
-    }
 
     public MongoCollection<Room> readAll() {
         return getDatabase().getCollection("rooms", Room.class);
     }
 
-    public Room read(long id) {
-        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
-        return collection.find(Filters.eq("_id", id)).first();
-    }
 
     public void update(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);

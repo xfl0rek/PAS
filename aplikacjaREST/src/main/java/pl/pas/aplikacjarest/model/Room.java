@@ -23,6 +23,11 @@ public class Room {
     @Max(5)
     private int roomCapacity;
 
+    @BsonProperty("rented")
+    @Min(0)
+    @Max(1)
+    private int rented = 0;
+
     public Room(@BsonId int roomNumber,
                 @BsonProperty("baseprice") int basePrice,
                 @BsonProperty("roomcapacity") int roomCapacity) {
@@ -62,5 +67,9 @@ public class Room {
 
     public void setRoomCapacity(int roomCapacity) {
         this.roomCapacity = roomCapacity;
+    }
+
+    public int getRented() {
+        return rented;
     }
 }
