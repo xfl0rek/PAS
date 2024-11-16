@@ -35,7 +35,7 @@ public class Rent {
         return id;
     }
 
-    public User getClient() {
+    public Client getClient() {
         return client;
     }
 
@@ -63,7 +63,7 @@ public class Rent {
         this.id = id;
     }
 
-    public void setUser(Client client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 

@@ -7,37 +7,32 @@ import pl.pas.aplikacjarest.dto.RoomDTO;
 import java.time.LocalDateTime;
 
 public class RentDTO {
-    private ObjectId id;
-    private ClientDTO client;
-    private RoomDTO room;
+    private String clientUsername;
+    private int roomNumber;
     private LocalDateTime beginTime;
     private LocalDateTime endTime;
 
-    public RentDTO(ClientDTO client, RoomDTO room, LocalDateTime beginTime, LocalDateTime endTime) {
-        this.client = client;
-        this.room = room;
+    public RentDTO(String clientUsername, int roomNumber, LocalDateTime beginTime, LocalDateTime endTime) {
+        this.clientUsername = clientUsername;
+        this.roomNumber = roomNumber;
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
 
-    public ObjectId getId() {
-        return id;
+    public String getClientUsername() {
+        return clientUsername;
     }
 
-    public ClientDTO getClient() {
-        return client;
+    public void setClientUsername(String clientUsername) {
+        this.clientUsername = clientUsername;
     }
 
-    public void setClient(ClientDTO client) {
-        this.client = client;
+    public int getRoomNumber() {
+        return roomNumber;
     }
 
-    public RoomDTO getRoom() {
-        return room;
-    }
-
-    public void setRoom(RoomDTO room) {
-        this.room = room;
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public LocalDateTime getBeginTime() {

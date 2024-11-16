@@ -14,6 +14,7 @@ public abstract class UserDTO {
     private String username;
     @Size(min = 10, max = 50)
     private String email;
+    private String password = "********";
     private UserRole userRole;
 
     public UserDTO(String firstName, String lastName, String username, String email) {
@@ -41,6 +42,10 @@ public abstract class UserDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public UserRole getUserRole() {

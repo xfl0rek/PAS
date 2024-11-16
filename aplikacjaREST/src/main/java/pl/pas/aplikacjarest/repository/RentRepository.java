@@ -28,17 +28,17 @@ public class RentRepository extends AbstractMongoRepository {
         ClientSession clientSession = getMongoClient().startSession();
         try (clientSession) {
             clientSession.startTransaction();
-
-            MongoCollection<Room> roomCollection = getDatabase().getCollection("rooms", Room.class);
-            Bson filter = Filters.eq("_id", rent.getRoom().getRoomNumber());
-            Bson update = Updates.inc("rented", 1);
-            roomCollection.updateOne(clientSession, filter, update);
+//            MongoCollection<Room> roomCollection = getDatabase().getCollection("rooms", Room.class);
+//            Bson filter = Filters.eq("_id", rent.getRoom().getRoomNumber());
+//            Bson update = Updates.inc("rented", 1);
+//            roomCollection.updateOne(clientSession, filter, update);
 
             MongoCollection<Rent> rentCollection = getDatabase().getCollection("rents", Rent.class);
             rentCollection.insertOne(clientSession, rent);
 
             clientSession.commitTransaction();
         } catch (Exception e) {
+            System.out.println("nie ok");
             if (clientSession.hasActiveTransaction())
                 clientSession.abortTransaction();
             throw e;

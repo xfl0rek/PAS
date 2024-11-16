@@ -56,9 +56,9 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         base = mongoClient.getDatabase("hotelpas");
-        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
-            createRoomsCollection();
-        }
+//        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
+//            createRoomsCollection();
+//        }
     }
 
     private void createRoomsCollection() {
