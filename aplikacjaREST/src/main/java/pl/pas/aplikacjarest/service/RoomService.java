@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.model.Room;
+import pl.pas.aplikacjarest.repository.RentRepository;
 import pl.pas.aplikacjarest.repository.RoomRepository;
 
 import java.util.List;
@@ -13,10 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class RoomService {
     RoomRepository roomRepository;
+    RentRepository rentRepository;
 
     @Autowired
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, RentRepository rentRepository) {
         this.roomRepository = roomRepository;
+        this.rentRepository = rentRepository;
     }
 
     public RoomDTO createRoom(RoomDTO roomDTO) {
@@ -39,7 +42,7 @@ public class RoomService {
 
     public void deleteRoom(int roomNumber) {
         Room room = roomRepository.findByRoomNumber(roomNumber);
-        if (room != null) {
+        if (room != null && rentRepository.isRoomCurrentlyRented(roomNumber) == null) {
             roomRepository.delete(roomNumber);
         }
     }

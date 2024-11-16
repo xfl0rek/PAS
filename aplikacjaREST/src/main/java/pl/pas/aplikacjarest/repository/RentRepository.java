@@ -64,6 +64,15 @@ public class RentRepository extends AbstractMongoRepository {
 //        return collection.find(filter).first();
 //    }
 
+    public Rent isRoomCurrentlyRented(int roomNumber) {
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        Bson filter = Filters.and(
+                Filters.eq("room.roomNumber", roomNumber),
+                Filters.eq("archive", false)
+        );
+        return collection.find(filter).first();
+    }
+
     //Zakonczonej rezerwacji nie mozna edytowac
     public void update(Rent rent) {
         ClientSession clientSession = getMongoClient().startSession();
