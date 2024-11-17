@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.pas.aplikacjarest.dto.UserDTO;
-import pl.pas.aplikacjarest.dto.client.ClientDTO;
-import pl.pas.aplikacjarest.model.ClientType;
 import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.service.UserService;
 
@@ -25,29 +23,15 @@ public class UserController {
     }
 
     @GetMapping("/client/getClient")
-    public ResponseEntity<ClientDTO> getClient(@RequestParam String username) {
-        ClientDTO clientDTO = userService.getClient(username);
-        return ResponseEntity.ok(clientDTO);
+    public ResponseEntity<UserDTO> getClient(@RequestParam String username) {
+        UserDTO userDTO = userService.getUser(username);
+        return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("/manager/getUsersByPartialUsername")
     public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
         List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
         return ResponseEntity.ok(userDTOs);
-    }
-
-
-    @PostMapping("/admin/setClientType")
-    public ResponseEntity<ClientDTO> setClientType(@RequestParam String username,
-                                                   @RequestParam ClientType clientType) {
-        ClientDTO clientDTO = userService.setClientType(username, clientType);
-        return ResponseEntity.ok(clientDTO);
-    }
-
-    @GetMapping("/admin/getAllClientsByClientType")
-    public ResponseEntity<List<ClientDTO>> getAllClientsByClientType(@RequestParam ClientType clientType) {
-        List<ClientDTO> clientDTOs = userService.findAllClientsByClientType(clientType);
-        return ResponseEntity.ok(clientDTOs);
     }
 
     @PostMapping("/admin/activateAccount")

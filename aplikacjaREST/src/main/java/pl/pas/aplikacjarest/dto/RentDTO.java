@@ -1,10 +1,5 @@
 package pl.pas.aplikacjarest.dto;
 
-import org.bson.types.ObjectId;
-import org.springframework.format.annotation.DateTimeFormat;
-import pl.pas.aplikacjarest.dto.client.ClientDTO;
-import pl.pas.aplikacjarest.dto.RoomDTO;
-
 import java.time.LocalDateTime;
 
 public class RentDTO {

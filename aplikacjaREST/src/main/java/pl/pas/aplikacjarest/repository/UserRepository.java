@@ -7,7 +7,6 @@ import com.mongodb.client.model.Updates;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
-import pl.pas.aplikacjarest.model.ClientType;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.model.UserRole;
 
@@ -44,13 +43,6 @@ public class UserRepository extends AbstractMongoRepository {
         ArrayList<User> users = new ArrayList<>();
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
         collection.find(Filters.eq("userRole", userRole)).into(users);
-        return users;
-    }
-
-    public List<User> findAllClientsByClientType(ClientType clientType) {
-        ArrayList<User> users = new ArrayList<>();
-        MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        collection.find(Filters.eq("clientType", clientType)).into(users);
         return users;
     }
 

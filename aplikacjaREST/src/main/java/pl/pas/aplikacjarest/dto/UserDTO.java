@@ -1,11 +1,9 @@
 package pl.pas.aplikacjarest.dto;
 
 import jakarta.validation.constraints.Size;
-import org.bson.types.ObjectId;
 import pl.pas.aplikacjarest.model.UserRole;
 
-public abstract class UserDTO {
-    private ObjectId id;
+public class UserDTO {
     @Size(min = 3, max = 30)
     private String firstName;
     @Size(min = 3, max = 30)
@@ -17,15 +15,12 @@ public abstract class UserDTO {
     private String password = "********";
     private UserRole userRole;
 
-    public UserDTO(String firstName, String lastName, String username, String email) {
+    public UserDTO(String firstName, String lastName, String username, String email, UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-    }
-
-    public ObjectId getId() {
-        return id;
+        this.userRole = userRole;
     }
 
     public String getFirstName() {

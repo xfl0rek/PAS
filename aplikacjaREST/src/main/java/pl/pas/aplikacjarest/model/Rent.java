@@ -124,6 +124,6 @@ public class Rent {
     }
 
     private double calculateRentCost() {
-        return Math.round(100 * client.applyDiscount(getRentDays() * room.getBasePrice())) / 100.0;
+        return Math.round(100 * getRentDays() * room.getBasePrice()) / 100.0;
     }
 }

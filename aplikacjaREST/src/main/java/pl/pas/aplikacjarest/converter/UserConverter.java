@@ -1,13 +1,7 @@
 package pl.pas.aplikacjarest.converter;
 
 import pl.pas.aplikacjarest.dto.UserDTO;
-import pl.pas.aplikacjarest.dto.admin.AdminDTO;
-import pl.pas.aplikacjarest.dto.client.ClientDTO;
-import pl.pas.aplikacjarest.dto.manager.ManagerDTO;
-import pl.pas.aplikacjarest.model.Admin;
-import pl.pas.aplikacjarest.model.Client;
-import pl.pas.aplikacjarest.model.Manager;
-import pl.pas.aplikacjarest.model.User;
+import pl.pas.aplikacjarest.model.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,47 +13,44 @@ public class UserConverter {
                 .collect(Collectors.toList());
     }
 
-    public UserDTO userToUserDTOConverter(User user) {
-        return convertUserToDTO(user);
+    public UserDTO convertUserToDTO(User user) {
+        return new UserDTO(
+                user.getFirstName(),
+                user.getLastName(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getUserRole()
+        );
     }
 
-    private UserDTO convertUserToDTO(User user) {
-        if (user instanceof Client client) {
-            return new ClientDTO(
-                    client.getFirstName(),
-                    client.getLastName(),
-                    client.getUsername(),
-                    client.getEmail(),
-                    client.getType()
+    public User convertDTOToUser(UserDTO userDTO) {
+        if (userDTO.getUserRole() == UserRole.CLIENT) {
+            return new Client(
+                    userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getUsername(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword()
             );
-        } else if (user instanceof Manager manager) {
-            return new ManagerDTO(
-                    manager.getFirstName(),
-                    manager.getLastName(),
-                    manager.getUsername(),
-                    manager.getEmail()
+        } else if (userDTO.getUserRole() == UserRole.MANAGER) {
+            return new Manager(
+                    userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getUsername(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword()
             );
-        } else if (user instanceof Admin admin) {
-            return new AdminDTO(
-                    admin.getFirstName(),
-                    admin.getLastName(),
-                    admin.getUsername(),
-                    admin.getEmail()
+        } else if (userDTO.getUserRole() == UserRole.ADMIN) {
+            return new Admin(
+                    userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getUsername(),
+                    userDTO.getEmail(),
+                    userDTO.getPassword()
             );
         }
+
         return null;
+
     }
-//TODO zrobic
-//    public User userDTOToUser(UserDTO userDTO) {
-//        if (userDTO instanceof ClientDTO) {
-//            return new Client(
-//                    userDTO.getFirstName(),
-//                    userDTO.getLastName(),
-//                    userDTO.getUsername(),
-//                    userDTO.getEmail(),
-//                    userDTO.
-//                    ((ClientDTO) userDTO).getClientType()
-//            )
-//        }
-//    }
 }
