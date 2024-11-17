@@ -71,6 +71,12 @@ public class UserService {
         userRepository.deactivateUser(username);
     }
 
+    public void changeUserRole(String username, UserRole userRole) {
+        User user = userRepository.findByUsername(username);
+        user.setUserRole(userRole);
+        userRepository.update(user);
+    }
+
     public List<UserDTO> findAll(UserRole userRole) {
         List<User> users = userRepository.findAll(userRole);
         return userConverter.userListToUserDTOListConverter(users);

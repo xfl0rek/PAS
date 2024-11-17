@@ -44,6 +44,11 @@ public class UserController {
         userService.deactivateAccount(username);
     }
 
+    @PostMapping("/admin/changeUserRole")
+    public void changeUserRole(@RequestParam String username, UserRole userRole) {
+        userService.changeUserRole(username, userRole);
+    }
+
     @GetMapping("/admin/getAllUsersByRole")
     public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
         List<UserDTO> userDTOs = userService.findAll(userRole);
