@@ -8,8 +8,10 @@ import com.mongodb.client.model.Updates;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
+import pl.pas.aplikacjarest.exception.RentTransactionException;
 import pl.pas.aplikacjarest.model.Rent;
 import pl.pas.aplikacjarest.model.Room;
+import pl.pas.aplikacjarest.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class RentRepository extends AbstractMongoRepository {
         } catch (Exception e) {
             if (clientSession.hasActiveTransaction())
                 clientSession.abortTransaction();
-            throw e;
+            throw new RentTransactionException("Transaction failed", e);
         }
     }
 
@@ -103,7 +105,7 @@ public class RentRepository extends AbstractMongoRepository {
         } catch (Exception e) {
             if (clientSession.hasActiveTransaction())
                 clientSession.abortTransaction();
-            throw e;
+            throw new RentTransactionException("Transaction failed", e);
         }
     }
 

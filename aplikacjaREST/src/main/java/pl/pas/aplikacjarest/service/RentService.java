@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.RentDTO;
+import pl.pas.aplikacjarest.exception.*;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.Rent;
 import pl.pas.aplikacjarest.model.Room;
@@ -29,7 +30,13 @@ public class RentService {
 
     public RentDTO rentRoom(RentDTO rentDTO) {
         Client client = (Client) userRepository.findByUsername(rentDTO.getClientUsername());
+        if (client == null)
+            throw new UserNotFoundException("Client not found");
+        if (!client.isActive())
+            throw new InactiveUserException("Client is inactive and cannot rent room");
         Room room = roomRepository.findByRoomNumber(rentDTO.getRoomNumber());
+        if (room == null)
+            throw new RoomNotFoundException("Room not found");
         Rent rent = new Rent(
                 client,
                 room,
@@ -43,9 +50,9 @@ public class RentService {
     public RentDTO returnRoom(ObjectId rentID, LocalDateTime endTime) {
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
-            return null; //TODO dodac wyjatek
+            throw new RentNotFoundException("Rent not found");
         if (rent.isArchive())
-            return null; //TODO inny wyjatek
+            throw new RentAlreadyEndedException("Rent already ended");
 
         rent.endRent(endTime);
         RentDTO rentDTO = new RentDTO(
@@ -58,12 +65,13 @@ public class RentService {
         return rentDTO;
     }
 
-    public void updateRent(ObjectId rentID, RentDTO rentDTO) throws Exception { //usunac throws Exception
+    public void updateRent(ObjectId rentID, RentDTO rentDTO) {
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
-            throw new Exception("Nie ma takiego wypozyczenia"); //TODO dodac wyjatek
+            throw new RentNotFoundException("Rent not found");
         if (rent.isArchive())
-            throw new Exception("Nie mozna modyfikowac zakonczonego wypozyczenia"); //TODO inny wyjatek
+            throw new RentAlreadyEndedException("Rent already ended");
+
 
         Room room = roomRepository.findByRoomNumber(rentDTO.getRoomNumber());
         Client client = (Client) userRepository.findByUsername(rentDTO.getClientUsername());
@@ -75,13 +83,17 @@ public class RentService {
 
     public void deleteRent(ObjectId rentID) {
         Rent rent = rentRepository.findByID(rentID);
-        if (rent.isArchive()) {
-            rentRepository.delete(rentID);
-        }
+        if (rent == null)
+            throw new RentNotFoundException("Rent not found");
+        if (!rent.isArchive())
+            throw new RentNotEndedException("Rent not ended and cannot be deleted");
+        rentRepository.delete(rentID);
     }
 
     public RentDTO getRentByID(ObjectId rentID) {
         Rent rent = rentRepository.findByID(rentID);
+        if (rent == null)
+            throw new RentNotFoundException("Rent not found");
         return new RentDTO(
                 rent.getClient().getUsername(),
                 rent.getRoom().getRoomNumber(),

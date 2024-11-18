@@ -4,6 +4,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.dto.RoomDTO;
+import pl.pas.aplikacjarest.exception.RoomAlreadyExistsException;
+import pl.pas.aplikacjarest.exception.RoomIsAlreadyRentedException;
+import pl.pas.aplikacjarest.exception.RoomNotFoundException;
 import pl.pas.aplikacjarest.model.Room;
 import pl.pas.aplikacjarest.repository.RentRepository;
 import pl.pas.aplikacjarest.repository.RoomRepository;
@@ -24,31 +27,34 @@ public class RoomService {
 
     public RoomDTO createRoom(RoomDTO roomDTO) {
         Room room = roomRepository.findByRoomNumber(roomDTO.getRoomNumber());
-        if (room == null) {
-            Room newRoom = new Room(
-                    roomDTO.getRoomNumber(),
-                    roomDTO.getBasePrice(),
-                    roomDTO.getRoomCapacity()
+        if (room != null)
+            throw new RoomAlreadyExistsException("Room with number " + roomDTO.getRoomNumber() + " already exists");
+        Room newRoom = new Room(
+                roomDTO.getRoomNumber(),
+                roomDTO.getBasePrice(),
+                roomDTO.getRoomCapacity()
+        );
+        roomRepository.save(newRoom);
+        return new RoomDTO(
+                newRoom.getRoomNumber(),
+                newRoom.getBasePrice(),
+                newRoom.getRoomCapacity()
             );
-            roomRepository.save(newRoom);
-            return new RoomDTO(
-                    newRoom.getRoomNumber(),
-                    newRoom.getBasePrice(),
-                    newRoom.getRoomCapacity()
-            );
-        }
-        return null;
     }
 
     public void deleteRoom(ObjectId roomID) {
         Room room = roomRepository.getRoomByID(roomID);
-        if (room != null && rentRepository.isRoomCurrentlyRented(room.getRoomNumber()) == null) {
-            roomRepository.delete(roomID);
-        }
+        if (room == null)
+            throw new RoomNotFoundException("Room not found");
+        if (rentRepository.isRoomCurrentlyRented(room.getRoomNumber()) != null)
+            throw new RoomIsAlreadyRentedException("Room is currently rented and cannot be deleted");
+        roomRepository.delete(roomID);
     }
 
     public RoomDTO getRoomByID(ObjectId id) {
         Room room = roomRepository.getRoomByID(id);
+        if (room == null)
+            throw new RoomNotFoundException("Room not found");
         return new RoomDTO(
                 room.getRoomNumber(),
                 room.getBasePrice(),
@@ -58,9 +64,8 @@ public class RoomService {
 
     public void updateRoom(ObjectId roomID, RoomDTO roomDTO) {
         Room room = roomRepository.getRoomByID(roomID);
-        if (room == null) {
-            return;
-        }
+        if (room == null)
+            throw new RoomNotFoundException("Room not found");
         room.setBasePrice(roomDTO.getBasePrice());
         room.setRoomCapacity(roomDTO.getRoomCapacity());
         roomRepository.update(room);

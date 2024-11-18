@@ -15,20 +15,6 @@ import java.util.Map;
 @ControllerAdvice
 public class RestExceptionHandler {
 
-//    @ExceptionHandler(InvalidLoginDataException.class)
-//    public ResponseEntity<Map<String, String>> handleInvalidLoginDataException(InvalidLoginDataException ex) {
-//        Map<String, String> errorMessages = new HashMap<>();
-//
-//        // Iterate through the validation errors and add them to the errorMessages map
-//        for (ObjectError error : ex.getErrors()) {
-//            String fieldName = error.getField();
-//            String errorMessage = error.getDefaultMessage();
-//            errorMessages.put(fieldName, errorMessage);
-//        }
-//
-//        return new ResponseEntity<>(errorMessages, HttpStatus.BAD_REQUEST);
-//    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleInvalidArgument(MethodArgumentNotValidException ex) {
         Map<String, String> errorMap = new HashMap<>();
@@ -36,5 +22,60 @@ public class RestExceptionHandler {
             errorMap.put(error.getField(), error.getDefaultMessage());
         }
         return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(WrongPasswordException.class)
+    public ResponseEntity<String> handleWrongPasswordException(WrongPasswordException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UsernameAlreadyInUseException.class)
+    public ResponseEntity<String> handleUsernameAlreadyInUseException(UsernameAlreadyInUseException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoomNotFoundException.class)
+    public ResponseEntity<String> handleRoomNotFoundException(RoomNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoomAlreadyExistsException.class)
+    public ResponseEntity<String> handleRoomAlreadyExistsException(RoomAlreadyExistsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RoomIsAlreadyRentedException.class)
+    public ResponseEntity<String> handleRoomIsAlreadyRentedException(RoomIsAlreadyRentedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RentNotFoundException.class)
+    public ResponseEntity<String> handleRentNotFoundException(RentNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RentAlreadyEndedException.class)
+    public ResponseEntity<String> handleRentAlreadyEndedException(RentAlreadyEndedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RentNotEndedException.class)
+    public ResponseEntity<String> handleRentNotEndedException(RentNotEndedException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RentTransactionException.class)
+    public ResponseEntity<String> handleRentTransactionException(RentTransactionException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InactiveUserException.class)
+    public ResponseEntity<String> handleInactiveUserException(InactiveUserException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); //TODO status do weryfikacji
     }
 }
