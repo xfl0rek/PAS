@@ -45,6 +45,10 @@ public class Room {
         return id;
     }
 
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
     public int getRoomNumber() {
         return roomNumber;
     }

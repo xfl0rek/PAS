@@ -58,18 +58,18 @@ public class RentService {
         return rentDTO;
     }
 
-    public void updateRent(ObjectId rentID, String clientUsername, int roomNumber, LocalDateTime beginTime) throws Exception { //usunac throws Exception
+    public void updateRent(ObjectId rentID, RentDTO rentDTO) throws Exception { //usunac throws Exception
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
             throw new Exception("Nie ma takiego wypozyczenia"); //TODO dodac wyjatek
         if (rent.isArchive())
             throw new Exception("Nie mozna modyfikowac zakonczonego wypozyczenia"); //TODO inny wyjatek
 
-        Room room = roomRepository.findByRoomNumber(roomNumber);
-        Client client = (Client) userRepository.findByUsername(clientUsername);
+        Room room = roomRepository.findByRoomNumber(rentDTO.getRoomNumber());
+        Client client = (Client) userRepository.findByUsername(rentDTO.getClientUsername());
         rent.setClient(client);
         rent.setRoom(room);
-        rent.setBeginTime(beginTime);
+        rent.setBeginTime(rentDTO.getBeginTime());
         rentRepository.update(rent);
     }
 

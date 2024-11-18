@@ -24,20 +24,55 @@ public class RoomController {
         return ResponseEntity.ok(roomDTO);
     }
 
-    @GetMapping("/manager/getRoomByID")
-    public ResponseEntity<RoomDTO> getRoomByID(@RequestParam ObjectId roomID) {
+    @GetMapping("/manager/{id}")
+    public ResponseEntity<RoomDTO> getRoomByID(@PathVariable String id) {
+        ObjectId roomID = new ObjectId(id);
         RoomDTO roomDTO = roomService.getRoomByID(roomID);
         return ResponseEntity.ok(roomDTO);
     }
 
-    @PostMapping("/manager/updateRoom")
-    public void updateRoom(@RequestBody RoomDTO updatedRoom) {
-        roomService.updateRoom(updatedRoom);
+    @PostMapping("/manager/{id}")
+    public ResponseEntity<Void> updateRoom(@PathVariable String id, @RequestBody RoomDTO updatedRoom) {
+        ObjectId roomID = new ObjectId(id);
+        roomService.updateRoom(roomID, updatedRoom);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/admin/deleteRoom")
-    public void deleteRoom(@RequestParam int roomNumber) {
-        roomService.deleteRoom(roomNumber);
+//    @GetMapping("/manager/{id}")
+//    public ResponseEntity<RoomDTO> getRoomByID(@PathVariable String id) {
+//        try {
+//            ObjectId roomID = new ObjectId(id);
+//            RoomDTO roomDTO = roomService.getRoomByID(roomID);
+//            return ResponseEntity.ok(roomDTO);
+//        } catch (IllegalArgumentException e) {
+//            // Handle invalid ObjectId format
+//            return ResponseEntity.badRequest().build(); // Returns 400 Bad Request
+//        } catch (RoomNotFoundException e) {
+//            // Custom exception for when the room is not found
+//            return ResponseEntity.notFound().build(); // Returns 404 Not Found
+//        }
+//    }
+//
+//    @PostMapping("/manager/{id}")
+//    public ResponseEntity<Void> updateRoom(@PathVariable String id, @RequestBody RoomDTO updatedRoom) {
+//        try {
+//            ObjectId roomID = new ObjectId(id);
+//            roomService.updateRoom(roomID, updatedRoom);
+//            return ResponseEntity.noContent().build(); // Returns 204 No Content
+//        } catch (IllegalArgumentException e) {
+//            // Handle invalid ObjectId format
+//            return ResponseEntity.badRequest().build(); // Returns 400 Bad Request
+//        } catch (RoomNotFoundException e) {
+//            // Custom exception for when the room to update is not found
+//            return ResponseEntity.notFound().build(); // Returns 404 Not Found
+//        }
+//    }
+
+
+    @PostMapping("/admin/deleteRoom/{id}")
+    public void deleteRoom(@PathVariable String id) {
+        ObjectId roomID = new ObjectId(id);
+        roomService.deleteRoom(roomID);
     }
 
     @GetMapping("/manager/getRoomsByRoomCapacity")

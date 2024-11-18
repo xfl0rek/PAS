@@ -23,14 +23,7 @@ public class UserService {
     public UserDTO login(LoginDTO loginDTO) {
         User user = userRepository.findByUsername(loginDTO.getUsername());
         if (user != null && user.getPassword().equals(loginDTO.getPassword())) {
-
-            return new UserDTO(
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getUserRole()
-            );
+            return userConverter.convertUserToDTO(user);
         }
         return null;
     }
@@ -47,14 +40,8 @@ public class UserService {
 
     public UserDTO getUser(String username) {
         User user = userRepository.findByUsername(username);
-        if (user != null) {
-            return new UserDTO(
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getUsername(),
-                    user.getEmail(),
-                    user.getUserRole());
-            }
+        if (user != null)
+            return userConverter.convertUserToDTO(user);
         return null;
     }
 
@@ -63,16 +50,16 @@ public class UserService {
         return userConverter.userListToUserDTOListConverter(users);
     }
 
-    public void activateAccount(String username) {
-        userRepository.activateUser(username);
+    public void activateAccount(ObjectId userID) {
+        userRepository.activateUser(userID);
     }
 
-    public void deactivateAccount(String username) {
-        userRepository.deactivateUser(username);
+    public void deactivateAccount(ObjectId userID) {
+        userRepository.deactivateUser(userID);
     }
 
-    public void changeUserRole(String username, UserRole userRole) {
-        User user = userRepository.findByUsername(username);
+    public void changeUserRole(ObjectId userID, UserRole userRole) {
+        User user = userRepository.findByID(userID);
         user.setUserRole(userRole);
         userRepository.update(user);
     }

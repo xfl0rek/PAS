@@ -12,14 +12,15 @@ public class UserDTO {
     private String username;
     @Size(min = 10, max = 50)
     private String email;
-    private String password = "********";
+    private String password;
     private UserRole userRole;
 
-    public UserDTO(String firstName, String lastName, String username, String email, UserRole userRole) {
+    public UserDTO(String firstName, String lastName, String username, String email, String password, UserRole userRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
+        this.password = password;
         this.userRole = userRole;
     }
 

@@ -58,14 +58,14 @@ public class UserRepository extends AbstractMongoRepository {
         collection.replaceOne(update, user);
     }
 
-    public void deactivateUser(String username) {
+    public void deactivateUser(ObjectId userID) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        collection.updateOne(Filters.eq("username", username), Updates.set("active", false));
+        collection.updateOne(Filters.eq("_id", userID), Updates.set("active", false));
     }
 
-    public void activateUser(String username) {
+    public void activateUser(ObjectId userID) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        collection.updateOne(Filters.eq("username", username), Updates.set("active", true));
+        collection.updateOne(Filters.eq("_id", userID), Updates.set("active", true));
     }
 
     public List<User> findUsersByPartialUsername(String partialUsername) {

@@ -40,10 +40,10 @@ public class RoomService {
         return null;
     }
 
-    public void deleteRoom(int roomNumber) {
-        Room room = roomRepository.findByRoomNumber(roomNumber);
-        if (room != null && rentRepository.isRoomCurrentlyRented(roomNumber) == null) {
-            roomRepository.delete(roomNumber);
+    public void deleteRoom(ObjectId roomID) {
+        Room room = roomRepository.getRoomByID(roomID);
+        if (room != null && rentRepository.isRoomCurrentlyRented(room.getRoomNumber()) == null) {
+            roomRepository.delete(roomID);
         }
     }
 
@@ -56,11 +56,14 @@ public class RoomService {
         );
     }
 
-    public void updateRoom(RoomDTO roomDTO) {
-        Room room = roomRepository.findByRoomNumber(roomDTO.getRoomNumber());
+    public void updateRoom(ObjectId roomID, RoomDTO roomDTO) {
+        Room room = roomRepository.getRoomByID(roomID);
+        if (room == null) {
+            return;
+        }
         room.setBasePrice(roomDTO.getBasePrice());
         room.setRoomCapacity(roomDTO.getRoomCapacity());
-        roomRepository.save(room);
+        roomRepository.update(room);
     }
 
     public List<RoomDTO> getRoomsByRoomCapacity(int roomCapacity) {

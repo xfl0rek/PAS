@@ -24,28 +24,29 @@ public class RentController {
         return ResponseEntity.ok(rent);
     }
 
-    @PostMapping("/client/returnRoom")
-    public ResponseEntity<RentDTO> returnRoom(@RequestParam ObjectId rentID,
+    @PostMapping("/client/returnRoom/{id}")
+    public ResponseEntity<RentDTO> returnRoom(@PathVariable String id,
                                               @RequestParam LocalDateTime endTime) {
+        ObjectId rentID = new ObjectId(id);
         RentDTO rent = rentService.returnRoom(rentID, endTime);
         return ResponseEntity.ok(rent);
     }
 
-    @PostMapping("/manager/updateRent")
-    public void updateRent(@RequestParam ObjectId rentID,
-                           @RequestParam String clientUsername,
-                           @RequestParam int roomNumber,
-                           @RequestParam LocalDateTime beginTime) throws Exception { //TODO usunac throws Exception
-        rentService.updateRent(rentID, clientUsername, roomNumber, beginTime);
+    @PostMapping("/manager/updateRent/{id}")
+    public void updateRent(@PathVariable String id, @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
+        ObjectId rentID = new ObjectId(id);
+        rentService.updateRent(rentID, rentDTO);
     }
 
-    @PostMapping("/manager/deleteRent")
-    public void deleteRent(@RequestParam ObjectId rentID) {
+    @PostMapping("/manager/deleteRent/{id}")
+    public void deleteRent(@PathVariable String id) {
+        ObjectId rentID = new ObjectId(id);
         rentService.deleteRent(rentID);
     }
 
-    @GetMapping("/manager/getRentByID")
-    public ResponseEntity<RentDTO> getRentByRoomNumber(@RequestParam ObjectId rentID) {
+    @GetMapping("/manager/getRentByID/{id}")
+    public ResponseEntity<RentDTO> getRentByRoomNumber(@PathVariable String id) {
+        ObjectId rentID = new ObjectId(id);
         RentDTO rentDTO = rentService.getRentByID(rentID);
         return ResponseEntity.ok(rentDTO);
     }

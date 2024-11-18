@@ -19,6 +19,7 @@ public class UserConverter {
                 user.getLastName(),
                 user.getUsername(),
                 user.getEmail(),
+                user.getPassword(),
                 user.getUserRole()
         );
     }

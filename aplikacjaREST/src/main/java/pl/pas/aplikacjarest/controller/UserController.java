@@ -3,10 +3,7 @@ package pl.pas.aplikacjarest.controller;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.UserDTO;
 import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.service.UserService;
@@ -34,19 +31,22 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    @PostMapping("/admin/activateAccount")
-    public void activateAccount(@RequestParam String username) {
-        userService.activateAccount(username);
+    @PostMapping("/admin/activateAccount/{id}")
+    public void activateAccount(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        userService.activateAccount(userID);
     }
 
-    @PostMapping("/admin/deactivateAccount")
-    public void deactivateAccount(@RequestParam String username) {
-        userService.deactivateAccount(username);
+    @PostMapping("/admin/deactivateAccount/{id}")
+    public void deactivateAccount(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        userService.deactivateAccount(userID);
     }
 
-    @PostMapping("/admin/changeUserRole")
-    public void changeUserRole(@RequestParam String username, UserRole userRole) {
-        userService.changeUserRole(username, userRole);
+    @PostMapping("/admin/changeUserRole/{id}")
+    public void changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
+        ObjectId userID = new ObjectId(id);
+        userService.changeUserRole(userID, userRole);
     }
 
     @GetMapping("/admin/getAllUsersByRole")
@@ -55,8 +55,9 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    @GetMapping("/admin/getUserByID")
-    public ResponseEntity<UserDTO> getUserByID(@RequestParam ObjectId userID) {
+    @GetMapping("/admin/{id}")
+    public ResponseEntity<UserDTO> getUserByID(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
         UserDTO userDTO = userService.getUserByID(userID);
         return ResponseEntity.ok(userDTO);
     }
