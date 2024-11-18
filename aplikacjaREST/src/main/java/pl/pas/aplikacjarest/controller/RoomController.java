@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.controller;
 
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RoomController {
     }
 
     @PostMapping("/manager/createRoom")
-    public ResponseEntity<RoomDTO> createRoom(@RequestBody RoomDTO createdRoom) {
+    public ResponseEntity<RoomDTO> createRoom(@Valid @RequestBody RoomDTO createdRoom) {
         RoomDTO roomDTO = roomService.createRoom(createdRoom);
         return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
     }
@@ -33,7 +34,7 @@ public class RoomController {
     }
 
     @PostMapping("/manager/{id}")
-    public ResponseEntity<Void> updateRoom(@PathVariable String id, @RequestBody RoomDTO updatedRoom) {
+    public ResponseEntity<Void> updateRoom(@PathVariable String id, @Valid @RequestBody RoomDTO updatedRoom) {
         ObjectId roomID = new ObjectId(id);
         roomService.updateRoom(roomID, updatedRoom);
         return ResponseEntity.noContent().build();

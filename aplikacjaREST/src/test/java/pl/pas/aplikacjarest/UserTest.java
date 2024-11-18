@@ -67,7 +67,7 @@ public class UserTest {
 
     @Test
     void getClientTest() {
-        UserDTO userDTO = new UserDTO("John", "Bug", "jbug",
+        UserDTO userDTO = new UserDTO("John", "Bug", "JBuggy",
                 "jbug@example.com", "123456789" , UserRole.CLIENT);
         RestAssured.given()
                 .body(userDTO)
@@ -78,7 +78,7 @@ public class UserTest {
                 .statusCode(201);
 
         RestAssured.given()
-                .queryParam("username", "jbug")
+                .queryParam("username", "JBuggy")
                 .when()
                 .get("/client/getClient")
                 .then()
@@ -86,7 +86,7 @@ public class UserTest {
                 .contentType(ContentType.JSON)
                 .body("firstName", equalTo("John"))
                 .body("lastName", equalTo("Bug"))
-                .body("username", equalTo("jbug"))
+                .body("username", equalTo("JBuggy"))
                 .body("email", equalTo("jbug@example.com"))
                 .body("password", equalTo("123456789"))
                 .body("userRole", equalTo("CLIENT"));

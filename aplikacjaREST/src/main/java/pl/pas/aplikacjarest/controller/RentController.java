@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.controller;
 
+import jakarta.validation.Valid;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class RentController {
     }
 
     @PostMapping("/client/rentRoom")
-    public ResponseEntity<RentDTO> rentRoom(@RequestBody RentDTO rentDTO) {
+    public ResponseEntity<RentDTO> rentRoom(@Valid @RequestBody RentDTO rentDTO) {
         RentDTO rent = rentService.rentRoom(rentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(rent);
     }
@@ -34,7 +35,7 @@ public class RentController {
     }
 
     @PostMapping("/manager/updateRent/{id}")
-    public ResponseEntity<Void> updateRent(@PathVariable String id, @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
+    public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
         ObjectId rentID = new ObjectId(id);
         rentService.updateRent(rentID, rentDTO);
         return ResponseEntity.noContent().build();

@@ -1,18 +1,28 @@
 package pl.pas.aplikacjarest.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import pl.pas.aplikacjarest.model.UserRole;
 
 public class UserDTO {
-    @Size(min = 3, max = 30)
+    @NotNull(message = "First name cannot be null")
+    @Size(min = 3, max = 30, message = "First name must be between 3 and 30 characters")
     private String firstName;
-    @Size(min = 3, max = 30)
+    @NotNull(message = "Last name cannot be null")
+    @Size(min = 3, max = 30, message = "Last name must be between 3 and 30 characters")
     private String lastName;
-    @Size(min = 5, max = 30)
+    @NotNull(message = "Username cannot be null")
+    @Size(min = 5, max = 30, message = "Username must be between 5 and 30 characters")
     private String username;
-    @Size(min = 10, max = 50)
+    @NotNull(message = "Email cannot be null")
+    @Size(min = 10, max = 50, message = "Email must be between 10 and 50 characters")
+    @Pattern(regexp = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Invalid email format")
     private String email;
+    @NotNull(message = "Password cannot be null")
+    @Size(min = 8, max = 30, message = "Password must be between 8 and 30 characters")
     private String password;
+    @NotNull(message = "User role cannot be null")
     private UserRole userRole;
 
     public UserDTO(String firstName, String lastName, String username, String email, String password, UserRole userRole) {

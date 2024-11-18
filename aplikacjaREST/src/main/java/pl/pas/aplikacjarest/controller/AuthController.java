@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerClient(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> registerClient(@Valid @RequestBody UserDTO userDTO) {
         UserDTO user = userService.registerUser(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<UserDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
         UserDTO userDTO = userService.login(loginDTO);
         return ResponseEntity.ok().body(userDTO);
     }
