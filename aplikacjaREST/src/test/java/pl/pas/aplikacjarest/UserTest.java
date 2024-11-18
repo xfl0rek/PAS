@@ -25,8 +25,7 @@ public class UserTest {
 
     @AfterEach
     void cleanUp() {
-        MongoCollection<User> collection = userRepository.getDatabase().getCollection("users", User.class);
-        collection.drop();
+        userRepository.getDatabase().getCollection("users", User.class).drop();
     }
 
     @Test
@@ -39,7 +38,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200)
+                .statusCode(201)
                 .contentType(ContentType.JSON)
                 .body("firstName", equalTo("Jadwiga"))
                 .body("lastName", equalTo("Hymel"))
@@ -76,7 +75,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         RestAssured.given()
                 .queryParam("username", "jbug")
@@ -103,7 +102,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         RestAssured.given()
                 .queryParam("partialUsername", "ta")
@@ -129,7 +128,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         User user = userRepository.findByUsername("johndoe123");
 
@@ -138,7 +137,7 @@ public class UserTest {
                 .when()
                 .post("/admin/deactivateAccount/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(204);
 
         user = userRepository.findByUsername("johndoe123");
         Assertions.assertFalse(user.isActive());
@@ -148,7 +147,7 @@ public class UserTest {
                 .when()
                 .post("/admin/activateAccount/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(204);
 
         user = userRepository.findByUsername("johndoe123");
         Assertions.assertTrue(user.isActive());
@@ -164,7 +163,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         User user = userRepository.findByUsername("tatuazyk123");
 
@@ -174,7 +173,7 @@ public class UserTest {
                 .when()
                 .post("/admin/changeUserRole/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(204);
 
         user = userRepository.findByUsername("tatuazyk123");
         Assertions.assertEquals(UserRole.ADMIN, user.getUserRole());
@@ -193,7 +192,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         RestAssured.given()
                 .body(user2)
@@ -201,7 +200,7 @@ public class UserTest {
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         RestAssured.given()
                 .queryParam("userRole", "CLIENT")

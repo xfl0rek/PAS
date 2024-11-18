@@ -25,8 +25,7 @@ public class RoomTest {
 
     @AfterEach
     void cleanUp() {
-        MongoCollection<Room> collection = roomRepository.getDatabase().getCollection("rooms", Room.class);
-        collection.drop();
+        roomRepository.getDatabase().getCollection("rooms", Room.class).drop();
     }
 
     @Test
@@ -38,7 +37,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200)
+                .statusCode(201)
                 .body("roomNumber", equalTo(1))
                 .body("basePrice", equalTo(1000))
                 .body("roomCapacity", equalTo(2));
@@ -53,7 +52,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         Room room = roomRepository.findByRoomNumber(1);
 
@@ -82,7 +81,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         Room room = roomRepository.findByRoomNumber(1);
         Assertions.assertNotNull(room);
@@ -92,7 +91,7 @@ public class RoomTest {
                 .when()
                 .post("/admin/deleteRoom/{id}")
                 .then()
-                .statusCode(200);
+                .statusCode(204);
 
         room = roomRepository.findByRoomNumber(1);
         Assertions.assertNull(room);
@@ -107,7 +106,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
         RoomDTO roomDTO2 = new RoomDTO(2, 1200, 3);
         RestAssured.given()
                 .body(roomDTO2)
@@ -115,7 +114,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
         RoomDTO roomDTO3 = new RoomDTO(3, 1600, 2);
         RestAssured.given()
                 .body(roomDTO3)
@@ -123,7 +122,7 @@ public class RoomTest {
                 .when()
                 .post("/manager/createRoom")
                 .then()
-                .statusCode(200);
+                .statusCode(201);
 
         RestAssured.given()
                 .queryParam("roomCapacity", 2)

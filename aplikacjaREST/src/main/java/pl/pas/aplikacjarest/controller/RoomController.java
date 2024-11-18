@@ -2,6 +2,7 @@ package pl.pas.aplikacjarest.controller;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RoomDTO;
@@ -21,7 +22,7 @@ public class RoomController {
     @PostMapping("/manager/createRoom")
     public ResponseEntity<RoomDTO> createRoom(@RequestBody RoomDTO createdRoom) {
         RoomDTO roomDTO = roomService.createRoom(createdRoom);
-        return ResponseEntity.ok(roomDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
     }
 
     @GetMapping("/manager/{id}")
@@ -70,9 +71,10 @@ public class RoomController {
 
 
     @PostMapping("/admin/deleteRoom/{id}")
-    public void deleteRoom(@PathVariable String id) {
+    public ResponseEntity<Void> deleteRoom(@PathVariable String id) {
         ObjectId roomID = new ObjectId(id);
         roomService.deleteRoom(roomID);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/manager/getRoomsByRoomCapacity")

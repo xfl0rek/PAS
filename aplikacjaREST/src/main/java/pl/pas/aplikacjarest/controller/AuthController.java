@@ -1,6 +1,7 @@
 package pl.pas.aplikacjarest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.*;
@@ -18,7 +19,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerClient(@RequestBody UserDTO userDTO) {
         UserDTO user = userService.registerUser(userDTO);
-        return ResponseEntity.ok().body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PostMapping("/login")

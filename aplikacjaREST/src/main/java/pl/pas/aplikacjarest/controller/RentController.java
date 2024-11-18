@@ -2,6 +2,7 @@ package pl.pas.aplikacjarest.controller;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RentDTO;
@@ -21,7 +22,7 @@ public class RentController {
     @PostMapping("/client/rentRoom")
     public ResponseEntity<RentDTO> rentRoom(@RequestBody RentDTO rentDTO) {
         RentDTO rent = rentService.rentRoom(rentDTO);
-        return ResponseEntity.ok(rent);
+        return ResponseEntity.status(HttpStatus.CREATED).body(rent);
     }
 
     @PostMapping("/client/returnRoom/{id}")
@@ -33,15 +34,17 @@ public class RentController {
     }
 
     @PostMapping("/manager/updateRent/{id}")
-    public void updateRent(@PathVariable String id, @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
+    public ResponseEntity<Void> updateRent(@PathVariable String id, @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
         ObjectId rentID = new ObjectId(id);
         rentService.updateRent(rentID, rentDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/manager/deleteRent/{id}")
-    public void deleteRent(@PathVariable String id) {
+    public ResponseEntity<Void> deleteRent(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         rentService.deleteRent(rentID);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/manager/getRentByID/{id}")

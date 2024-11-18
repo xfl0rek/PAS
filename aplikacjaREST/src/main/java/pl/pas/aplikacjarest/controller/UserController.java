@@ -32,21 +32,24 @@ public class UserController {
     }
 
     @PostMapping("/admin/activateAccount/{id}")
-    public void activateAccount(@PathVariable String id) {
+    public ResponseEntity<Void> activateAccount(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         userService.activateAccount(userID);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/admin/deactivateAccount/{id}")
-    public void deactivateAccount(@PathVariable String id) {
+    public ResponseEntity<Void> deactivateAccount(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         userService.deactivateAccount(userID);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/admin/changeUserRole/{id}")
-    public void changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
+    public ResponseEntity<Void> changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
         ObjectId userID = new ObjectId(id);
         userService.changeUserRole(userID, userRole);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/admin/getAllUsersByRole")
