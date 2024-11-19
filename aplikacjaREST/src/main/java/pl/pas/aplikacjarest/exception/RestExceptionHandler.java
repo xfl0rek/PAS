@@ -76,6 +76,6 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(InactiveUserException.class)
     public ResponseEntity<String> handleInactiveUserException(InactiveUserException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR); //TODO status do weryfikacji
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 }
