@@ -3,6 +3,7 @@ package pl.pas.aplikacjarest.repository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
 import pl.pas.aplikacjarest.dto.RoomDTO;
@@ -40,9 +41,10 @@ public class RoomRepository extends AbstractMongoRepository {
         return collection.find(Filters.eq("roomNumber", roomNumber)).first();
     }
 
-    public void save(Room room) {
+    public ObjectId save(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
-        collection.insertOne(room);
+        InsertOneResult result = collection.insertOne(room);
+        return result.getInsertedId().asObjectId().getValue();
     }
 
     public void delete(ObjectId roomID) {

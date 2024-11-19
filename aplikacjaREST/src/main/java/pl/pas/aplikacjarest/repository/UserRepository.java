@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
@@ -46,9 +47,10 @@ public class UserRepository extends AbstractMongoRepository {
         return users;
     }
 
-    public void save(User user) {
+    public ObjectId save(User user) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        collection.insertOne(user);
+        InsertOneResult result = collection.insertOne(user);
+        return result.getInsertedId().asObjectId().getValue();
     }
 
     public void update(User user) {

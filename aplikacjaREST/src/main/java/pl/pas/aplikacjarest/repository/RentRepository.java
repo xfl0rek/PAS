@@ -5,6 +5,7 @@ import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public class RentRepository extends AbstractMongoRepository {
         this.initDBConnection();
     }
 
-    public void create(Rent rent) {
+    public ObjectId create(Rent rent) {
         ClientSession clientSession = getMongoClient().startSession();
         try (clientSession) {
             clientSession.startTransaction();
@@ -37,9 +38,10 @@ public class RentRepository extends AbstractMongoRepository {
             roomCollection.updateOne(clientSession, filter, update);
 
             MongoCollection<Rent> rentCollection = getDatabase().getCollection("rents", Rent.class);
-            rentCollection.insertOne(clientSession, rent);
+            InsertOneResult result = rentCollection.insertOne(clientSession, rent);
 
             clientSession.commitTransaction();
+            return result.getInsertedId().asObjectId().getValue();
         } catch (Exception e) {
             if (clientSession.hasActiveTransaction())
                 clientSession.abortTransaction();
