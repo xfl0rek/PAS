@@ -1,6 +1,5 @@
 package pl.pas.aplikacjarest;
 
-import com.mongodb.client.MongoCollection;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
@@ -212,5 +211,33 @@ public class UserTest {
                 .body("$.size()", equalTo(2))
                 .body("[0].username", equalTo("alice123"))
                 .body("[1].username", equalTo("charlie789"));
+    }
+
+    @Test
+    void getUserByIDTest() {
+        UserDTO userDTO = new UserDTO("Sebastian", "Alvarez", "tatuazyk123",
+                "sentino@example.com", "123456789" , UserRole.CLIENT);
+        RestAssured.given()
+                .body(userDTO)
+                .contentType("application/json")
+                .when()
+                .post("/register")
+                .then()
+                .statusCode(201);
+
+        User user = userRepository.findByUsername("tatuazyk123");
+
+        RestAssured.given()
+                .pathParam("id", user.getId().toString())
+                .get("/admin/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("firstName", equalTo("Sebastian"))
+                .body("lastName", equalTo("Alvarez"))
+                .body("username", equalTo("tatuazyk123"))
+                .body("email", equalTo("sentino@example.com"))
+                .body("password", equalTo("123456789"))
+                .body("userRole", equalTo("CLIENT"));
     }
 }

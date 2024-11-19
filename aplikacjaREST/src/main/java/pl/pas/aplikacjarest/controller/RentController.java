@@ -49,7 +49,7 @@ public class RentController {
     }
 
     @GetMapping("/manager/getRentByID/{id}")
-    public ResponseEntity<RentDTO> getRentByRoomNumber(@PathVariable String id) {
+    public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         RentDTO rentDTO = rentService.getRentByID(rentID);
         return ResponseEntity.ok(rentDTO);

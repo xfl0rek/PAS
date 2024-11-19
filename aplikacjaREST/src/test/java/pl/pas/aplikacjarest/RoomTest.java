@@ -1,6 +1,5 @@
 package pl.pas.aplikacjarest;
 
-import com.mongodb.client.MongoCollection;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.AfterEach;
@@ -138,4 +137,68 @@ public class RoomTest {
     }
 
     ///manager/getRoomsByRoomCapacity
+
+    @Test
+    void getRoomByIDTest() {
+        RoomDTO roomDTO = new RoomDTO(1, 1000, 2);
+        RestAssured.given()
+                .body(roomDTO)
+                .contentType("application/json")
+                .when()
+                .post("/manager/createRoom")
+                .then()
+                .statusCode(201);
+
+        Room room = roomRepository.findByRoomNumber(1);
+
+        RestAssured.given()
+                .pathParams("id", room.getId().toString())
+                .when()
+                .get("/manager/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("roomNumber", equalTo(1))
+                .body("basePrice", equalTo(1000))
+                .body("roomCapacity", equalTo(2));
+    }
+
+    @Test
+    void getRoomByBasePriceTest() {
+        RoomDTO roomDTO1 = new RoomDTO(1, 1000, 2);
+        RestAssured.given()
+                .body(roomDTO1)
+                .contentType("application/json")
+                .when()
+                .post("/manager/createRoom")
+                .then()
+                .statusCode(201);
+        RoomDTO roomDTO2 = new RoomDTO(2, 1000, 3);
+        RestAssured.given()
+                .body(roomDTO2)
+                .contentType("application/json")
+                .when()
+                .post("/manager/createRoom")
+                .then()
+                .statusCode(201);
+        RoomDTO roomDTO3 = new RoomDTO(3, 1600, 2);
+        RestAssured.given()
+                .body(roomDTO3)
+                .contentType("application/json")
+                .when()
+                .post("/manager/createRoom")
+                .then()
+                .statusCode(201);
+
+        RestAssured.given()
+                .queryParam("basePrice", 1000)
+                .when()
+                .get("/manager/getRoomsByBasePrice")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(2))
+                .body("[0].roomNumber", equalTo(1))
+                .body("[1].roomNumber", equalTo(2));
+    }
 }
