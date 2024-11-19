@@ -69,16 +69,10 @@ public class UserTest {
     }
 
     @Test
-    void getClientTest() {
-        UserDTO userDTO = new UserDTO("John", "Bug", "JBuggy",
-                "jbug@example.com", "123456789" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+    void getClientByUsernameTest() {
+        Client client = new Client("John", "Bug", "JBuggy",
+                "jbug@example.com", "123456789");
+        userRepository.save(client);
 
         RestAssured.given()
                 .queryParam("username", "JBuggy")
@@ -97,47 +91,37 @@ public class UserTest {
 
     @Test
     void getUsersByPartialUsernameTest() {
-        UserDTO userDTO = new UserDTO("Sebastian", "Alvarez", "tatuazyk123",
-                "sentino@example.com", "123456789" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+        Client client1 = new Client("Sebastian", "Alvarez", "tatuazyk123",
+                "sentino@example.com", "123456789");
+        Client client2 = new Client("Jadwiga", "Hymel", "jhymel", "j.hymel@gmail.com", "strongpassword");
+        Client client3 = new Client("John", "Bug", "jbuggy", "jbug@example.bug", "234726385");
+        userRepository.save(client1);
+        userRepository.save(client2);
+        userRepository.save(client3);
 
         RestAssured.given()
-                .queryParam("partialUsername", "ta")
+                .queryParam("partialUsername", "j")
                 .when()
                 .get("/manager/getUsersByPartialUsername")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("[0].firstName", equalTo("Sebastian"))
-                .body("[0].lastName", equalTo("Alvarez"))
-                .body("[0].username", equalTo("tatuazyk123"))
-                .body("[0].email", equalTo("sentino@example.com"))
-                .body("[0].userRole", equalTo("CLIENT"));
+                .body("[0].firstName", equalTo("Jadwiga"))
+                .body("[0].username", equalTo("jhymel"))
+                .body("[1].firstName", equalTo("John"))
+                .body("[1].username", equalTo("jbuggy"));
     }
 
     @Test
     void activateAndDeactivateAccountTest() {
-        UserDTO userDTO = new UserDTO("John", "Doe", "johndoe123",
-                "john.doe@example.com", "password123", UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+        Client client = new Client("John", "Doe", "johndoe123",
+                "john.doe@example.com", "password123");
+        ObjectId clientID = userRepository.save(client);
 
-        User user = userRepository.findByUsername("johndoe123");
-        Assertions.assertTrue(user.isActive());
+        Assertions.assertTrue(client.isActive());
 
         RestAssured.given()
-                .pathParam("id", user.getId().toString())
+                .pathParam("id", clientID.toString())
                 .when()
                 .post("/admin/deactivateAccount/{id}")
                 .then()
@@ -146,7 +130,7 @@ public class UserTest {
         Assertions.assertFalse(userRepository.findByUsername("johndoe123").isActive());
 
         RestAssured.given()
-                .pathParam("id", user.getId().toString())
+                .pathParam("id", clientID.toString())
                 .when()
                 .post("/admin/activateAccount/{id}")
                 .then()
@@ -157,20 +141,12 @@ public class UserTest {
 
     @Test
     void changeUserRoleTest() {
-        UserDTO userDTO = new UserDTO("Sebastian", "Alvarez", "tatuazyk123",
-                "sentino@example.com", "123456789" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
-
-        User user = userRepository.findByUsername("tatuazyk123");
+        Client client = new Client("Sebastian", "Alvarez", "tatuazyk123",
+                "sentino@example.com", "123456789");
+        ObjectId clientID = userRepository.save(client);
 
         RestAssured.given()
-                .pathParam("id", user.getId().toString())
+                .pathParam("id", clientID.toString())
                 .queryParam("userRole", "ADMIN")
                 .when()
                 .post("/admin/changeUserRole/{id}")
@@ -182,26 +158,12 @@ public class UserTest {
 
     @Test
     void getAllUsersRoleTest() {
-        UserDTO user1 = new UserDTO("Alice", "Smith", "alice123",
-                "alice@example.com", "password123", UserRole.CLIENT);
-        UserDTO user2 = new UserDTO("Charlie", "Brown", "charlie789",
-                "charlie@example.com", "password789", UserRole.CLIENT);
-
-        RestAssured.given()
-                .body(user1)
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
-
-        RestAssured.given()
-                .body(user2)
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+        Client client1 = new Client("Alice", "Smith", "alice123",
+                "alice@example.com", "password123");
+        Client client2 = new Client("Charlie", "Brown", "charlie789",
+                "charlie@example.com", "password789");
+        userRepository.save(client1);
+        userRepository.save(client2);
 
         RestAssured.given()
                 .queryParam("userRole", "CLIENT")
@@ -253,16 +215,10 @@ public class UserTest {
     }
 
     @Test
-    void loginUserNegativeTest() {
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+    void loginUserInvalidPasswordNegativeTest() {
+         Client client = new Client("Jadwiga", "Hymel", "jhymel",
+                "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client);
 
         LoginDTO wrongLoginDTO = new LoginDTO("jhymel", "1234566745");
         String resultBody = RestAssured.given()
@@ -301,16 +257,10 @@ public class UserTest {
     }
 
     @Test
-    void getClientNegativeTest() {
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+    void getClientByWrongUsernameNegativeTest() {
+        Client client = new Client("Jadwiga", "Hymel", "jhymel",
+                "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client);
 
         RestAssured.given()
                 .queryParam("username", "jadwigahymel")
@@ -375,15 +325,9 @@ public class UserTest {
 
     @Test
     void getUserByIDNegativeTest() {
-        UserDTO userDTO = new UserDTO("Sebastian", "Alvarez", "tatuazyk123",
-                "sentino@example.com", "123456789" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
+        Client client = new Client("Sebastian", "Alvarez", "tatuazyk123",
+                "sentino@example.com", "123456789");
+        userRepository.save(client);
 
         RestAssured.given()
                 .pathParam("id", "zleid")
