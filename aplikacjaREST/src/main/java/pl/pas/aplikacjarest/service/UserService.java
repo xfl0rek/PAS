@@ -77,9 +77,15 @@ public class UserService {
         userRepository.update(user);
     }
 
-    public List<UserDTO> findAll(UserRole userRole) {
-        List<User> users = userRepository.findAll(userRole);
+    public List<UserDTO> findAllByRole(UserRole userRole) {
+        List<User> users = userRepository.findAllByRole(userRole);
         return userConverter.userListToUserDTOListConverter(users);
+    }
+
+    public List<UserDTO> findAll() {
+        List<User> users = userRepository.findAll();
+        return userConverter.userListToUserDTOListConverter(users);
+
     }
 
     public UserDTO getUserByID(ObjectId userID) {

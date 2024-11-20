@@ -89,4 +89,10 @@ public class RoomController {
         List<RoomDTO> roomDTOs = roomService.getRoomsByBasePrice(basePrice);
         return ResponseEntity.ok(roomDTOs);
     }
+
+    @GetMapping("/manager/getAllRooms")
+    public ResponseEntity<List<RoomDTO>> getAllRooms() {
+        List<RoomDTO> roomDTOs = roomService.findAll();
+        return ResponseEntity.ok(roomDTOs);
+    }
 }

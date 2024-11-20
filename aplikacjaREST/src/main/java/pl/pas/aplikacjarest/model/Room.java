@@ -28,7 +28,7 @@ public class Room {
     @Max(1)
     private int rented = 0;
 
-    public Room(@BsonId int roomNumber,
+    public Room(@BsonProperty int roomNumber,
                 @BsonProperty("baseprice") int basePrice,
                 @BsonProperty("roomcapacity") int roomCapacity) {
         this.id = new ObjectId();

@@ -40,10 +40,17 @@ public class UserRepository extends AbstractMongoRepository {
         return collection.find(Filters.eq("_id", userID)).first();
     }
 
-    public List<User> findAll(UserRole userRole) {
+    public List<User> findAllByRole(UserRole userRole) {
         ArrayList<User> users = new ArrayList<>();
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
         collection.find(Filters.eq("userRole", userRole)).into(users);
+        return users;
+    }
+
+    public List<User> findAll() {
+        ArrayList<User> users = new ArrayList<>();
+        MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
+        collection.find().into(users);
         return users;
     }
 

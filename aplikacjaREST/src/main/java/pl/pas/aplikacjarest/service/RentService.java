@@ -13,6 +13,7 @@ import pl.pas.aplikacjarest.repository.RoomRepository;
 import pl.pas.aplikacjarest.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class RentService {
@@ -100,5 +101,49 @@ public class RentService {
                 rent.getBeginTime(),
                 rent.getEndTime()
         );
+    }
+
+    public List<RentDTO> getAllActiveRentsForUser(ObjectId userID) {
+        return rentRepository.findAllActiveRentsForUser(userID).stream()
+                .map(rent -> new RentDTO(
+                        rent.getClient().getUsername(),
+                        rent.getRoom().getRoomNumber(),
+                        rent.getBeginTime(),
+                        rent.getEndTime()
+                ))
+                .toList();
+    }
+
+    public List<RentDTO> getAllArchiveRentsForUser(ObjectId userID) {
+        return rentRepository.findAllArchiveRentsForUser(userID).stream()
+                .map(rent -> new RentDTO(
+                        rent.getClient().getUsername(),
+                        rent.getRoom().getRoomNumber(),
+                        rent.getBeginTime(),
+                        rent.getEndTime()
+                ))
+                .toList();
+    }
+
+    public List<RentDTO> getAllActiveRentsForRoom(ObjectId rentId) {
+        return rentRepository.findAllActiveRentsForRoom(rentId).stream()
+                .map(rent -> new RentDTO(
+                        rent.getClient().getUsername(),
+                        rent.getRoom().getRoomNumber(),
+                        rent.getBeginTime(),
+                        rent.getEndTime()
+                ))
+                .toList();
+    }
+
+    public List<RentDTO> getAllArchiveRentsForRoom(ObjectId rentId) {
+        return rentRepository.findAllArchiveRentsForRoom(rentId).stream()
+                .map(rent -> new RentDTO(
+                        rent.getClient().getUsername(),
+                        rent.getRoom().getRoomNumber(),
+                        rent.getBeginTime(),
+                        rent.getEndTime()
+                ))
+                .toList();
     }
 }

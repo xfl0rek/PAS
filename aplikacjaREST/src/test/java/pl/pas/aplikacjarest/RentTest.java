@@ -187,6 +187,150 @@ public class RentTest {
     }
 
     @Test
+    void getAllActiveRentsForUserPositiveTest() {
+        Client client = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        Room room1 = new Room(1, 1000, 2);
+        Room room2 = new Room(2, 1800, 4);
+        Room room3 = new Room(3, 2000, 3);
+        Rent rent1 = new Rent(client, room1, LocalDateTime.of(2023, 11, 18, 14, 30, 0));
+        Rent rent2 = new Rent(client, room2, LocalDateTime.of(2023, 1, 1, 12, 47, 0));
+        Rent rent3 = new Rent(client, room3, LocalDateTime.of(2023, 9, 7, 13, 20, 0));
+
+        ObjectId clientID = userRepository.save(client);
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        roomRepository.save(room3);
+        ObjectId rent1ID = rentRepository.create(rent1);
+        ObjectId rent2ID = rentRepository.create(rent2);
+        ObjectId rent3ID = rentRepository.create(rent3);
+
+        rent2.setId(rent2ID);
+        rent2.endRent(LocalDateTime.of(2023, 9, 17, 23, 20, 0));
+        rentRepository.update(rent2);
+
+        RestAssured.given().
+                pathParam("id", clientID.toString())
+                .when()
+                .get("/manager/getAllActiveRentsForUser/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(2))
+                .body("[0].clientUsername", equalTo("jhymel"))
+                .body("[0].roomNumber", equalTo(1))
+                .body("[1].clientUsername", equalTo("jhymel"))
+                .body("[1].roomNumber", equalTo(3));
+    }
+
+    @Test
+    void getAllArchiveRentsForUserPositiveTest() {
+        Client client = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        Room room1 = new Room(1, 1000, 2);
+        Room room2 = new Room(2, 1800, 4);
+        Room room3 = new Room(3, 2000, 3);
+        Rent rent1 = new Rent(client, room1, LocalDateTime.of(2023, 11, 18, 14, 30, 0));
+        Rent rent2 = new Rent(client, room2, LocalDateTime.of(2023, 1, 1, 12, 47, 0));
+        Rent rent3 = new Rent(client, room3, LocalDateTime.of(2023, 9, 7, 13, 20, 0));
+
+        ObjectId clientID = userRepository.save(client);
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        roomRepository.save(room3);
+        ObjectId rent1ID = rentRepository.create(rent1);
+        ObjectId rent2ID = rentRepository.create(rent2);
+        ObjectId rent3ID = rentRepository.create(rent3);
+        rent1.setId(rent1ID);
+        rent3.setId(rent3ID);
+        rent1.endRent(LocalDateTime.of(2023, 11, 20, 14, 30, 0));
+        rent3.endRent(LocalDateTime.of(2023, 9, 17, 23, 20, 0));
+        rentRepository.update(rent1);
+        rentRepository.update(rent3);
+
+        RestAssured.given().
+                pathParam("id", clientID.toString())
+                .when()
+                .get("/manager/getAllArchiveRentsForUser/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(2))
+                .body("[0].clientUsername", equalTo("jhymel"))
+                .body("[0].roomNumber", equalTo(1))
+                .body("[1].clientUsername", equalTo("jhymel"))
+                .body("[1].roomNumber", equalTo(3));
+    }
+
+    @Test
+    void getAllActiveRentsForRoomPositiveTest() {
+        Client client1 = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client1);
+        Room room = new Room(1, 1000, 2);
+        ObjectId roomId = roomRepository.save(room);
+        Rent rent = new Rent(client1, room,
+                LocalDateTime.of(2023, 11, 18, 14, 30, 0));
+        rentRepository.create(rent);
+
+        RestAssured.given()
+                .pathParam("id", roomId.toString())
+                .when()
+                .get("/manager/getAllActiveRentsForRoom/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(1))
+                .body("[0].clientUsername", equalTo("jhymel"))
+                .body("[0].roomNumber", equalTo(1));
+    }
+
+    @Test
+    void getAllArchiveRentsForRoomPositiveTest() {
+        Client client1 = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        Client client2 = new Client("John", "Bug", "jbuggy", "jbug@example.com", "12213425");
+        Client client3 = new Client("Sebastian", "Alvarez", "sentino", "tatuazyk123@gmail.com", "4756238511");
+        userRepository.save(client1);
+        userRepository.save(client2);
+        userRepository.save(client3);
+
+        Room room = new Room(1, 1000, 2);
+        ObjectId roomId = roomRepository.save(room);
+        Rent rent1 = new Rent(client1, room,
+                LocalDateTime.of(2023, 11, 18, 14, 30, 0));
+        ObjectId rent1Id = rentRepository.create(rent1);
+        rent1.setId(rent1Id);
+        rent1.endRent(LocalDateTime.of(2023, 11, 19, 14, 30, 0));
+        rentRepository.update(rent1);
+
+        Rent rent2 = new Rent(client2, room,
+                LocalDateTime.of(2023, 11, 20, 14, 30, 0));
+        ObjectId rent2Id = rentRepository.create(rent2);
+        rent2.setId(rent2Id);
+        rent2.endRent(LocalDateTime.of(2023, 11, 25, 14, 30, 0));
+        rentRepository.update(rent2);
+
+        Rent rent3 = new Rent(client3, room,
+                LocalDateTime.of(2023, 11, 26, 14, 30, 0));
+        ObjectId rent3Id = rentRepository.create(rent3);
+        rent3.setId(rent3Id);
+        rent3.endRent(LocalDateTime.of(2023, 11, 30, 14, 30, 0));
+        rentRepository.update(rent3);
+
+        RestAssured.given()
+                .pathParam("id", roomId.toString())
+                .when()
+                .get("/manager/getAllArchiveRentsForRoom/{id}")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(3))
+                .body("[0].clientUsername", equalTo("jhymel"))
+                .body("[0].roomNumber", equalTo(1))
+                .body("[1].clientUsername", equalTo("jbuggy"))
+                .body("[1].roomNumber", equalTo(1))
+                .body("[2].clientUsername", equalTo("sentino"))
+                .body("[2].roomNumber", equalTo(1));
+    }
+
+    @Test
     void invalidArgumentsPassedTest() {
         RentDTO invalidRentDTO = new RentDTO("ab", 0, null, null);
         RestAssured.given()

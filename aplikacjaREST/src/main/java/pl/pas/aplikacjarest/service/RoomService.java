@@ -46,7 +46,7 @@ public class RoomService {
         Room room = roomRepository.getRoomByID(roomID);
         if (room == null)
             throw new RoomNotFoundException("Room not found");
-        if (rentRepository.isRoomCurrentlyRented(room.getRoomNumber()) != null)
+        if (rentRepository.isRoomCurrentlyRented(roomID) != null)
             throw new RoomIsAlreadyRentedException("Room is currently rented and cannot be deleted");
         roomRepository.delete(roomID);
     }
@@ -84,6 +84,17 @@ public class RoomService {
 
     public List<RoomDTO> getRoomsByBasePrice(int basePrice) {
         List<Room> rooms = roomRepository.getRoomsByBasePrice(basePrice);
+        return rooms.stream()
+                .map(room -> new RoomDTO(
+                        room.getRoomNumber(),
+                        room.getBasePrice(),
+                        room.getRoomCapacity()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<RoomDTO> findAll() {
+        List<Room> rooms = roomRepository.findAll();
         return rooms.stream()
                 .map(room -> new RoomDTO(
                         room.getRoomNumber(),

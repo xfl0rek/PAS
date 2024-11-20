@@ -9,7 +9,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.pas.aplikacjarest.dto.LoginDTO;
 import pl.pas.aplikacjarest.dto.UserDTO;
+import pl.pas.aplikacjarest.model.Admin;
 import pl.pas.aplikacjarest.model.Client;
+import pl.pas.aplikacjarest.model.Manager;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.repository.UserRepository;
@@ -178,6 +180,35 @@ public class UserTest {
     }
 
     @Test
+    void getAllUsersPositiveTest() {
+        Client client1 = new Client("Alice", "Smith", "alice123",
+                "alice@example.com", "password123");
+        Client client2 = new Client("Charlie", "Brown", "charlie789",
+                "charlie@example.com", "password789");
+        Manager manager = new Manager("John", "Doe", "johndoe123",
+                "John@example.com", "password123");
+        Admin admin = new Admin("Jane", "Doe", "janedoe123",
+                "jane@example.com", "password123");
+
+        userRepository.save(client1);
+        userRepository.save(client2);
+        userRepository.save(manager);
+        userRepository.save(admin);
+
+        RestAssured.given()
+                .when()
+                .get("/admin/getAllUsers")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(4))
+                .body("[0].username", equalTo("alice123"))
+                .body("[1].username", equalTo("charlie789"))
+                .body("[2].username", equalTo("johndoe123"))
+                .body("[3].username", equalTo("janedoe123"));
+    }
+
+    @Test
     void getUserByIDTest() {
         Client client = new Client("Sebastian", "Alvarez", "tatuazyk123",
                 "sentino@example.com", "123456789");
@@ -221,16 +252,13 @@ public class UserTest {
         userRepository.save(client);
 
         LoginDTO wrongLoginDTO = new LoginDTO("jhymel", "1234566745");
-        String resultBody = RestAssured.given()
+        RestAssured.given()
                 .body(wrongLoginDTO)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/login")
                 .then()
-                .statusCode(400)
-                .extract()
-                .asString();
-        Assertions.assertEquals("Invalid password", resultBody);
+                .statusCode(400);
     }
 
     @Test

@@ -54,24 +54,42 @@ public class RentRepository extends AbstractMongoRepository {
         return collection.find(Filters.eq("_id", id)).first();
     }
 
-    public List<Rent> findAll() {
+    public List<Rent> findAllActiveRentsForUser(ObjectId userId) {
         ArrayList<Rent> rents = new ArrayList<>();
+        Bson filter = Filters.and(Filters.eq("client._id", userId), Filters.eq("archive", false));
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
-        collection.find().into(rents);
+        collection.find(filter).into(rents);
         return rents;
     }
 
+    public List<Rent> findAllArchiveRentsForUser(ObjectId userId) {
+        ArrayList<Rent> rents = new ArrayList<>();
+        Bson filter = Filters.and(Filters.eq("client._id", userId), Filters.eq("archive", true));
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        collection.find(filter).into(rents);
+        return rents;
+    }
 
-//    public Rent getRentByRoomNumber(int roomNumber) {
-//        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
-//        Bson filter = Filters.eq("room.roomNumber", roomNumber);
-//        return collection.find(filter).first();
-//    }
+    public List<Rent> findAllActiveRentsForRoom(ObjectId roomId) {
+        ArrayList<Rent> rents = new ArrayList<>();
+        Bson filter = Filters.and(Filters.eq("room._id", roomId), Filters.eq("archive", false));
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        collection.find(filter).into(rents);
+        return rents;
+    }
 
-    public Rent isRoomCurrentlyRented(int roomNumber) {
+    public List<Rent> findAllArchiveRentsForRoom(ObjectId roomId) {
+        ArrayList<Rent> rents = new ArrayList<>();
+        Bson filter = Filters.and(Filters.eq("room._id", roomId), Filters.eq("archive", true));
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        collection.find(filter).into(rents);
+        return rents;
+    }
+
+    public Rent isRoomCurrentlyRented(ObjectId roomID) {
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
         Bson filter = Filters.and(
-                Filters.eq("room.roomNumber", roomNumber),
+                Filters.eq("room._id", roomID),
                 Filters.eq("archive", false)
         );
         return collection.find(filter).first();
@@ -117,12 +135,6 @@ public class RentRepository extends AbstractMongoRepository {
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
         collection.deleteOne(query);
     }
-
-//    public void deleteRoomByRoomNumber(int roomNumber) {
-//        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
-//        Bson filter = Filters.eq("room.roomNumber", roomNumber);
-//        collection.deleteOne(filter);
-//    }
 
     public MongoCollection<Rent> readAll() {
         return getDatabase().getCollection("rents", Rent.class);

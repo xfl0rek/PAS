@@ -54,7 +54,13 @@ public class UserController {
 
     @GetMapping("/admin/getAllUsersByRole")
     public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
-        List<UserDTO> userDTOs = userService.findAll(userRole);
+        List<UserDTO> userDTOs = userService.findAllByRole(userRole);
+        return ResponseEntity.ok(userDTOs);
+    }
+
+    @GetMapping("/admin/getAllUsers")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> userDTOs = userService.findAll();
         return ResponseEntity.ok(userDTOs);
     }
 

@@ -41,6 +41,13 @@ public class RoomRepository extends AbstractMongoRepository {
         return collection.find(Filters.eq("roomNumber", roomNumber)).first();
     }
 
+    public List<Room> findAll() {
+        List<Room> rooms = new ArrayList<>();
+        MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
+        collection.find().into(rooms);
+        return rooms;
+    }
+
     public ObjectId save(Room room) {
         MongoCollection<Room> collection = getDatabase().getCollection("rooms", Room.class);
         InsertOneResult result = collection.insertOne(room);

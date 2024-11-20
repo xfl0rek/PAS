@@ -10,6 +10,7 @@ import pl.pas.aplikacjarest.dto.RentDTO;
 import pl.pas.aplikacjarest.service.RentService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 public class RentController {
@@ -52,6 +53,34 @@ public class RentController {
     public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         RentDTO rentDTO = rentService.getRentByID(rentID);
+        return ResponseEntity.ok(rentDTO);
+    }
+
+    @GetMapping("/manager/getAllActiveRentsForUser/{id}")
+    public ResponseEntity<List<RentDTO>> getAllActiveRentsForUser(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        List<RentDTO> rentDTO = rentService.getAllActiveRentsForUser(userID);
+        return ResponseEntity.ok(rentDTO);
+    }
+
+    @GetMapping("/manager/getAllArchiveRentsForUser/{id}")
+    public ResponseEntity<List<RentDTO>> getAllArchiveRentsForUser(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        List<RentDTO> rentDTO = rentService.getAllArchiveRentsForUser(userID);
+        return ResponseEntity.ok(rentDTO);
+    }
+
+    @GetMapping("/manager/getAllActiveRentsForRoom/{id}")
+    public ResponseEntity<List<RentDTO>> getAllActiveRentsForRoom(@PathVariable String id) {
+        ObjectId rentID = new ObjectId(id);
+        List<RentDTO> rentDTO = rentService.getAllActiveRentsForRoom(rentID);
+        return ResponseEntity.ok(rentDTO);
+    }
+
+    @GetMapping("/manager/getAllArchiveRentsForRoom/{id}")
+    public ResponseEntity<List<RentDTO>> getAllArchiveRentsForRoom(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        List<RentDTO> rentDTO = rentService.getAllArchiveRentsForRoom(userID);
         return ResponseEntity.ok(rentDTO);
     }
 }

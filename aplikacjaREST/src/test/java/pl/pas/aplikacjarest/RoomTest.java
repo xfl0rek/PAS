@@ -148,6 +148,27 @@ public class RoomTest {
                 .body("[1].roomNumber", equalTo(2));
     }
 
+    @Test
+    void getAllRoomsPositiveTest() {
+        Room room1 = new Room(1, 1000, 2);
+        Room room2 = new Room(2, 1000, 3);
+        Room room3 = new Room(3, 1600, 2);
+        roomRepository.save(room1);
+        roomRepository.save(room2);
+        roomRepository.save(room3);
+
+        RestAssured.given()
+                .when()
+                .get("/manager/getAllRooms")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$.size()", equalTo(3))
+                .body("[0].roomNumber", equalTo(1))
+                .body("[1].roomNumber", equalTo(2))
+                .body("[2].roomNumber", equalTo(3));
+    }
+
     //Negative tests
 
     @Test
