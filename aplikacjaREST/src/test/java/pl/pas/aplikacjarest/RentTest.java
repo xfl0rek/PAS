@@ -136,22 +136,13 @@ public class RentTest {
 
     @Test
     void deleteRentTest() {
-        Client client = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
-        userRepository.save(client);
+        Client client1 = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client1);
         Room room = new Room(1, 1000, 2);
-        roomRepository.save(room);
-        Rent rent = new Rent(client, room,
+        ObjectId roomID = roomRepository.save(room);
+        Rent rent = new Rent(client1, room,
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0));
         ObjectId rentID = rentRepository.create(rent);
-
-        RestAssured.given()
-                .pathParam("id", rentID.toString())
-                .queryParam("endTime", "2023-11-19T14:30:00")
-                .contentType(ContentType.JSON)
-                .when()
-                .post("/client/returnRoom/{id}")
-                .then()
-                .statusCode(200);
 
         RestAssured.given()
                 .pathParam("id", rentID.toString())
@@ -161,6 +152,7 @@ public class RentTest {
                 .statusCode(204);
 
         Assertions.assertNull(rentRepository.findByID(rentID));
+        Assertions.assertEquals(0, roomRepository.getRoomByID(roomID).getRented());
     }
 
     @Test
@@ -197,6 +189,8 @@ public class RentTest {
         Rent rent3 = new Rent(client, room3, LocalDateTime.of(2023, 9, 7, 13, 20, 0));
 
         ObjectId clientID = userRepository.save(client);
+        client.setId(clientID);
+        userRepository.update(client);
         roomRepository.save(room1);
         roomRepository.save(room2);
         roomRepository.save(room3);
@@ -233,6 +227,8 @@ public class RentTest {
         Rent rent3 = new Rent(client, room3, LocalDateTime.of(2023, 9, 7, 13, 20, 0));
 
         ObjectId clientID = userRepository.save(client);
+        client.setId(clientID);
+        userRepository.update(client);
         roomRepository.save(room1);
         roomRepository.save(room2);
         roomRepository.save(room3);
@@ -422,13 +418,22 @@ public class RentTest {
 
     @Test
     void deleteRentNegativeTest() {
-        Client client1 = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
-        userRepository.save(client1);
+        Client client = new Client("Jadwiga", "Hymel", "jhymel", "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client);
         Room room = new Room(1, 1000, 2);
         roomRepository.save(room);
-        Rent rent = new Rent(client1, room,
+        Rent rent = new Rent(client, room,
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0));
         ObjectId rentID = rentRepository.create(rent);
+
+        RestAssured.given()
+                .pathParam("id", rentID.toString())
+                .queryParam("endTime", "2023-11-19T14:30:00")
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/client/returnRoom/{id}")
+                .then()
+                .statusCode(200);
 
         RestAssured.given()
                 .pathParam("id", rentID.toString())
@@ -437,7 +442,7 @@ public class RentTest {
                 .then()
                 .statusCode(400);
 
-        Assertions.assertFalse(rentRepository.findByID(rentID).isArchive());
+        Assertions.assertNotNull(rentRepository.findByID(rentID));
     }
 
     @Test

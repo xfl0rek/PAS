@@ -6,7 +6,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.InsertOneResult;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
-import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.model.Room;
 
 import java.util.ArrayList;

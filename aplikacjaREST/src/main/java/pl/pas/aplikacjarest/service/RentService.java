@@ -86,8 +86,8 @@ public class RentService {
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
             throw new RentNotFoundException("Rent not found");
-        if (!rent.isArchive())
-            throw new RentNotEndedException("Rent not ended and cannot be deleted");
+        if (rent.isArchive())
+            throw new RentNotEndedException("Rent ended and cannot be deleted");
         rentRepository.delete(rentID);
     }
 

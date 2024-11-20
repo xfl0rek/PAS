@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import pl.pas.aplikacjarest.exception.RentTransactionException;
 import pl.pas.aplikacjarest.model.Rent;
 import pl.pas.aplikacjarest.model.Room;
-import pl.pas.aplikacjarest.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +129,28 @@ public class RentRepository extends AbstractMongoRepository {
     }
 
     public void delete(ObjectId id) {
+        ClientSession clientSession = getMongoClient().startSession();
+        try (clientSession) {
+            clientSession.startTransaction();
+
+            MongoCollection<Rent> rentCollection = getDatabase().getCollection("rents", Rent.class);
+            Rent rent = rentCollection.find(Filters.eq("_id", id)).first();
+
+            MongoCollection<Room> roomCollection = getDatabase().getCollection("rooms", Room.class);
+            Bson roomFilter = Filters.eq("roomNumber", rent.getRoom().getRoomNumber());
+            Bson update = Updates.inc("rented", -1);
+            roomCollection.updateOne(clientSession, roomFilter, update);
+
+            rentCollection.deleteOne(clientSession, Filters.eq("_id", id));
+
+
+            clientSession.commitTransaction();
+        } catch (Exception e) {
+            if (clientSession.hasActiveTransaction())
+                clientSession.abortTransaction();
+            throw new RentTransactionException("Transaction failed", e);
+        }
+
         BasicDBObject query = new BasicDBObject();
         query.put("_id", id);
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);

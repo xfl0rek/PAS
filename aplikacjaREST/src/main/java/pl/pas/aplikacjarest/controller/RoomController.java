@@ -40,37 +40,6 @@ public class RoomController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/manager/{id}")
-//    public ResponseEntity<RoomDTO> getRoomByID(@PathVariable String id) {
-//        try {
-//            ObjectId roomID = new ObjectId(id);
-//            RoomDTO roomDTO = roomService.getRoomByID(roomID);
-//            return ResponseEntity.ok(roomDTO);
-//        } catch (IllegalArgumentException e) {
-//            // Handle invalid ObjectId format
-//            return ResponseEntity.badRequest().build(); // Returns 400 Bad Request
-//        } catch (RoomNotFoundException e) {
-//            // Custom exception for when the room is not found
-//            return ResponseEntity.notFound().build(); // Returns 404 Not Found
-//        }
-//    }
-//
-//    @PostMapping("/manager/{id}")
-//    public ResponseEntity<Void> updateRoom(@PathVariable String id, @RequestBody RoomDTO updatedRoom) {
-//        try {
-//            ObjectId roomID = new ObjectId(id);
-//            roomService.updateRoom(roomID, updatedRoom);
-//            return ResponseEntity.noContent().build(); // Returns 204 No Content
-//        } catch (IllegalArgumentException e) {
-//            // Handle invalid ObjectId format
-//            return ResponseEntity.badRequest().build(); // Returns 400 Bad Request
-//        } catch (RoomNotFoundException e) {
-//            // Custom exception for when the room to update is not found
-//            return ResponseEntity.notFound().build(); // Returns 404 Not Found
-//        }
-//    }
-
-
     @PostMapping("/admin/deleteRoom/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable String id) {
         ObjectId roomID = new ObjectId(id);

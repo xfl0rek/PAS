@@ -1,7 +1,6 @@
 package pl.pas.aplikacjarest.model;
 
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 
 @BsonDiscriminator("client")
 public class Client extends User {
