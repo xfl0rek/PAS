@@ -7,17 +7,14 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
-import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ValidationAction;
 import com.mongodb.client.model.ValidationOptions;
-import org.bson.BsonType;
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.Conventions;
 import org.bson.codecs.pojo.PojoCodecProvider;
-import org.bson.conversions.Bson;
 import pl.pas.aplikacjarest.model.Admin;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.Manager;
@@ -58,28 +55,102 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
 
         mongoClient = MongoClients.create(settings);
         base = mongoClient.getDatabase("hotelpas");
+        if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("users")) {
+            createUserCollection();
+        }
         if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rooms")) {
-            createRoomsCollection();
+            createRoomCollection();
         }
         if (!getDatabase().listCollectionNames().into(new ArrayList<>()).contains("rents")) {
            createRentCollection();
         }
     }
 
-    private void createRoomsCollection() {
-        Bson isRentedType = Filters.type("rented", BsonType.INT32);
-        Bson isRentedMin = Filters.gte("rented", 0);
-        Bson isRentedMax = Filters.lte("rented", 1);
-        Bson isRented = Filters.and(isRentedType, isRentedMin, isRentedMax);
+    private void createUserCollection() {
+        ValidationOptions validationOptions = new ValidationOptions().validator(
+                Document.parse("""
+                        {
+                        $jsonSchema: {
+                            bsonType: "object",
+                            required: ["_id", "active", "email", "firstname", "lastname", "password", "username"],
+                            properties: {
+                                _id: {
+                                    bsonType: "objectId"
+                                },
+                                active: {
+                                    bsonType: "bool"
+                                },
+                                email: {
+                                    bsonType: "string",
+                                    "minLength": 10,
+                                    "maxLength": 50
+                                },
+                                firstname: {
+                                    bsonType: "string",
+                                    "minLength": 3,
+                                    "maxLength": 30
+                                },
+                                lastname: {
+                                    bsonType: "string",
+                                    "minLength": 3,
+                                    "maxLength": 30
+                                },
+                                password: {
+                                    bsonType: "string",
+                                    "minLength": 8,
+                                    "maxLength": 30
+                                },
+                                username: {
+                                    bsonType: "string",
+                                    "minLength": 5,
+                                    "maxLength": 30
+                                }
+                            }
+                        }}
+                        """
+                )).validationAction(ValidationAction.ERROR);
+        CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
+                .validationOptions(validationOptions);
+        getDatabase().createCollection("users", createCollectionOptions);
+    }
 
-        ValidationOptions validationOptions = new ValidationOptions()
-                .validator(isRented);
-
+    private void createRoomCollection() {
+        ValidationOptions validationOptions = new ValidationOptions().validator(
+                Document.parse("""
+                        {
+                        $jsonSchema: {
+                            bsonType: "object",
+                            required: ["_id", "baseprice", "rented", "roomcapacity", "roomNumber"],
+                            properties: {
+                                _id: {
+                                    bsonType: "objectId"
+                                },
+                                baseprice: {
+                                    bsonType: "int",
+                                    "minimum": 100
+                                },
+                                rented: {
+                                    bsonType: "int",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                },
+                                roomcapacity: {
+                                    bsonType: "int",
+                                    "minimum": 1,
+                                    "maximum": 5
+                                },
+                                roomNumber: {
+                                    bsonType: "int",
+                                    minimum: 1
+                                }
+                            }
+                        }}
+                        """
+                )).validationAction(ValidationAction.ERROR);
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
                 .validationOptions(validationOptions);
         getDatabase().createCollection("rooms", createCollectionOptions);
     }
-
     private void createRentCollection() {
         ValidationOptions validationOptions = new ValidationOptions().validator(
                 Document.parse("""
@@ -103,11 +174,9 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                                 room: {
                                     bsonType: "object"
                                 }
-}}}
-
-
+                            }
+                        }}
                         """
-
                 )).validationAction(ValidationAction.ERROR);
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
                 .validationOptions(validationOptions);

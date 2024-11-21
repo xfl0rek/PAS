@@ -11,6 +11,7 @@ import pl.pas.aplikacjarest.dto.RoomDTO;
 import pl.pas.aplikacjarest.model.Client;
 import pl.pas.aplikacjarest.model.Rent;
 import pl.pas.aplikacjarest.model.Room;
+import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.repository.RentRepository;
 import pl.pas.aplikacjarest.repository.RoomRepository;
 import pl.pas.aplikacjarest.repository.UserRepository;
@@ -33,7 +34,9 @@ public class RoomTest {
 
     @AfterEach
     void cleanUp() {
+        userRepository.getDatabase().getCollection("users", User.class).drop();
         roomRepository.getDatabase().getCollection("rooms", Room.class).drop();
+        rentRepository.getDatabase().getCollection("rents", Rent.class).drop();
     }
 
     @Test
