@@ -159,32 +159,31 @@ public class UserTest {
         Assertions.assertEquals(UserRole.ADMIN, userRepository.findByUsername("tatuazyk123").getUserRole());
     }
 
-//    @Test
-//    void updateClientPositiveTest() {
-//        Client client1 = new Client("Alice", "Smith", "alice123",
-//                "alice@example.com", "password123");
-//        ObjectId clientID = userRepository.save(client1);
-//        client1.setId(clientID);
-//        userRepository.update(client1);
-//
-//        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-//                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
-//
-//        RestAssured.given()
-//                .pathParam("id", clientID.toString())
-//                .body(userDTO)
-//                .contentType("application/json")
-//                .when()
-//                .put("/updateUser/{id}")
-//                .then()
-//                .statusCode(204);
-//
-//        User updatedUser = userRepository.findByID(clientID);
-//        Assertions.assertEquals("Jadwiga", updatedUser.getFirstName());
-//        Assertions.assertEquals("Hymel", updatedUser.getLastName());
-//        Assertions.assertEquals("jhymel", updatedUser.getUsername());
-//        Assertions.assertEquals("jadwigahymel@example.com", updatedUser.getEmail());
-//    }
+    @Test
+    void updateClientPositiveTest() {
+        Client client1 = new Client("Alice", "Smith", "alice123",
+                "alice@example.com", "password123");
+        ObjectId clientID = userRepository.save(client1);
+        client1.setId(clientID);
+        userRepository.update(client1);
+
+        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
+                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
+
+        RestAssured.given()
+                .pathParam("id", clientID.toString())
+                .body(userDTO)
+                .contentType("application/json")
+                .when()
+                .put("/{id}")
+                .then()
+                .statusCode(204);
+
+        User updatedUser = userRepository.findByID(clientID);
+        Assertions.assertEquals("Jadwiga", updatedUser.getFirstName());
+        Assertions.assertEquals("Hymel", updatedUser.getLastName());
+        Assertions.assertEquals("jhymel", updatedUser.getUsername());
+    }
 
     @Test
     void getAllUsersRoleTest() {

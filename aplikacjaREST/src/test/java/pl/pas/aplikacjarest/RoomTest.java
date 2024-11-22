@@ -47,7 +47,7 @@ public class RoomTest {
                 .body(roomDTO)
                 .contentType("application/json")
                 .when()
-                .post("/createRoom")
+                .post("/")
                 .then()
                 .statusCode(201)
                 .body("roomNumber", equalTo(1))
@@ -85,7 +85,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .when()
-                .delete("/deleteRoom/{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(204);
 
@@ -163,7 +163,7 @@ public class RoomTest {
 
         RestAssured.given()
                 .when()
-                .get("/getAllRooms")
+                .get("/")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -182,7 +182,7 @@ public class RoomTest {
                 .body(roomDTO)
                 .contentType("application/json")
                 .when()
-                .post("/createRoom")
+                .post("/")
                 .then()
                 .statusCode(400);
     }
@@ -194,7 +194,7 @@ public class RoomTest {
                 .body(roomDTO1)
                 .contentType("application/json")
                 .when()
-                .post("/createRoom")
+                .post("/")
                 .then()
                 .statusCode(201);
         RoomDTO roomDTO2 = new RoomDTO(1, 1000, 3);
@@ -202,7 +202,7 @@ public class RoomTest {
                 .body(roomDTO2)
                 .contentType("application/json")
                 .when()
-                .post("/createRoom")
+                .post("/")
                 .then()
                 .statusCode(400);
     }
@@ -241,7 +241,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .when()
-                .delete("/deleteRoom/{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(400);
     }

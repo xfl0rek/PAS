@@ -22,7 +22,7 @@ public class RentController {
         this.rentService = rentService;
     }
 
-    @PostMapping("/rentRoom")
+    @PostMapping("/")
     public ResponseEntity<RentDTO> rentRoom(@Valid @RequestBody RentDTO rentDTO) {
         RentDTO rent = rentService.rentRoom(rentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(rent);
@@ -36,21 +36,21 @@ public class RentController {
         return ResponseEntity.ok(rent);
     }
 
-    @PutMapping("/updateRent/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) {
         ObjectId rentID = new ObjectId(id);
         rentService.updateRent(rentID, rentDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/deleteRent/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRent(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         rentService.deleteRent(rentID);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/getRentByID/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         RentDTO rentDTO = rentService.getRentByID(rentID);

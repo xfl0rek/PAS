@@ -21,7 +21,7 @@ public class RoomController {
         this.roomService = roomService;
     }
 
-    @PostMapping("/createRoom")
+    @PostMapping("/")
     public ResponseEntity<RoomDTO> createRoom(@Valid @RequestBody RoomDTO createdRoom) {
         RoomDTO roomDTO = roomService.createRoom(createdRoom);
         return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
@@ -41,7 +41,7 @@ public class RoomController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/deleteRoom/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable String id) {
         ObjectId roomID = new ObjectId(id);
         roomService.deleteRoom(roomID);
@@ -60,7 +60,7 @@ public class RoomController {
         return ResponseEntity.ok(roomDTOs);
     }
 
-    @GetMapping("/getAllRooms")
+    @GetMapping("/")
     public ResponseEntity<List<RoomDTO>> getAllRooms() {
         List<RoomDTO> roomDTOs = roomService.findAll();
         return ResponseEntity.ok(roomDTOs);

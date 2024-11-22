@@ -51,7 +51,7 @@ public class RentTest {
                 .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/rentRoom")
+                .post("/")
                 .then()
                 .statusCode(201)
                 .contentType(ContentType.JSON)
@@ -111,7 +111,7 @@ public class RentTest {
                 .body(updateRent)
                 .contentType(ContentType.JSON)
                 .when()
-                .put("/updateRent/{id}")
+                .put("/{id}")
                 .then()
                 .statusCode(204);
 
@@ -134,7 +134,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .delete("/deleteRent/{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(204);
 
@@ -155,7 +155,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .get("/getRentByID/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -320,7 +320,7 @@ public class RentTest {
                 .body(invalidRentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/rentRoom")
+                .post("/")
                 .then()
                 .statusCode(400);
 
@@ -341,7 +341,7 @@ public class RentTest {
                 .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/rentRoom")
+                .post("/")
                 .then()
                 .statusCode(400);
     }
@@ -393,7 +393,7 @@ public class RentTest {
                 .body(updateRent)
                 .contentType(ContentType.JSON)
                 .when()
-                .put("/updateRent/{id}")
+                .put("/{id}")
                 .then()
                 .statusCode(500);
 
@@ -425,7 +425,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .delete("/deleteRent/{id}")
+                .delete("/{id}")
                 .then()
                 .statusCode(400);
 
@@ -445,7 +445,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", "zleid")
                 .when()
-                .get("/getRentByID/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(500);
     }
