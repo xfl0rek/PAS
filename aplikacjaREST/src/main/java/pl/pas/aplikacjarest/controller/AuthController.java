@@ -9,6 +9,7 @@ import pl.pas.aplikacjarest.dto.*;
 import pl.pas.aplikacjarest.service.UserService;
 
 @RestController
+@RequestMapping("/api/users")
 public class AuthController {
     private final UserService userService;
 

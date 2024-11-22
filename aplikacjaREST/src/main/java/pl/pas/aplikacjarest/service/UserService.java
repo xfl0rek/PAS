@@ -94,4 +94,16 @@ public class UserService {
             throw new UserNotFoundException("User not found");
         return userConverter.convertUserToDTO(user);
     }
+
+    public void updateUser(ObjectId userID, UserDTO userDTO) {
+        User user = userRepository.findByID(userID);
+        if (user == null)
+            throw new UserNotFoundException("User not found");
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUserRole(userDTO.getUserRole());
+        userRepository.update(user);
+    }
 }

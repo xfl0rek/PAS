@@ -24,6 +24,7 @@ public class UserTest {
     static void setup() {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 8080;
+        RestAssured.basePath = "/api/users";
     }
 
     @AfterEach
@@ -79,7 +80,7 @@ public class UserTest {
         RestAssured.given()
                 .queryParam("username", "JBuggy")
                 .when()
-                .get("/client/getClient")
+                .get("/getUser")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -104,7 +105,7 @@ public class UserTest {
         RestAssured.given()
                 .queryParam("partialUsername", "j")
                 .when()
-                .get("/manager/getUsersByPartialUsername")
+                .get("/getUsersByPartialUsername")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -125,7 +126,7 @@ public class UserTest {
         RestAssured.given()
                 .pathParam("id", clientID.toString())
                 .when()
-                .post("/admin/deactivateAccount/{id}")
+                .post("/deactivateAccount/{id}")
                 .then()
                 .statusCode(204);
 
@@ -134,7 +135,7 @@ public class UserTest {
         RestAssured.given()
                 .pathParam("id", clientID.toString())
                 .when()
-                .post("/admin/activateAccount/{id}")
+                .post("/activateAccount/{id}")
                 .then()
                 .statusCode(204);
 
@@ -151,12 +152,40 @@ public class UserTest {
                 .pathParam("id", clientID.toString())
                 .queryParam("userRole", "ADMIN")
                 .when()
-                .post("/admin/changeUserRole/{id}")
+                .post("/changeUserRole/{id}")
                 .then()
                 .statusCode(204);
 
         Assertions.assertEquals(UserRole.ADMIN, userRepository.findByUsername("tatuazyk123").getUserRole());
     }
+
+//    @Test
+//    void updateClientPositiveTest() {
+//        Client client1 = new Client("Alice", "Smith", "alice123",
+//                "alice@example.com", "password123");
+//        ObjectId clientID = userRepository.save(client1);
+//        client1.setId(clientID);
+//        userRepository.update(client1);
+//
+//        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
+//                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
+//
+//        RestAssured.given()
+//                .pathParam("id", clientID.toString())
+//                .body(userDTO)
+//                .contentType("application/json")
+//                .when()
+//                .put("/updateUser/{id}")
+//                .then()
+//                .statusCode(204);
+//
+//        User updatedUser = userRepository.findByID(clientID);
+//        Assertions.assertEquals("Jadwiga", updatedUser.getFirstName());
+//        Assertions.assertEquals("Hymel", updatedUser.getLastName());
+//        Assertions.assertEquals("jhymel", updatedUser.getUsername());
+//        Assertions.assertEquals("jadwigahymel@example.com", updatedUser.getEmail());
+//
+//    }
 
     @Test
     void getAllUsersRoleTest() {
@@ -170,7 +199,7 @@ public class UserTest {
         RestAssured.given()
                 .queryParam("userRole", "CLIENT")
                 .when()
-                .get("/admin/getAllUsersByRole")
+                .get("/getAllUsersByRole")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -197,7 +226,7 @@ public class UserTest {
 
         RestAssured.given()
                 .when()
-                .get("/admin/getAllUsers")
+                .get("/")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -216,7 +245,7 @@ public class UserTest {
 
         RestAssured.given()
                 .pathParam("id", clientID.toString())
-                .get("/admin/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -293,7 +322,7 @@ public class UserTest {
         RestAssured.given()
                 .queryParam("username", "jadwigahymel")
                 .when()
-                .get("/client/getClient")
+                .get("/getUser")
                 .then()
                 .statusCode(404);
     }
@@ -309,7 +338,7 @@ public class UserTest {
         RestAssured.given()
                 .pathParam("id", "zleid")
                 .when()
-                .post("/admin/deactivateAccount/{id}")
+                .post("/deactivateAccount/{id}")
                 .then()
                 .statusCode(500);
 
@@ -318,7 +347,7 @@ public class UserTest {
         RestAssured.given()
                 .pathParam("id", clientID.toString())
                 .when()
-                .post("/admin/deactivateAccount/{id}")
+                .post("/deactivateAccount/{id}")
                 .then()
                 .statusCode(204);
 
@@ -327,7 +356,7 @@ public class UserTest {
         RestAssured.given()
                 .pathParam("id", "zleid")
                 .when()
-                .post("/admin/activateAccount/{id}")
+                .post("/activateAccount/{id}")
                 .then()
                 .statusCode(500);
 
@@ -344,7 +373,7 @@ public class UserTest {
                 .pathParam("id", "zleid")
                 .queryParam("userRole", "ADMIN")
                 .when()
-                .post("/admin/changeUserRole/{id}")
+                .post("/changeUserRole/{id}")
                 .then()
                 .statusCode(500);
 
@@ -359,7 +388,7 @@ public class UserTest {
 
         RestAssured.given()
                 .pathParam("id", "zleid")
-                .get("/admin/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(500);
     }

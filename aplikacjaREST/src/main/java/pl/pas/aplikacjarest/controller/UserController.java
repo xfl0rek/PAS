@@ -11,6 +11,7 @@ import pl.pas.aplikacjarest.service.UserService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -19,55 +20,63 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/client/getClient")
+    @GetMapping("/getUser")
     public ResponseEntity<UserDTO> getClient(@RequestParam String username) {
         UserDTO userDTO = userService.getUser(username);
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/manager/getUsersByPartialUsername")
+    @GetMapping("/getUsersByPartialUsername")
     public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
         List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
         return ResponseEntity.ok(userDTOs);
     }
 
-    @PostMapping("/admin/activateAccount/{id}")
+    @PostMapping("/activateAccount/{id}")
     public ResponseEntity<Void> activateAccount(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         userService.activateAccount(userID);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/admin/deactivateAccount/{id}")
+    @PostMapping("/deactivateAccount/{id}")
     public ResponseEntity<Void> deactivateAccount(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         userService.deactivateAccount(userID);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/admin/changeUserRole/{id}")
+    @PostMapping("/changeUserRole/{id}")
     public ResponseEntity<Void> changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
         ObjectId userID = new ObjectId(id);
         userService.changeUserRole(userID, userRole);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/admin/getAllUsersByRole")
+    @GetMapping("/getAllUsersByRole")
     public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
         List<UserDTO> userDTOs = userService.findAllByRole(userRole);
         return ResponseEntity.ok(userDTOs);
     }
 
-    @GetMapping("/admin/getAllUsers")
+    @GetMapping("/")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> userDTOs = userService.findAll();
         return ResponseEntity.ok(userDTOs);
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserByID(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         UserDTO userDTO = userService.getUserByID(userID);
         return ResponseEntity.ok(userDTO);
     }
+
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<Void> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        ObjectId userID = new ObjectId(id);
+        userService.updateUser(userID, userDTO);
+        return ResponseEntity.noContent().build();
+    }
+
 }
