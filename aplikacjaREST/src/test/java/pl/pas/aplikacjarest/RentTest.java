@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pl.pas.aplikacjarest.dto.RentDTO;
-import pl.pas.aplikacjarest.dto.RoomDTO;
-import pl.pas.aplikacjarest.dto.UserDTO;
 import pl.pas.aplikacjarest.model.*;
 import pl.pas.aplikacjarest.repository.RentRepository;
 import pl.pas.aplikacjarest.repository.RoomRepository;
@@ -29,6 +27,7 @@ public class RentTest {
     static void setup() {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 8080;
+        RestAssured.basePath = "/api/rents";
     }
 
     @AfterEach
@@ -40,23 +39,11 @@ public class RentTest {
 
     @Test
     void rentRoomPositiveTest() {
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
-        RoomDTO roomDTO = new RoomDTO(1, 1000, 2);
-        RestAssured.given()
-                .body(roomDTO)
-                .contentType("application/json")
-                .when()
-                .post("/manager/createRoom")
-                .then()
-                .statusCode(201);
+        Client client = new Client("Jadwiga", "Hymel", "jhymel",
+                "jadwigahymel@example.com", "synaniemawdomu");
+        userRepository.save(client);
+        Room room = new Room(1, 1000, 2);
+        roomRepository.save(room);
 
         RentDTO rentDTO = new RentDTO("jhymel", 1,
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0), null);
@@ -64,7 +51,7 @@ public class RentTest {
                 .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/rentRoom")
+                .post("/rentRoom")
                 .then()
                 .statusCode(201)
                 .contentType(ContentType.JSON)
@@ -89,7 +76,7 @@ public class RentTest {
                 .queryParam("endTime", "2023-11-19T14:30:00")
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/returnRoom/{id}")
+                .post("/returnRoom/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -124,7 +111,7 @@ public class RentTest {
                 .body(updateRent)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/manager/updateRent/{id}")
+                .put("/updateRent/{id}")
                 .then()
                 .statusCode(204);
 
@@ -147,7 +134,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .post("/manager/deleteRent/{id}")
+                .delete("/deleteRent/{id}")
                 .then()
                 .statusCode(204);
 
@@ -168,7 +155,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .get("/manager/getRentByID/{id}")
+                .get("/getRentByID/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -205,7 +192,7 @@ public class RentTest {
         RestAssured.given().
                 pathParam("id", clientID.toString())
                 .when()
-                .get("/manager/getAllActiveRentsForUser/{id}")
+                .get("/getAllActiveRentsForUser/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -245,7 +232,7 @@ public class RentTest {
         RestAssured.given().
                 pathParam("id", clientID.toString())
                 .when()
-                .get("/manager/getAllArchiveRentsForUser/{id}")
+                .get("/getAllArchiveRentsForUser/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -269,7 +256,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", roomId.toString())
                 .when()
-                .get("/manager/getAllActiveRentsForRoom/{id}")
+                .get("/getAllActiveRentsForRoom/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -313,7 +300,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", roomId.toString())
                 .when()
-                .get("/manager/getAllArchiveRentsForRoom/{id}")
+                .get("/getAllArchiveRentsForRoom/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -333,7 +320,7 @@ public class RentTest {
                 .body(invalidRentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/rentRoom")
+                .post("/rentRoom")
                 .then()
                 .statusCode(400);
 
@@ -354,7 +341,7 @@ public class RentTest {
                 .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/rentRoom")
+                .post("/rentRoom")
                 .then()
                 .statusCode(400);
     }
@@ -374,7 +361,7 @@ public class RentTest {
                 .queryParam("endTime", "2023-11-19T14:30:00")
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/returnRoom/{id}")
+                .post("/returnRoom/{id}")
                 .then()
                 .statusCode(200);
 
@@ -383,7 +370,7 @@ public class RentTest {
                 .queryParam("endTime", "2023-11-19T14:30:00")
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/returnRoom/{id}")
+                .post("/returnRoom/{id}")
                 .then()
                 .statusCode(400);
     }
@@ -406,7 +393,7 @@ public class RentTest {
                 .body(updateRent)
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/manager/updateRent/{id}")
+                .put("/updateRent/{id}")
                 .then()
                 .statusCode(500);
 
@@ -431,14 +418,14 @@ public class RentTest {
                 .queryParam("endTime", "2023-11-19T14:30:00")
                 .contentType(ContentType.JSON)
                 .when()
-                .post("/client/returnRoom/{id}")
+                .post("/returnRoom/{id}")
                 .then()
                 .statusCode(200);
 
         RestAssured.given()
                 .pathParam("id", rentID.toString())
                 .when()
-                .post("/manager/deleteRent/{id}")
+                .delete("/deleteRent/{id}")
                 .then()
                 .statusCode(400);
 
@@ -458,7 +445,7 @@ public class RentTest {
         RestAssured.given()
                 .pathParam("id", "zleid")
                 .when()
-                .get("/manager/getRentByID/{id}")
+                .get("/getRentByID/{id}")
                 .then()
                 .statusCode(500);
     }

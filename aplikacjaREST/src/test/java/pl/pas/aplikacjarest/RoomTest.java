@@ -30,6 +30,7 @@ public class RoomTest {
     static void setup() {
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 8080;
+        RestAssured.basePath = "/api/rooms";
     }
 
     @AfterEach
@@ -46,7 +47,7 @@ public class RoomTest {
                 .body(roomDTO)
                 .contentType("application/json")
                 .when()
-                .post("/manager/createRoom")
+                .post("/createRoom")
                 .then()
                 .statusCode(201)
                 .body("roomNumber", equalTo(1))
@@ -65,7 +66,7 @@ public class RoomTest {
                 .body(roomDTOUpdated)
                 .contentType("application/json")
                 .when()
-                .post("/manager/{id}")
+                .put("/{id}")
                 .then()
                 .statusCode(204);
 
@@ -84,7 +85,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .when()
-                .post("/admin/deleteRoom/{id}")
+                .delete("/deleteRoom/{id}")
                 .then()
                 .statusCode(204);
 
@@ -104,7 +105,7 @@ public class RoomTest {
         RestAssured.given()
                 .queryParam("roomCapacity", 2)
                 .when()
-                .get("/manager/getRoomsByRoomCapacity")
+                .get("/getRoomsByRoomCapacity")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -121,7 +122,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .when()
-                .get("/manager/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -142,7 +143,7 @@ public class RoomTest {
         RestAssured.given()
                 .queryParam("basePrice", 1000)
                 .when()
-                .get("/manager/getRoomsByBasePrice")
+                .get("/getRoomsByBasePrice")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -162,7 +163,7 @@ public class RoomTest {
 
         RestAssured.given()
                 .when()
-                .get("/manager/getAllRooms")
+                .get("/getAllRooms")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -181,7 +182,7 @@ public class RoomTest {
                 .body(roomDTO)
                 .contentType("application/json")
                 .when()
-                .post("/manager/createRoom")
+                .post("/createRoom")
                 .then()
                 .statusCode(400);
     }
@@ -193,7 +194,7 @@ public class RoomTest {
                 .body(roomDTO1)
                 .contentType("application/json")
                 .when()
-                .post("/manager/createRoom")
+                .post("/createRoom")
                 .then()
                 .statusCode(201);
         RoomDTO roomDTO2 = new RoomDTO(1, 1000, 3);
@@ -201,7 +202,7 @@ public class RoomTest {
                 .body(roomDTO2)
                 .contentType("application/json")
                 .when()
-                .post("/manager/createRoom")
+                .post("/createRoom")
                 .then()
                 .statusCode(400);
     }
@@ -217,7 +218,7 @@ public class RoomTest {
                 .body(roomDTOUpdated)
                 .contentType("application/json")
                 .when()
-                .post("/manager/{id}")
+                .put("/{id}")
                 .then()
                 .statusCode(500);
 
@@ -240,7 +241,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .when()
-                .post("/admin/deleteRoom/{id}")
+                .delete("/deleteRoom/{id}")
                 .then()
                 .statusCode(400);
     }
@@ -253,7 +254,7 @@ public class RoomTest {
         RestAssured.given()
                 .pathParams("id", "zleid")
                 .when()
-                .get("/manager/{id}")
+                .get("/{id}")
                 .then()
                 .statusCode(500);
     }

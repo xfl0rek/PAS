@@ -184,7 +184,6 @@ public class UserTest {
 //        Assertions.assertEquals("Hymel", updatedUser.getLastName());
 //        Assertions.assertEquals("jhymel", updatedUser.getUsername());
 //        Assertions.assertEquals("jadwigahymel@example.com", updatedUser.getEmail());
-//
 //    }
 
     @Test

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/rents")
 public class RentController {
     private RentService rentService;
 
@@ -21,13 +22,13 @@ public class RentController {
         this.rentService = rentService;
     }
 
-    @PostMapping("/client/rentRoom")
+    @PostMapping("/rentRoom")
     public ResponseEntity<RentDTO> rentRoom(@Valid @RequestBody RentDTO rentDTO) {
         RentDTO rent = rentService.rentRoom(rentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(rent);
     }
 
-    @PostMapping("/client/returnRoom/{id}")
+    @PostMapping("/returnRoom/{id}")
     public ResponseEntity<RentDTO> returnRoom(@PathVariable String id,
                                               @RequestParam LocalDateTime endTime) {
         ObjectId rentID = new ObjectId(id);
@@ -35,49 +36,49 @@ public class RentController {
         return ResponseEntity.ok(rent);
     }
 
-    @PostMapping("/manager/updateRent/{id}")
+    @PutMapping("/updateRent/{id}")
     public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
         ObjectId rentID = new ObjectId(id);
         rentService.updateRent(rentID, rentDTO);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/manager/deleteRent/{id}")
+    @DeleteMapping("/deleteRent/{id}")
     public ResponseEntity<Void> deleteRent(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         rentService.deleteRent(rentID);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/manager/getRentByID/{id}")
+    @GetMapping("/getRentByID/{id}")
     public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         RentDTO rentDTO = rentService.getRentByID(rentID);
         return ResponseEntity.ok(rentDTO);
     }
 
-    @GetMapping("/manager/getAllActiveRentsForUser/{id}")
+    @GetMapping("/getAllActiveRentsForUser/{id}")
     public ResponseEntity<List<RentDTO>> getAllActiveRentsForUser(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllActiveRentsForUser(userID);
         return ResponseEntity.ok(rentDTO);
     }
 
-    @GetMapping("/manager/getAllArchiveRentsForUser/{id}")
+    @GetMapping("/getAllArchiveRentsForUser/{id}")
     public ResponseEntity<List<RentDTO>> getAllArchiveRentsForUser(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForUser(userID);
         return ResponseEntity.ok(rentDTO);
     }
 
-    @GetMapping("/manager/getAllActiveRentsForRoom/{id}")
+    @GetMapping("/getAllActiveRentsForRoom/{id}")
     public ResponseEntity<List<RentDTO>> getAllActiveRentsForRoom(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllActiveRentsForRoom(rentID);
         return ResponseEntity.ok(rentDTO);
     }
 
-    @GetMapping("/manager/getAllArchiveRentsForRoom/{id}")
+    @GetMapping("/getAllArchiveRentsForRoom/{id}")
     public ResponseEntity<List<RentDTO>> getAllArchiveRentsForRoom(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForRoom(userID);
