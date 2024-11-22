@@ -37,7 +37,7 @@ public class RentController {
     }
 
     @PutMapping("/updateRent/{id}")
-    public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) throws Exception { //TODO usunac throws Exception
+    public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) {
         ObjectId rentID = new ObjectId(id);
         rentService.updateRent(rentID, rentDTO);
         return ResponseEntity.noContent().build();
