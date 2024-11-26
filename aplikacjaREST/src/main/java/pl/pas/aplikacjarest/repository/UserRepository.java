@@ -8,6 +8,7 @@ import com.mongodb.client.result.InsertOneResult;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Repository;
+import pl.pas.aplikacjarest.exception.UsernameAlreadyInUseException;
 import pl.pas.aplikacjarest.model.User;
 import pl.pas.aplikacjarest.model.UserRole;
 
@@ -56,6 +57,10 @@ public class UserRepository extends AbstractMongoRepository {
 
     public ObjectId save(User user) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
+        boolean userExists = collection.countDocuments(Filters.eq("username", user.getUsername())) > 0;
+        if (userExists) {
+            throw new UsernameAlreadyInUseException("User " + user.getUsername() + " already exists");
+        }
         InsertOneResult result = collection.insertOne(user);
         return result.getInsertedId().asObjectId().getValue();
     }
