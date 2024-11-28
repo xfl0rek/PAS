@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.UserDTO;
+import pl.pas.aplikacjarest.exception.UserNotFoundException;
 import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.service.UserService;
 
@@ -34,21 +35,36 @@ public class UserController {
 
     @PostMapping("/activateAccount/{id}")
     public ResponseEntity<Void> activateAccount(@PathVariable String id) {
-        ObjectId userID = new ObjectId(id);
+        ObjectId userID;
+        try {
+            userID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
         userService.activateAccount(userID);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/deactivateAccount/{id}")
     public ResponseEntity<Void> deactivateAccount(@PathVariable String id) {
-        ObjectId userID = new ObjectId(id);
+        ObjectId userID;
+        try {
+            userID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
         userService.deactivateAccount(userID);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/changeUserRole/{id}")
     public ResponseEntity<Void> changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
-        ObjectId userID = new ObjectId(id);
+        ObjectId userID;
+        try {
+            userID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
         userService.changeUserRole(userID, userRole);
         return ResponseEntity.noContent().build();
     }
@@ -67,14 +83,24 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserByID(@PathVariable String id) {
-        ObjectId userID = new ObjectId(id);
+        ObjectId userID;
+        try {
+            userID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
         UserDTO userDTO = userService.getUserByID(userID);
         return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
-        ObjectId userID = new ObjectId(id);
+        ObjectId userID;
+        try {
+            userID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
         userService.updateUser(userID, userDTO);
         return ResponseEntity.noContent().build();
     }

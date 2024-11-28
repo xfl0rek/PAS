@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RoomDTO;
+import pl.pas.aplikacjarest.exception.RoomNotFoundException;
 import pl.pas.aplikacjarest.service.RoomService;
 
 import java.util.List;
@@ -29,21 +30,36 @@ public class RoomController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RoomDTO> getRoomByID(@PathVariable String id) {
-        ObjectId roomID = new ObjectId(id);
+        ObjectId roomID;
+        try {
+            roomID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new RoomNotFoundException("Room not found");
+        }
         RoomDTO roomDTO = roomService.getRoomByID(roomID);
         return ResponseEntity.ok(roomDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateRoom(@PathVariable String id, @Valid @RequestBody RoomDTO updatedRoom) {
-        ObjectId roomID = new ObjectId(id);
+        ObjectId roomID;
+        try {
+            roomID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new RoomNotFoundException("Room not found");
+        }
         roomService.updateRoom(roomID, updatedRoom);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable String id) {
-        ObjectId roomID = new ObjectId(id);
+        ObjectId roomID;
+        try {
+            roomID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new RoomNotFoundException("Room not found");
+        }
         roomService.deleteRoom(roomID);
         return ResponseEntity.noContent().build();
     }

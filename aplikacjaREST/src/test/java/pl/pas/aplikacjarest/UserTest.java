@@ -338,7 +338,7 @@ public class UserTest {
                 .when()
                 .post("/deactivateAccount/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
 
         Assertions.assertTrue(userRepository.findByID(clientID).isActive());
 
@@ -356,7 +356,7 @@ public class UserTest {
                 .when()
                 .post("/activateAccount/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
 
         Assertions.assertFalse(userRepository.findByID(clientID).isActive());
     }
@@ -373,7 +373,7 @@ public class UserTest {
                 .when()
                 .post("/changeUserRole/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
 
         Assertions.assertEquals(UserRole.CLIENT, userRepository.findByID(clientID).getUserRole());
     }
@@ -388,6 +388,6 @@ public class UserTest {
                 .pathParam("id", "zleid")
                 .get("/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
     }
 }

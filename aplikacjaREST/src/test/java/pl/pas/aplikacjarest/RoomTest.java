@@ -220,7 +220,7 @@ public class RoomTest {
                 .when()
                 .put("/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
 
         Room room2 = roomRepository.getRoomByID(roomID);
         Assertions.assertEquals(1000, room2.getBasePrice());
@@ -256,6 +256,6 @@ public class RoomTest {
                 .when()
                 .get("/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
     }
 }
