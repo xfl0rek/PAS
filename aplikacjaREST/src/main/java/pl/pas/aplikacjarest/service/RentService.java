@@ -75,7 +75,11 @@ public class RentService {
 
 
         Room room = roomRepository.findByRoomNumber(rentDTO.getRoomNumber());
+        if (room == null)
+            throw new RoomNotFoundException("Room not found");
         Client client = (Client) userRepository.findByUsername(rentDTO.getClientUsername());
+        if (client == null)
+            throw new UserNotFoundException("Client not found");
         rent.setClient(client);
         rent.setRoom(room);
         rent.setBeginTime(rentDTO.getBeginTime());

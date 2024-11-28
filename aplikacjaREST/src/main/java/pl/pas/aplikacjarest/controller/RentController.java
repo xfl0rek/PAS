@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RentDTO;
+import pl.pas.aplikacjarest.exception.RentNotFoundException;
 import pl.pas.aplikacjarest.service.RentService;
 
 import java.time.LocalDateTime;
@@ -38,7 +39,13 @@ public class RentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) {
-        ObjectId rentID = new ObjectId(id);
+        ObjectId rentID;
+        try {
+            rentID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new RentNotFoundException("Rent not found");
+        }
+
         rentService.updateRent(rentID, rentDTO);
         return ResponseEntity.noContent().build();
     }
@@ -52,7 +59,12 @@ public class RentController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
-        ObjectId rentID = new ObjectId(id);
+        ObjectId rentID;
+        try {
+            rentID = new ObjectId(id);
+        } catch (Exception e) {
+            throw new RentNotFoundException("Rent not found");
+        }
         RentDTO rentDTO = rentService.getRentByID(rentID);
         return ResponseEntity.ok(rentDTO);
     }

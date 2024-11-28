@@ -395,7 +395,7 @@ public class RentTest {
                 .when()
                 .put("/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
 
         Assertions.assertEquals(
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0),
@@ -447,6 +447,6 @@ public class RentTest {
                 .when()
                 .get("/{id}")
                 .then()
-                .statusCode(500);
+                .statusCode(404);
     }
 }
