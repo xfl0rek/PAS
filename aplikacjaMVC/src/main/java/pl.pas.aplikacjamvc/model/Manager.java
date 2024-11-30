@@ -1,8 +1,5 @@
 package pl.pas.aplikacjamvc.model;
 
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-
-@BsonDiscriminator("manager")
 public class Manager extends User {
 
     public Manager() {

@@ -1,31 +1,20 @@
 package pl.pas.aplikacjamvc.model;
 
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Rent {
-    @BsonId
     private ObjectId id;
-    @BsonProperty("client")
     private Client client;
-    @BsonProperty("room")
     private Room room;
-    @BsonProperty("begintime")
     private LocalDateTime beginTime;
-    @BsonProperty("endtime")
     private LocalDateTime endTime;
-    @BsonProperty("rentcost")
     private double rentCost;
-    @BsonProperty("isarchive")
     private boolean isArchive;
 
-    public Rent(@BsonProperty("client") Client client,
-                @BsonProperty("room") Room room,
-                @BsonProperty("begintime") LocalDateTime beginTime) {
+    public Rent(Client client, Room room, LocalDateTime beginTime) {
         this.client = client;
         this.room = room;
         this.beginTime = beginTime;

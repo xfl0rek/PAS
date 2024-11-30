@@ -1,8 +1,5 @@
 package pl.pas.aplikacjamvc.model;
 
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
-
-@BsonDiscriminator("admin")
 public class Admin extends User {
 
     public Admin() {
