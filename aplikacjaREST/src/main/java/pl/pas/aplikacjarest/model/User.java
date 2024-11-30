@@ -38,6 +38,7 @@ public class User {
                 @BsonProperty("username") String username,
                 @BsonProperty("email") String email,
                 @BsonProperty("password") String password) {
+        this.id = new ObjectId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

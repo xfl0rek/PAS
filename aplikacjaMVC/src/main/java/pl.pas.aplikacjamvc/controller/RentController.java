@@ -33,4 +33,10 @@ public class RentController {
         rentService.rentRoom(rentDTO);
         return "redirect:/home";
     }
+
+//    @PostMapping
+//    public String returnRoom() {
+//
+//        return "redirect:/home";
+//    }
 }

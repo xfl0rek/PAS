@@ -43,8 +43,8 @@ public class RentService {
                 room,
                 rentDTO.getBeginTime()
         );
-
-        rentRepository.create(rent);
+        ObjectId rentId = rentRepository.create(rent);
+        rentDTO.setId(rentId.toString());
         return rentDTO;
     }
 
@@ -62,6 +62,7 @@ public class RentService {
                 rent.getBeginTime(),
                 rent.getEndTime()
         );
+        rentDTO.setId(rentID.toString());
         rentRepository.update(rent);
         return rentDTO;
     }
@@ -99,55 +100,74 @@ public class RentService {
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
             throw new RentNotFoundException("Rent not found");
-        return new RentDTO(
+        RentDTO rentDTO = new RentDTO(
                 rent.getClient().getUsername(),
                 rent.getRoom().getRoomNumber(),
                 rent.getBeginTime(),
                 rent.getEndTime()
         );
+        rentDTO.setId(rentID.toString());
+        return rentDTO;
     }
 
     public List<RentDTO> getAllActiveRentsForUser(ObjectId userID) {
         return rentRepository.findAllActiveRentsForUser(userID).stream()
-                .map(rent -> new RentDTO(
-                        rent.getClient().getUsername(),
-                        rent.getRoom().getRoomNumber(),
-                        rent.getBeginTime(),
-                        rent.getEndTime()
-                ))
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
                 .toList();
     }
 
+
     public List<RentDTO> getAllArchiveRentsForUser(ObjectId userID) {
         return rentRepository.findAllArchiveRentsForUser(userID).stream()
-                .map(rent -> new RentDTO(
-                        rent.getClient().getUsername(),
-                        rent.getRoom().getRoomNumber(),
-                        rent.getBeginTime(),
-                        rent.getEndTime()
-                ))
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
                 .toList();
     }
 
     public List<RentDTO> getAllActiveRentsForRoom(ObjectId rentId) {
         return rentRepository.findAllActiveRentsForRoom(rentId).stream()
-                .map(rent -> new RentDTO(
-                        rent.getClient().getUsername(),
-                        rent.getRoom().getRoomNumber(),
-                        rent.getBeginTime(),
-                        rent.getEndTime()
-                ))
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
                 .toList();
     }
 
     public List<RentDTO> getAllArchiveRentsForRoom(ObjectId rentId) {
         return rentRepository.findAllArchiveRentsForRoom(rentId).stream()
-                .map(rent -> new RentDTO(
-                        rent.getClient().getUsername(),
-                        rent.getRoom().getRoomNumber(),
-                        rent.getBeginTime(),
-                        rent.getEndTime()
-                ))
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
                 .toList();
     }
 }

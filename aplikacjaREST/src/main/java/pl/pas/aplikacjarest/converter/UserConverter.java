@@ -14,7 +14,7 @@ public class UserConverter {
     }
 
     public UserDTO convertUserToDTO(User user) {
-        return new UserDTO(
+        UserDTO newUserDTO = new UserDTO(
                 user.getFirstName(),
                 user.getLastName(),
                 user.getUsername(),
@@ -22,6 +22,8 @@ public class UserConverter {
                 user.getPassword(),
                 user.getUserRole()
         );
+        newUserDTO.setId(user.getId().toString());
+        return newUserDTO;
     }
 
     public User convertDTOToUser(UserDTO userDTO) {

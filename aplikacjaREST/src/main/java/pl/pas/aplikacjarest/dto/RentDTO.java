@@ -3,10 +3,12 @@ package pl.pas.aplikacjarest.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDateTime;
 
 public class RentDTO {
+    private String id;
     @NotNull(message = "Client username cannot be null")
     @Size(min = 5, max = 30, message = "Username must be between 5 and 30 characters")
     private String clientUsername;
@@ -18,10 +20,15 @@ public class RentDTO {
     private LocalDateTime endTime;
 
     public RentDTO(String clientUsername, int roomNumber, LocalDateTime beginTime, LocalDateTime endTime) {
+        this.id = new ObjectId().toString();
         this.clientUsername = clientUsername;
         this.roomNumber = roomNumber;
         this.beginTime = beginTime;
         this.endTime = endTime;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getClientUsername() {
@@ -54,5 +61,9 @@ public class RentDTO {
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
     }
 }

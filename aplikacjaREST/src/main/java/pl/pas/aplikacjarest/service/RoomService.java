@@ -34,12 +34,14 @@ public class RoomService {
                 roomDTO.getBasePrice(),
                 roomDTO.getRoomCapacity()
         );
-        roomRepository.save(newRoom);
-        return new RoomDTO(
+        ObjectId roomId = roomRepository.save(newRoom);
+        RoomDTO newRoomDTO = new RoomDTO(
                 newRoom.getRoomNumber(),
                 newRoom.getBasePrice(),
                 newRoom.getRoomCapacity()
             );
+        newRoomDTO.setId(roomId.toString());
+        return newRoomDTO;
     }
 
     public void deleteRoom(ObjectId roomID) {
@@ -55,11 +57,13 @@ public class RoomService {
         Room room = roomRepository.getRoomByID(id);
         if (room == null)
             throw new RoomNotFoundException("Room not found");
-        return new RoomDTO(
+        RoomDTO newRoomDTO = new RoomDTO(
                 room.getRoomNumber(),
                 room.getBasePrice(),
                 room.getRoomCapacity()
         );
+        newRoomDTO.setId(room.getId().toString());
+        return newRoomDTO;
     }
 
     public void updateRoom(ObjectId roomID, RoomDTO roomDTO) {
@@ -74,33 +78,45 @@ public class RoomService {
     public List<RoomDTO> getRoomsByRoomCapacity(int roomCapacity) {
         List<Room> rooms = roomRepository.getRoomsByRoomCapacity(roomCapacity);
         return rooms.stream()
-                .map(room -> new RoomDTO(
-                        room.getRoomNumber(),
-                        room.getBasePrice(),
-                        room.getRoomCapacity()
-                ))
+                .map(room -> {
+                    RoomDTO roomDTO = new RoomDTO(
+                            room.getRoomNumber(),
+                            room.getBasePrice(),
+                            room.getRoomCapacity()
+                    );
+                    roomDTO.setId(room.getId().toString());
+                    return roomDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     public List<RoomDTO> getRoomsByBasePrice(int basePrice) {
         List<Room> rooms = roomRepository.getRoomsByBasePrice(basePrice);
         return rooms.stream()
-                .map(room -> new RoomDTO(
-                        room.getRoomNumber(),
-                        room.getBasePrice(),
-                        room.getRoomCapacity()
-                ))
+                .map(room -> {
+                    RoomDTO roomDTO = new RoomDTO(
+                            room.getRoomNumber(),
+                            room.getBasePrice(),
+                            room.getRoomCapacity()
+                    );
+                    roomDTO.setId(room.getId().toString());
+                    return roomDTO;
+                })
                 .collect(Collectors.toList());
     }
 
     public List<RoomDTO> findAll() {
         List<Room> rooms = roomRepository.findAll();
         return rooms.stream()
-                .map(room -> new RoomDTO(
-                        room.getRoomNumber(),
-                        room.getBasePrice(),
-                        room.getRoomCapacity()
-                ))
+                .map(room -> {
+                    RoomDTO roomDTO = new RoomDTO(
+                            room.getRoomNumber(),
+                            room.getBasePrice(),
+                            room.getRoomCapacity()
+                    );
+                    roomDTO.setId(room.getId().toString());
+                    return roomDTO;
+                })
                 .collect(Collectors.toList());
     }
 }

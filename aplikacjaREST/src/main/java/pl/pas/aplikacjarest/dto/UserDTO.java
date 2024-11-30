@@ -3,9 +3,17 @@ package pl.pas.aplikacjarest.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.bson.types.ObjectId;
 import pl.pas.aplikacjarest.model.UserRole;
 
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
 public class UserDTO {
+    private String id;
     @NotNull(message = "First name cannot be null")
     @Size(min = 3, max = 30, message = "First name must be between 3 and 30 characters")
     private String firstName;
@@ -26,12 +34,17 @@ public class UserDTO {
     private UserRole userRole;
 
     public UserDTO(String firstName, String lastName, String username, String email, String password, UserRole userRole) {
+        this.id = new ObjectId().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
         this.userRole = userRole;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -76,5 +89,9 @@ public class UserDTO {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
+    }
+    
+    public void setId(String id) {
+        this.id = id;
     }
 }

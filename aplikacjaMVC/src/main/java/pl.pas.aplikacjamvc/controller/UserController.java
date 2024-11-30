@@ -6,13 +6,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pas.aplikacjamvc.dto.UserDTO;
+import pl.pas.aplikacjamvc.exception.AppException;
 import pl.pas.aplikacjamvc.model.UserRole;
 import pl.pas.aplikacjamvc.service.UserService;
+import reactor.core.publisher.Mono;
+
+import org.springframework.http.HttpStatusCode;
 
 @Controller
 public class UserController {
     private final UserService userService;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
     @Autowired
     public UserController(UserService userService) {
@@ -32,10 +41,17 @@ public class UserController {
                            @RequestParam String email,
                            @RequestParam String password,
                            Model model) {
-        UserDTO userDTO = new UserDTO(firstName, lastName,
-                username, email, password, UserRole.CLIENT);
-        model.addAttribute("userDTO", userDTO);
-        userService.register(userDTO);
-        return "redirect:/home";
+        try {
+            UserDTO userDTO = userService.register(new UserDTO(firstName, lastName,
+                    username, email, password, UserRole.CLIENT));
+            model.addAttribute("userDTO", userDTO);
+            return "redirect:/home";
+        } catch (AppException e) {
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("code", e.getStatusCode());
+            return "error";
+        }
     }
+
+
 }

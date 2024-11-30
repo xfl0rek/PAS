@@ -3,8 +3,10 @@ package pl.pas.aplikacjarest.dto;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
 
 public class RoomDTO {
+    private String id;
     @NotNull(message = "Room number cannot be null")
     @Min(value = 1, message = "Room number must be greater than 0")
     private int roomNumber;
@@ -20,6 +22,10 @@ public class RoomDTO {
         this.roomNumber = roomNumber;
         this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getRoomNumber() {
@@ -44,5 +50,9 @@ public class RoomDTO {
 
     public void setRoomCapacity(int roomCapacity) {
         this.roomCapacity = roomCapacity;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
