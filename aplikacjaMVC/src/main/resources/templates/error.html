@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
+    <link href="/style.css" rel="stylesheet">
 </head>
 <body>
-    <h1 th:text="${code}"></h1>
-    <p th:text="${error}"></p>
+    <h1 th:text="${statusCode}"></h1>
+    <p th:text="${message}"></p>
     <a href="/">Return to home</a>
 </body>
 </html>

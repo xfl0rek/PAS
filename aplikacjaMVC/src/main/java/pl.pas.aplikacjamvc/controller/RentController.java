@@ -10,6 +10,7 @@ import pl.pas.aplikacjamvc.dto.RentDTO;
 import pl.pas.aplikacjamvc.service.RentService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 public class RentController {
@@ -34,9 +35,16 @@ public class RentController {
         return "redirect:/home";
     }
 
-//    @PostMapping
-//    public String returnRoom() {
-//
-//        return "redirect:/home";
-//    }
+    @PostMapping("/return")
+    public String returnRoom(@RequestParam String id, @RequestParam LocalDateTime endTime) {
+        rentService.returnRoom(id, endTime);
+        return "redirect:/home";
+    }
+
+    @GetMapping("/getAllRents")
+    public String getAllRents(Model model) {
+        List<RentDTO> rentDTOs = rentService.getAllRents();
+        model.addAttribute("rentDTOs", rentDTOs);
+        return "home";
+    }
 }

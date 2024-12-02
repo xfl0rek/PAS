@@ -16,7 +16,7 @@ public class UserService {
         this.webClient = WebClient.builder().baseUrl("http://localhost:8080/api/users/").build();
     }
 
-    public UserDTO register(UserDTO userDTO) throws AppException {
+    public UserDTO register(UserDTO userDTO) {
         try {
             return webClient.post()
                     .uri("/register")
@@ -29,10 +29,6 @@ public class UserService {
                     .bodyToMono(UserDTO.class)
                     .block();
         } catch (WebClientResponseException e) {
-            System.out.println("--------------");
-            System.out.println("--------------");System.out.println("--------------");
-            System.out.println("--------------");System.out.println("--------------");System.out.println("--------------");System.out.println("--------------");
-
             throw new AppException(e.getResponseBodyAsString(), e.getStatusCode().value());
         }
     }

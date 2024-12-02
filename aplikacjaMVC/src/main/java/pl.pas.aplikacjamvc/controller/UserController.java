@@ -41,16 +41,11 @@ public class UserController {
                            @RequestParam String email,
                            @RequestParam String password,
                            Model model) {
-        try {
-            UserDTO userDTO = userService.register(new UserDTO(firstName, lastName,
-                    username, email, password, UserRole.CLIENT));
-            model.addAttribute("userDTO", userDTO);
-            return "redirect:/home";
-        } catch (AppException e) {
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("code", e.getStatusCode());
-            return "error";
-        }
+
+        UserDTO userDTO = userService.register(new UserDTO(firstName, lastName,
+                username, email, password, UserRole.CLIENT));
+        model.addAttribute("userDTO", userDTO);
+        return "redirect:/home";
     }
 
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rent Room</title>
+    <link href="/style.css" rel="stylesheet">
 </head>
 <body>
 <h1>Rent a Room</h1>
@@ -22,5 +23,40 @@
 
     <button type="submit">Submit</button>
 </form>
+
+<h1>getAllRents</h1>
+
+<form action="/getAllRents" method="get">
+    <button type="submit">show rents</button>
+</form>
+
+<div>
+    <h2>Rent list</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>beginTime</th>
+            <th>clientUsername</th>
+            <th>roomNumber</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="rentDTO : ${rentDTOs}">
+            <tr>
+                <td th:text="${rentDTO.beginTime}"></td>
+                <td th:text="${rentDTO.clientUsername}"></td>
+                <td th:text="${rentDTO.roomNumber}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+
+<form action="/return" method="post">
+    <input type="text" id="id" name="id">
+    <input type="datetime-local" id="endTime" name="endTime">
+    <button type="submit">Return room</button>
+</form>
+
 </body>
 </html>

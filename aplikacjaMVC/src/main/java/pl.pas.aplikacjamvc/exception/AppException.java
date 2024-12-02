@@ -1,6 +1,6 @@
 package pl.pas.aplikacjamvc.exception;
 
-public class AppException extends Exception {
+public class AppException extends RuntimeException {
     private int statusCode;
 
     public AppException(String message, int statusCode) {

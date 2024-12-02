@@ -1,0 +1,17 @@
+body {
+    background: grey;
+}
+
+td, th {
+    align-content: center;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+table {
+    border: 1px solid black;
+}
+
+button:hover {
+    background: aqua;
+}
