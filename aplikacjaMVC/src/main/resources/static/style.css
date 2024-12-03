@@ -1,5 +1,6 @@
 body {
     background: grey;
+    margin: 0;
 }
 
 td, th {
@@ -24,3 +25,21 @@ footer {
     bottom: 0;
 }
 
+.sidebar {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #a88989;
+    padding-top: 20px;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 1px 16px;
+}
+
+header {
+    margin-left: 400px;
+}
