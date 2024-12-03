@@ -15,3 +15,12 @@ table {
 button:hover {
     background: aqua;
 }
+
+footer {
+    text-align: center;
+    background: yellow;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+

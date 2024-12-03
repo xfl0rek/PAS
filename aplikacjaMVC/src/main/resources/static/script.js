@@ -1,0 +1,1 @@
+document.getElementById("current-page").textContent = `Title: ${document.title}`;

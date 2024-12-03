@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent Room</title>
+    <title>Home</title>
     <link href="/style.css" rel="stylesheet">
 </head>
 <body>
+<div th:replace="template :: header"></div>
+<div th:replace="template :: sidebar"></div>
 <h1>Rent a Room</h1>
 <form action="#" th:action="@{/}" method="post">
     <label for="clientUsername">Client Username:</label>
@@ -57,6 +59,7 @@
     <input type="datetime-local" id="endTime" name="endTime">
     <button type="submit">Return room</button>
 </form>
-
+<div th:replace="template :: footer"></div>
+<script src="/script.js"></script>
 </body>
 </html>
