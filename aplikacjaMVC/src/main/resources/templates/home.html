@@ -9,37 +9,37 @@
 <body>
 <div th:replace="template :: header"></div>
 <div th:replace="template :: sidebar"></div>
-<h1>Rent a Room</h1>
+<h1 th:text="#{rentRoomTitle}"></h1>
 <form action="#" th:action="@{/}" method="post">
-    <label for="clientUsername">Client Username:</label>
+    <label for="clientUsername" th:text="#{clientUsername}">: </label>
     <input type="text" id="clientUsername" name="clientUsername" required>
     <br><br>
 
-    <label for="roomNumber">Room Number:</label>
+    <label for="roomNumber" th:text="#{roomNumber}">: </label>
     <input type="number" id="roomNumber" name="roomNumber" required>
     <br><br>
 
-    <label for="beginTime">Begin Time:</label>
+    <label for="beginTime" th:text="#{beginTime}">: </label>
     <input type="datetime-local" id="beginTime" name="beginTime" required>
     <br><br>
 
-    <button type="submit">Submit</button>
+    <button type="submit" th:text="#{rentRoomButton}"></button>
 </form>
 
-<h1>getAllRents</h1>
+<h1 th:text="#{listAllRents}"></h1>
 
 <form action="/getAllRents" method="get">
-    <button type="submit">show rents</button>
+    <button type="submit" th:text="#{showRentsButton}"></button>
 </form>
 
 <div>
-    <h2>Rent list</h2>
+    <h2 th:text="#{rentListTitle}"></h2>
     <table>
         <thead>
         <tr>
-            <th>beginTime</th>
-            <th>clientUsername</th>
-            <th>roomNumber</th>
+            <th th:text="#{beginTime}"></th>
+            <th th:text="#{clientUsername}"></th>
+            <th th:text="#{roomNumber}"></th>
         </tr>
         </thead>
         <tbody>
@@ -54,10 +54,11 @@
     </table>
 </div>
 
+<h2 th:text="#{returnRoomTitle}"></h2>
 <form action="/return" method="post">
     <input type="text" id="id" name="id">
     <input type="datetime-local" id="endTime" name="endTime">
-    <button type="submit">Return room</button>
+    <button type="submit" th:text="#{returnRoomTitle}"></button>
 </form>
 <div th:replace="template :: footer"></div>
 <script src="/script.js"></script>
