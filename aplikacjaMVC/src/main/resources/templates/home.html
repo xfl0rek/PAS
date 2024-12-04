@@ -7,60 +7,64 @@
     <link href="/style.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="template :: header"></div>
-<div th:replace="template :: sidebar"></div>
-<h1 th:text="#{rentRoomTitle}"></h1>
-<form action="#" th:action="@{/}" method="post">
-    <label for="clientUsername" th:text="#{clientUsername}">: </label>
-    <input type="text" id="clientUsername" name="clientUsername" required>
-    <br><br>
+<div th:replace="fragments/header :: header"></div>
+<div th:replace="fragments/sidebar.html :: sidebar"></div>
 
-    <label for="roomNumber" th:text="#{roomNumber}">: </label>
-    <input type="number" id="roomNumber" name="roomNumber" required>
-    <br><br>
+<div class="content">
+    <h1 th:text="#{rentRoomTitle}"></h1>
+    <form action="#" th:action="@{/}" method="post" id="rentForm1">
+        <label for="clientUsername" th:text="#{clientUsername}">: </label>
+        <input type="text" id="clientUsername" name="clientUsername" required>
+        <br><br>
 
-    <label for="beginTime" th:text="#{beginTime}">: </label>
-    <input type="datetime-local" id="beginTime" name="beginTime" required>
-    <br><br>
+        <label for="roomNumber" th:text="#{roomNumber}">: </label>
+        <input type="number" id="roomNumber" name="roomNumber" required>
+        <br><br>
 
-    <button type="submit" th:text="#{rentRoomButton}"></button>
-</form>
+        <label for="beginTime" th:text="#{beginTime}">: </label>
+        <input type="datetime-local" id="beginTime" name="beginTime" required>
+        <br><br>
 
-<h1 th:text="#{listAllRents}"></h1>
+        <button type="submit" th:text="#{rentRoomButton}" id="submitButton"></button>
+    </form>
 
-<form action="/getAllRents" method="get">
-    <button type="submit" th:text="#{showRentsButton}"></button>
-</form>
+    <h1 th:text="#{listAllRents}"></h1>
 
-<div>
-    <h2 th:text="#{rentListTitle}"></h2>
-    <table>
-        <thead>
-        <tr>
-            <th th:text="#{beginTime}"></th>
-            <th th:text="#{clientUsername}"></th>
-            <th th:text="#{roomNumber}"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <th:block th:each="rentDTO : ${rentDTOs}">
+    <form action="/getAllRents" method="get">
+        <button type="submit" th:text="#{showRentsButton}"></button>
+    </form>
+
+    <div>
+        <h2 th:text="#{rentListTitle}"></h2>
+        <table>
+            <thead>
             <tr>
-                <td th:text="${rentDTO.beginTime}"></td>
-                <td th:text="${rentDTO.clientUsername}"></td>
-                <td th:text="${rentDTO.roomNumber}"></td>
+                <th th:text="#{beginTime}"></th>
+                <th th:text="#{clientUsername}"></th>
+                <th th:text="#{roomNumber}"></th>
             </tr>
-        </th:block>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <th:block th:each="rentDTO : ${rentDTOs}">
+                <tr>
+                    <td th:text="${rentDTO.beginTime}"></td>
+                    <td th:text="${rentDTO.clientUsername}"></td>
+                    <td th:text="${rentDTO.roomNumber}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 th:text="#{returnRoomTitle}"></h2>
+    <form action="/return" method="post" id="rentForm2">
+        <input type="text" id="id" name="id">
+        <input type="datetime-local" id="endTime" name="endTime">
+        <button type="submit" th:text="#{returnRoomTitle}"></button>
+    </form>
 </div>
 
-<h2 th:text="#{returnRoomTitle}"></h2>
-<form action="/return" method="post">
-    <input type="text" id="id" name="id">
-    <input type="datetime-local" id="endTime" name="endTime">
-    <button type="submit" th:text="#{returnRoomTitle}"></button>
-</form>
-<div th:replace="template :: footer"></div>
+<div th:replace="fragments/footer :: footer"></div>
 <script src="/script.js"></script>
 </body>
 </html>

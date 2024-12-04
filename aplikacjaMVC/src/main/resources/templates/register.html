@@ -7,14 +7,59 @@
 </head>
 <body>
 <h1>Registration Form</h1>
-<form action="#" th:action="@{/register}"  th:object="${userDTO}" method="post">
-    <input type="text" th:field="*{firstName}" placeholder="First Name" required />
-    <input type="text" th:field="*{lastName}" placeholder="Last Name" required />
-    <input type="text" th:field="*{username}" placeholder="Username" required />
-    <input type="email" th:field="*{email}" placeholder="Email" required />
-    <input type="password" th:field="*{password}" placeholder="Password" required />
+<form action="#" th:action="@{/register}" th:object="${userDTO}" method="post" onsubmit="return validateRegisterForm()">
+    <input id="firstName" type="text" th:field="*{firstName}" placeholder="First Name" required />
+    <div id="firstNameError"></div>
+    <input id="lastName" type="text" th:field="*{lastName}" placeholder="Last Name" required />
+    <div id="lastNameError"></div>
+    <input id="username" type="text" th:field="*{username}" placeholder="Username" required />
+    <div id="usernameError"></div>
+    <input id="email" type="email" th:field="*{email}" placeholder="Email" required />
+    <div id="emailError"></div>
+    <input id="password" type="password" th:field="*{password}" placeholder="Password" required />
+    <div id="passwordError"></div>
     <button type="submit">Register</button>
 </form>
-
 </body>
+
+<script>
+    function validateRegisterForm() {
+        let isValid = true;
+
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const username = document.getElementById("username").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        document.getElementById("firstNameError").textContent = "";
+        document.getElementById("lastNameError").textContent = "";
+        document.getElementById("usernameError").textContent = "";
+        document.getElementById("emailError").textContent = "";
+        document.getElementById("passwordError").textContent = "";
+
+        if (firstName.length < 3 || firstName.length > 30) {
+            document.getElementById("firstNameError").textContent = "First name length must be between 3 and 30 characters";
+            isValid = false;
+        }
+        if (lastName.length < 3 || lastName.length > 30) {
+            document.getElementById("lastNameError").textContent = "Last name length must be between 3 and 30 characters";
+            isValid = false;
+        }
+        if (username.length < 3 || username.length > 30) {
+            document.getElementById("usernameError").textContent = "Username length must be between 3 and 30 characters";
+            isValid = false;
+        }
+        if (email.length < 10 || email.length > 50 || !email.includes("@")) {
+            document.getElementById("emailError").textContent = "Invalid email format";
+            isValid = false;
+        }
+        if (password.length < 8 || password.length > 30) {
+            document.getElementById("passwordError").textContent = "Password length must be between 8 and 30 characters";
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+
 </html>
