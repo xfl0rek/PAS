@@ -6,9 +6,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.CreateCollectionOptions;
-import com.mongodb.client.model.ValidationAction;
-import com.mongodb.client.model.ValidationOptions;
+import com.mongodb.client.model.*;
 import org.bson.Document;
 import org.bson.UuidRepresentation;
 import org.bson.codecs.configuration.CodecRegistries;
@@ -112,6 +110,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
         CreateCollectionOptions createCollectionOptions = new CreateCollectionOptions()
                 .validationOptions(validationOptions);
         getDatabase().createCollection("users", createCollectionOptions);
+        getDatabase().getCollection("users").createIndex(Indexes.ascending("username"), new IndexOptions().unique(true));
     }
 
     private void createRoomCollection() {

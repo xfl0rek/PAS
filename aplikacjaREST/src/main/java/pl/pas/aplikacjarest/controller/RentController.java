@@ -32,13 +32,15 @@ public class RentController {
     @PostMapping("/returnRoom/{id}")
     public ResponseEntity<RentDTO> returnRoom(@PathVariable String id,
                                               @RequestParam LocalDateTime endTime) {
+        ObjectId rentID;
         try {
-            ObjectId rentID = new ObjectId(id);
-            RentDTO rent = rentService.returnRoom(rentID, endTime);
-            return ResponseEntity.ok(rent);
+            rentID = new ObjectId(id);
         } catch (Exception e) {
             throw new RentNotFoundException("Rent not found");
         }
+        RentDTO rent = rentService.returnRoom(rentID, endTime);
+        return ResponseEntity.ok(rent);
+
     }
 
     @PutMapping("/{id}")

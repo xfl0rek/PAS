@@ -109,10 +109,10 @@ public class UserTest {
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("[0].firstName", equalTo("Jadwiga"))
-                .body("[0].username", equalTo("jhymel"))
-                .body("[1].firstName", equalTo("John"))
-                .body("[1].username", equalTo("jbuggy"));
+                .body("[0].firstName", equalTo("John"))
+                .body("[0].username", equalTo("jbuggy"))
+                .body("[1].firstName", equalTo("Jadwiga"))
+                .body("[1].username", equalTo("jhymel"));
     }
 
     @Test
