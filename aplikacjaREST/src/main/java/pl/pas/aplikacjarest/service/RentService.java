@@ -170,4 +170,19 @@ public class RentService {
                 })
                 .toList();
     }
+
+    public List<RentDTO> findAll() {
+        return rentRepository.readAll().stream()
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
+                .toList();
+    }
 }

@@ -96,4 +96,10 @@ public class RentController {
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForRoom(userID);
         return ResponseEntity.ok(rentDTO);
     }
+
+    @GetMapping("/getAllRents")
+    public ResponseEntity<List<RentDTO>> getAllRents() {
+        List<RentDTO> rentDTOs = rentService.findAll();
+        return ResponseEntity.ok(rentDTOs);
+    }
 }

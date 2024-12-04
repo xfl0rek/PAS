@@ -157,7 +157,10 @@ public class RentRepository extends AbstractMongoRepository {
         collection.deleteOne(query);
     }
 
-    public MongoCollection<Rent> readAll() {
-        return getDatabase().getCollection("rents", Rent.class);
+    public List<Rent> readAll() {
+        ArrayList<Rent> rents = new ArrayList<>();
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        collection.find().into(rents);
+        return rents;
     }
 }
