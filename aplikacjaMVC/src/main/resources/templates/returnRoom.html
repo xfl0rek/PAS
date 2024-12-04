@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{returnRoomTitle}"></title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
+<div class="content">
+    <h2 th:text="#{returnRoomTitle}"></h2>
+    <form action="/return" method="post" id="rentForm2" onsubmit="return validateForm()">
+        <input type="text" id="id" name="id">
+        <input type="datetime-local" id="endTime" name="endTime">
+        <button type="submit" th:text="#{returnRoomTitle}"></button>
+        <div id="idError"></div>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+<script>
+    function validateForm() {
+        let isValid = true;
+
+        const rentID = document.getElementById("id").value;
+
+        document.getElementById("idError").textContent = "";
+
+        if (rentID.length != 24) {
+            document.getElementById("idError").textContent = "Invalid ID";
+            isValid = false;
+        }
+        return isValid;
+    }
+</script>
+</html>

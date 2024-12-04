@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{showAllRentsTitle}"></title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
+<div class="content">
+    <h1 th:text="#{listAllRents}"></h1>
+
+    <form action="/getAllRents" method="get">
+        <button type="submit" th:text="#{showRentsButton}"></button>
+    </form>
+
+    <div>
+        <h2 th:text="#{rentListTitle}"></h2>
+        <table>
+            <thead>
+            <tr>
+                <th th:text="#{beginTime}"></th>
+                <th th:text="#{clientUsername}"></th>
+                <th th:text="#{roomNumber}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="rentDTO : ${rentDTOs}">
+                <tr>
+                    <td th:text="${rentDTO.beginTime}"></td>
+                    <td th:text="${rentDTO.clientUsername}"></td>
+                    <td th:text="${rentDTO.roomNumber}"></td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

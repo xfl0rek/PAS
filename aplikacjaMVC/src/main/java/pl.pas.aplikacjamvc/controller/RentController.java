@@ -22,7 +22,7 @@ public class RentController {
     }
 
     @GetMapping("/home")
-    public String showForm(Model model) {
+    public String showHome(Model model) {
         return "home";
     }
 
@@ -45,6 +45,26 @@ public class RentController {
     public String getAllRents(Model model) {
         List<RentDTO> rentDTOs = rentService.getAllRents();
         model.addAttribute("rentDTOs", rentDTOs);
-        return "home";
+        return "rentList";
+    }
+
+    @GetMapping("/rents")
+    public String showRents(Model model) {
+        return "rents";
+    }
+
+    @GetMapping("/rents/rentRoom")
+    public String showRentRoom(Model model) {
+        return "rentRoom";
+    }
+
+    @GetMapping("/rents/returnRoom")
+    public String showReturnRoom(Model model) {
+        return "returnRoom";
+    }
+
+    @GetMapping("/rents/rentList")
+    public String showRentList(Model model) {
+        return "rentList";
     }
 }

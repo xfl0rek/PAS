@@ -2,23 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Register Client</title>
+    <title th:text="#{register}"></title>
     <link href="/style.css" rel="stylesheet">
 </head>
 <body>
-<h1>Registration Form</h1>
+<h1 th:text="#{registrationForm}"></h1>
 <form action="#" th:action="@{/register}" th:object="${userDTO}" method="post" onsubmit="return validateRegisterForm()">
-    <input id="firstName" type="text" th:field="*{firstName}" placeholder="First Name" required />
+    <input id="firstName" type="text" th:field="*{firstName}" th:placeholder="#{firstName}" required />
     <div id="firstNameError"></div>
-    <input id="lastName" type="text" th:field="*{lastName}" placeholder="Last Name" required />
+    <input id="lastName" type="text" th:field="*{lastName}" th:placeholder="#{lastName}" required />
     <div id="lastNameError"></div>
-    <input id="username" type="text" th:field="*{username}" placeholder="Username" required />
+    <input id="username" type="text" th:field="*{username}" th:placeholder="#{username}" required />
     <div id="usernameError"></div>
-    <input id="email" type="email" th:field="*{email}" placeholder="Email" required />
+    <input id="email" type="email" th:field="*{email}" th:placeholder="#{email}" required />
     <div id="emailError"></div>
-    <input id="password" type="password" th:field="*{password}" placeholder="Password" required />
+    <input id="password" type="password" th:field="*{password}" th:placeholder="#{password}" required />
     <div id="passwordError"></div>
-    <button type="submit">Register</button>
+    <button type="submit" th:text="#{register}"></button>
 </form>
 </body>
 
@@ -46,7 +46,7 @@
             document.getElementById("lastNameError").textContent = "Last name length must be between 3 and 30 characters";
             isValid = false;
         }
-        if (username.length < 3 || username.length > 30) {
+        if (username.length < 4 || username.length > 30) {
             document.getElementById("usernameError").textContent = "Username length must be between 3 and 30 characters";
             isValid = false;
         }

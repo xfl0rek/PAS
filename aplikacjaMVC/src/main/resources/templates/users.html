@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{users}"></title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
+<div class="content">
+    <h1 th:text="#{users}"></h1>
+    <input type="text" name="partialUsername" id="partialUsername" onkeyup="filterList()"/>
+    <table>
+        <thead>
+        <tr>
+            <th th:text="#{username}"></th>
+            <th th:text="#{firstName}"></th>
+            <th th:text="#{lastName}"></th>
+        </tr>
+        </thead>
+        <tbody id="tableid">
+        <th:block th:each="userDTO : ${userDTO}">
+            <tr>
+                <td th:text="${userDTO.username}"></td>
+                <td th:text="${userDTO.firstName}"></td>
+                <td th:text="${userDTO.lastName}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+<script>
+    function filterList() {
+        const input = document.getElementById('partialUsername').value.toLowerCase();
+        const table = document.getElementById('tableid');
+        const rows = table.getElementsByTagName('tr');
+
+        for (const row of rows) {
+            const username = row.cells[0].textContent.toLowerCase();
+            if (username.startsWith(input)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    }
+</script>
+</html>

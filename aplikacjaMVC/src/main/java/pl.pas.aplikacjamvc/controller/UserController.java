@@ -16,6 +16,8 @@ import reactor.core.publisher.Mono;
 
 import org.springframework.http.HttpStatusCode;
 
+import java.util.List;
+
 @Controller
 public class UserController {
     private final UserService userService;
@@ -48,5 +50,10 @@ public class UserController {
         return "redirect:/home";
     }
 
-
+    @GetMapping("/users")
+    public String getAllUsers(Model model) {
+        List<UserDTO> userDTOS = userService.getAllUsers();
+        model.addAttribute("userDTO", userDTOS);
+        return "users";
+    }
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
+
+<div class="content">
+    <h1 th:text="#{rentRoomTitle}"></h1>
+    <form action="#" th:action="@{/}" method="post" id="rentForm1" onsubmit="return validateRentRoom()">
+        <label for="clientUsername" th:text="#{clientUsername}">: </label>
+        <input type="text" id="clientUsername" name="clientUsername" required>
+        <div id="usernameError"></div>
+        <br><br>
+
+        <label for="roomNumber" th:text="#{roomNumber}">: </label>
+        <input type="number" id="roomNumber" name="roomNumber" required>
+        <div id="roomNumberError"></div>
+        <br><br>
+
+        <label for="beginTime" th:text="#{beginTime}">: </label>
+        <input type="datetime-local" id="beginTime" name="beginTime" required>
+        <div id="beginTimeError"></div>
+        <br><br>
+
+        <button type="submit" th:text="#{rentRoomButton}" id="submitButton"></button>
+    </form>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+
+<script src="/script.js"></script>
+<script>
+    function validateRentRoom() {
+        let isValid = true;
+
+        const username = document.getElementById("clientUsername").value;
+        const roomNumber = document.getElementById("roomNumber").value;
+        const beginTime = document.getElementById("beginTime").value;
+
+        document.getElementById("usernameError").textContent = "";
+        document.getElementById("roomNumberError").textContent = "";
+        document.getElementById("beginTimeError").textContent = "";
+
+        if (username.length < 4 || username.length > 30) {
+            document.getElementById("usernameError").textContent = "Username length must be between 3 and 30 characters";
+            isValid = false;
+        }
+        if (roomNumber <= 0) {
+            document.getElementById("roomNumberError").textContent = "Room number must be greater than 0";
+            isValid = false;
+        }
+        if (!beginTime) {
+            document.getElementById("roomNumberError").textContent = "Begin time cannot be null";
+            isValid = false;
+        }
+
+        return isValid;
+    }
+</script>
+</html>
