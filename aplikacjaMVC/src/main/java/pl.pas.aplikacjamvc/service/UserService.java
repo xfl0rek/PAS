@@ -51,18 +51,4 @@ public class UserService {
             throw new AppException(e.getResponseBodyAsString(), e.getStatusCode().value());
         }
     }
-
-//    public static ExchangeFilterFunction errorHandler() {
-//        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-//            if (clientResponse.statusCode().is5xxServerError()) {
-//                return clientResponse.bodyToMono(String.class)
-//                        .flatMap(errorBody -> Mono.error(new UserDefinedException1(errorBody)));
-//            } else if (clientResponse.statusCode().is4xxClientError()) {
-//                return clientResponse.bodyToMono(String.class)
-//                        .flatMap(errorBody -> Mono.error(new UserDefinedException2(errorBody)));
-//            } else {
-//                return Mono.just(clientResponse);
-//            }
-//        });
-    //}
 }

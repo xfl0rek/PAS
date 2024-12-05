@@ -33,17 +33,19 @@ footer {
     left: 0;
     background-color: #a88989;
     padding-top: 20px;
+    padding-left: 20px;
 }
 
 .content {
-    margin-left: 250px;
+    margin-left: 270px;
     padding: 1px 16px;
+    margin-top: 50px;
 }
 
 .header {
     width: 100%;
     position: fixed;
-    bottom: 0;
+    top: 0;
     background-color: aqua;
     text-align: center;
 }

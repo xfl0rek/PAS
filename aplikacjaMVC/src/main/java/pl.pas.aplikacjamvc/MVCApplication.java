@@ -14,10 +14,6 @@ public class MVCApplication {
         SpringApplication.run(MVCApplication.class, args);
     }
 
-//    @Bean
-//    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-//        return builder.build();
-//    }
 
     @Bean
     public WebClient webClient() {

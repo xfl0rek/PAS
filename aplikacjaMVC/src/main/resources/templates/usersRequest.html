@@ -37,41 +37,30 @@
 <script>
     async function filterListUsingREST() {
         const username = document.getElementById('partialUsername').value;
-        //const response = await fetch("http://localhost:8080/api/users/getUsersByPartialUsername?partialUsername=" + encodeURIComponent(username), {
-        const response = await fetch("http://localhost:8080/api/users/getUsersByPartialUsername?partialUsername=J", {
-            method: "GET",
-            mode: "no-cors"
+        const response = await fetch("http://localhost:8080/api/users/getUsersByPartialUsername?partialUsername=" + username, {
+            method: "GET"
         });
-        console.log(response);
         const table = document.getElementById("tableid");
         const users = await response.json();
 
-
-
-        // Clear existing rows
         table.innerHTML = "";
 
-        // Populate the table with new data
         users.forEach(user => {
-            const row = document.createElement("tr");
+            const tr = document.createElement("tr");
 
-            // Username cell
-            const usernameCell = document.createElement("td");
-            usernameCell.textContent = user.username; // Assuming API returns `username`
-            row.appendChild(usernameCell);
+            const td1 = document.createElement("td");
+            td1.textContent = user.username;
+            tr.appendChild(td1);
 
-            // First name cell
-            const firstNameCell = document.createElement("td");
-            firstNameCell.textContent = user.firstName; // Assuming API returns `firstName`
-            row.appendChild(firstNameCell);
+            const td2 = document.createElement("td");
+            td2.textContent = user.firstName;
+            tr.appendChild(td2);
 
-            // Last name cell
-            const lastNameCell = document.createElement("td");
-            lastNameCell.textContent = user.lastName; // Assuming API returns `lastName`
-            row.appendChild(lastNameCell);
+            const td3 = document.createElement("td");
+            td3.textContent = user.lastName;
+            tr.appendChild(td3);
 
-            // Append the row to the table body
-            table.appendChild(row);
+            table.appendChild(tr);
         });
     }
 </script>

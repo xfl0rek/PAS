@@ -38,7 +38,6 @@ public class RentService {
     }
     }
 
-    ///getAllActiveRentsForUser/{id}
 
     public List<RentDTO> getAllRents() {
         try {

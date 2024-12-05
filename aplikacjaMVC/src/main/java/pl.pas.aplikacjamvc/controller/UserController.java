@@ -7,14 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.pas.aplikacjamvc.dto.UserDTO;
-import pl.pas.aplikacjamvc.exception.AppException;
 import pl.pas.aplikacjamvc.model.UserRole;
 import pl.pas.aplikacjamvc.service.UserService;
-import reactor.core.publisher.Mono;
 
-import org.springframework.http.HttpStatusCode;
 
 import java.util.List;
 
@@ -60,6 +56,7 @@ public class UserController {
 
     @GetMapping("/usersRest")
     public String getAllUsersRest(Model model) {
+        model.addAttribute("currentPage", "/usersRest");
         return "/usersRequest";
     }
 }
