@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{users}"></title>
+    <link href="/style.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/sidebar.html :: sidebar}"></div>
+<div class="content">
+    <h1 th:text="#{users}"></h1>
+    <input type="text" name="partialUsername" id="partialUsername" onkeyup="filterListUsingREST()"/>
+    <table>
+        <thead>
+        <tr>
+            <th th:text="#{username}"></th>
+            <th th:text="#{firstName}"></th>
+            <th th:text="#{lastName}"></th>
+        </tr>
+        </thead>
+        <tbody id="tableid">
+        <th:block th:each="userDTO : ${userDTO}">
+            <tr>
+                <td th:text="${userDTO.username}"></td>
+                <td th:text="${userDTO.firstName}"></td>
+                <td th:text="${userDTO.lastName}"></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+
+<script>
+    async function filterListUsingREST() {
+        const username = document.getElementById('partialUsername').value;
+        //const response = await fetch("http://localhost:8080/api/users/getUsersByPartialUsername?partialUsername=" + encodeURIComponent(username), {
+        const response = await fetch("http://localhost:8080/api/users/getUsersByPartialUsername?partialUsername=J", {
+            method: "GET",
+            mode: "no-cors"
+        });
+        console.log(response);
+        const table = document.getElementById("tableid");
+        const users = await response.json();
+
+
+
+        // Clear existing rows
+        table.innerHTML = "";
+
+        // Populate the table with new data
+        users.forEach(user => {
+            const row = document.createElement("tr");
+
+            // Username cell
+            const usernameCell = document.createElement("td");
+            usernameCell.textContent = user.username; // Assuming API returns `username`
+            row.appendChild(usernameCell);
+
+            // First name cell
+            const firstNameCell = document.createElement("td");
+            firstNameCell.textContent = user.firstName; // Assuming API returns `firstName`
+            row.appendChild(firstNameCell);
+
+            // Last name cell
+            const lastNameCell = document.createElement("td");
+            lastNameCell.textContent = user.lastName; // Assuming API returns `lastName`
+            row.appendChild(lastNameCell);
+
+            // Append the row to the table body
+            table.appendChild(row);
+        });
+    }
+</script>
+
+</html>

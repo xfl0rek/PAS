@@ -54,6 +54,12 @@ public class UserController {
     public String getAllUsers(Model model) {
         List<UserDTO> userDTOS = userService.getAllUsers();
         model.addAttribute("userDTO", userDTOS);
+        model.addAttribute("currentPage", "/users");
         return "users";
+    }
+
+    @GetMapping("/usersRest")
+    public String getAllUsersRest(Model model) {
+        return "/usersRequest";
     }
 }

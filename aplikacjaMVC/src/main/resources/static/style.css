@@ -40,6 +40,10 @@ footer {
     padding: 1px 16px;
 }
 
-header {
-    margin-left: 400px;
+.header {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: aqua;
+    text-align: center;
 }

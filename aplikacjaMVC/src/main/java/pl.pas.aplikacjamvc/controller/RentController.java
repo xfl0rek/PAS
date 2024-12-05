@@ -23,6 +23,7 @@ public class RentController {
 
     @GetMapping("/home")
     public String showHome(Model model) {
+        model.addAttribute("currentPage", "/home");
         return "home";
     }
 
@@ -45,26 +46,31 @@ public class RentController {
     public String getAllRents(Model model) {
         List<RentDTO> rentDTOs = rentService.getAllRents();
         model.addAttribute("rentDTOs", rentDTOs);
+        model.addAttribute("currentPage", "/rentList");
         return "rentList";
     }
 
     @GetMapping("/rents")
     public String showRents(Model model) {
+        model.addAttribute("currentPage", "/rents");
         return "rents";
     }
 
     @GetMapping("/rents/rentRoom")
     public String showRentRoom(Model model) {
+        model.addAttribute("currentPage", "/rents/rentRoom");
         return "rentRoom";
     }
 
     @GetMapping("/rents/returnRoom")
     public String showReturnRoom(Model model) {
+        model.addAttribute("currentPage", "/rents/returnRoom");
         return "returnRoom";
     }
 
     @GetMapping("/rents/rentList")
     public String showRentList(Model model) {
+        model.addAttribute("currentPage", "/rents/rentList");
         return "rentList";
     }
 }
