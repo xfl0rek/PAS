@@ -28,6 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/getUsersByPartialUsername")
+    @CrossOrigin(origins = "http://localhost:9090")
     public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
         List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
         return ResponseEntity.ok(userDTOs);
