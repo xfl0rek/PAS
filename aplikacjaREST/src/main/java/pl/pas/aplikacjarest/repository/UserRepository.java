@@ -57,12 +57,12 @@ public class UserRepository extends AbstractMongoRepository {
 
     public ObjectId save(User user) {
         MongoCollection<User> collection = getDatabase().getCollection("users", User.class);
-        boolean userExists = collection.countDocuments(Filters.eq("username", user.getUsername())) > 0;
-        if (userExists) {
-            throw new UsernameAlreadyInUseException("User " + user.getUsername() + " already exists");
+        try {
+            InsertOneResult result = collection.insertOne(user);
+            return result.getInsertedId().asObjectId().getValue();
+        } catch (Exception e) {
+            throw new UsernameAlreadyInUseException("Username " + user.getUsername() + " already exists");
         }
-        InsertOneResult result = collection.insertOne(user);
-        return result.getInsertedId().asObjectId().getValue();
     }
 
     public void update(User user) {
