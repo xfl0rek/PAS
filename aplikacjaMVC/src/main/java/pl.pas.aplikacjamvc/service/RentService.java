@@ -35,9 +35,8 @@ public class RentService {
 
     } catch (WebClientResponseException e) {
             throw new AppException(e.getResponseBodyAsString(), e.getStatusCode().value());
+        }
     }
-    }
-
 
     public List<RentDTO> getAllRents() {
         try {
