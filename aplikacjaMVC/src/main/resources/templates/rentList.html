@@ -34,7 +34,7 @@
                     <td th:text="${rentDTO.roomNumber}"></td>
                     <td th:text="${rentDTO.endTime}"></td>
                     <td>
-                        <form action="/return" method="post" id="rentForm2">
+                        <form action="/return" method="post" id="rentForm2" th:if="${rentDTO.endTime} == null">
                             <input type="hidden" id="id" name="id" th:value="${rentDTO.id}">
                             <button type="submit">X</button>
                         </form>
