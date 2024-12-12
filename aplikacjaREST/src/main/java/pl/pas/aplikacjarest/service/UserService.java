@@ -36,6 +36,10 @@ public class UserService {
 
     public UserDTO registerUser(UserDTO userDTO) {
         User user = userConverter.convertDTOToUser(userDTO);
+        User user2 = userRepository.findByUsername(userDTO.getUsername());
+        if (user2 != null) {
+            throw new UsernameAlreadyInUseException("Username is already in use");
+        }
         userRepository.save(user);
         return userConverter.convertUserToDTO(user);
     }

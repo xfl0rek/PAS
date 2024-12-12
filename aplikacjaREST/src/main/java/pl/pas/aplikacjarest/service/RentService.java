@@ -125,7 +125,6 @@ public class RentService {
                 .toList();
     }
 
-
     public List<RentDTO> getAllArchiveRentsForUser(ObjectId userID) {
         return rentRepository.findAllArchiveRentsForUser(userID).stream()
                 .map(rent -> {

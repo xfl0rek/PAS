@@ -40,7 +40,7 @@ public class RentController {
     public String returnRoom(@RequestParam String id) {
         LocalDateTime endTime = LocalDateTime.now();
         rentService.returnRoom(id, endTime);
-        return "rentList";
+        return "redirect:/rents/rentList";
     }
 
     @GetMapping("/rents/rentList")
@@ -68,10 +68,4 @@ public class RentController {
         model.addAttribute("currentPage", "/rents/returnRoom");
         return "returnRoom";
     }
-
-//    @GetMapping("/rents/rentList")
-//    public String showRentList(Model model) {
-//        model.addAttribute("currentPage", "/rents/rentList");
-//        return "rentList";
-//    }
 }
