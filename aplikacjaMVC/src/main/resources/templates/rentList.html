@@ -12,26 +12,33 @@
 <div class="content">
     <h1 th:text="#{listAllRents}"></h1>
 
-    <form action="/getAllRents" method="get">
-        <button type="submit" th:text="#{showRentsButton}"></button>
-    </form>
-
     <div>
         <h2 th:text="#{rentListTitle}"></h2>
         <table>
             <thead>
             <tr>
+                <th>ID</th>
                 <th th:text="#{beginTime}"></th>
                 <th th:text="#{clientUsername}"></th>
                 <th th:text="#{roomNumber}"></th>
+                <th th:text="#{endTime}"></th>
+                <th th:text="#{endRent}"></th>
             </tr>
             </thead>
             <tbody>
             <th:block th:each="rentDTO : ${rentDTOs}">
                 <tr>
+                    <td th:text="${rentDTO.id}"></td>
                     <td th:text="${rentDTO.beginTime}"></td>
                     <td th:text="${rentDTO.clientUsername}"></td>
                     <td th:text="${rentDTO.roomNumber}"></td>
+                    <td th:text="${rentDTO.endTime}"></td>
+                    <td>
+                        <form action="/return" method="post" id="rentForm2">
+                            <input type="hidden" id="id" name="id" th:value="${rentDTO.id}">
+                            <button type="submit">X</button>
+                        </form>
+                    </td>
                 </tr>
             </th:block>
             </tbody>

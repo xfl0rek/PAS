@@ -37,16 +37,17 @@ public class RentController {
     }
 
     @PostMapping("/return")
-    public String returnRoom(@RequestParam String id, @RequestParam LocalDateTime endTime) {
+    public String returnRoom(@RequestParam String id) {
+        LocalDateTime endTime = LocalDateTime.now();
         rentService.returnRoom(id, endTime);
-        return "redirect:/home";
+        return "rentList";
     }
 
-    @GetMapping("/getAllRents")
+    @GetMapping("/rents/rentList")
     public String getAllRents(Model model) {
         List<RentDTO> rentDTOs = rentService.getAllRents();
         model.addAttribute("rentDTOs", rentDTOs);
-        model.addAttribute("currentPage", "/rentList");
+        model.addAttribute("currentPage", "/rents/rentList");
         return "rentList";
     }
 
@@ -68,9 +69,9 @@ public class RentController {
         return "returnRoom";
     }
 
-    @GetMapping("/rents/rentList")
-    public String showRentList(Model model) {
-        model.addAttribute("currentPage", "/rents/rentList");
-        return "rentList";
-    }
+//    @GetMapping("/rents/rentList")
+//    public String showRentList(Model model) {
+//        model.addAttribute("currentPage", "/rents/rentList");
+//        return "rentList";
+//    }
 }
