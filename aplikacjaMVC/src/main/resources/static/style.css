@@ -10,7 +10,7 @@ td, th {
 }
 
 table {
-    border: 1px solid black;
+    border-collapse: collapse;
 }
 
 button:hover {
@@ -48,4 +48,9 @@ footer {
     top: 0;
     background-color: aqua;
     text-align: center;
+}
+
+.lastTD {
+    text-align: center;
+    border: none;
 }
