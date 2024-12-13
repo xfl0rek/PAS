@@ -17,7 +17,6 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
                 <th th:text="#{beginTime}"></th>
                 <th th:text="#{clientUsername}"></th>
                 <th th:text="#{roomNumber}"></th>
@@ -27,7 +26,6 @@
             <tbody>
             <th:block th:each="rentDTO : ${rentDTOs}">
                 <tr>
-                    <td th:text="${rentDTO.id}"></td>
                     <td th:text="${rentDTO.beginTime}"></td>
                     <td th:text="${rentDTO.clientUsername}"></td>
                     <td th:text="${rentDTO.roomNumber}"></td>
