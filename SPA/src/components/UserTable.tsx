@@ -43,8 +43,8 @@ const UserTable = ({ users }: { users: User[] }) => {
   };
 
   return (
-    <div className="flex flex-col  m-4 min-h-screen">
-      <div className="flex flex-col items-center w-1/4 mb-4">
+    <div className="flex flex-col items-center  min-h-screen">
+      <div className="w-3/4 mb-4 mt-4">
         {/* <Label>
                     Wprowadz nazwe uzytkownika
                 </Label> */}
@@ -53,14 +53,15 @@ const UserTable = ({ users }: { users: User[] }) => {
           placeholder="Nazwa uzytkownika"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="w-1/4"
         />
       </div>
       {/* <div className="w-full flex items-center"> */}
-      <Table className="table-auto justify-self-center">
+      <Table className="table-fixed w-3/4 justify-self-center">
         <TableCaption>Lista klientow</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-20 py=10">Nazwa uzytkownika</TableHead>
+            <TableHead className="px-10 py=10">Nazwa uzytkownika</TableHead>
             <TableHead className="px-20 py=10">Imie</TableHead>
             <TableHead className="px-20 py=10">Nazwisko</TableHead>
             <TableHead className="px-20 py=10">Aktywny</TableHead>

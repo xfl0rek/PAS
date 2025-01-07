@@ -17,7 +17,7 @@ const Users = () => {
         }, []
     );
 
-    return <div>
+    return <div className="w-screen">
         <UserTable users={users}/>
     </div>
 };
