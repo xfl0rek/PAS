@@ -2,7 +2,7 @@ import UserTable from "@/components/UserTable"
 import {useEffect, useState} from "react";
 
 const Users = () => {
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         const fetchUsers = async () => {

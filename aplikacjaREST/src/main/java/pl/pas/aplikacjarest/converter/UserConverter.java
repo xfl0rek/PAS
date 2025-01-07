@@ -20,7 +20,8 @@ public class UserConverter {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getUserRole()
+                user.getUserRole(),
+                user.isActive()
         );
         newUserDTO.setId(user.getId().toString());
         return newUserDTO;
@@ -28,29 +29,35 @@ public class UserConverter {
 
     public User convertDTOToUser(UserDTO userDTO) {
         if (userDTO.getUserRole() == UserRole.CLIENT) {
-            return new Client(
+            Client client = new Client(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
                     userDTO.getUsername(),
                     userDTO.getEmail(),
                     userDTO.getPassword()
             );
+            client.setActive(userDTO.getActive());
+            return client;
         } else if (userDTO.getUserRole() == UserRole.MANAGER) {
-            return new Manager(
+            Manager manager = new Manager(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
                     userDTO.getUsername(),
                     userDTO.getEmail(),
                     userDTO.getPassword()
             );
+            manager.setActive(userDTO.getActive());
+            return manager;
         } else if (userDTO.getUserRole() == UserRole.ADMIN) {
-            return new Admin(
+            Admin admin = new Admin(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
                     userDTO.getUsername(),
                     userDTO.getEmail(),
                     userDTO.getPassword()
             );
+            admin.setActive(userDTO.getActive());
+            return admin;
         }
 
         return null;

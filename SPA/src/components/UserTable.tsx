@@ -7,14 +7,39 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { useEffect, useState } from "react";
+import { Input } from "@/components/ui/input"
+// import { Label } from "@/components/ui/label"
+
 
 const UserTable = ({
     users,
 } : {
     users: User[];
 }) => {
+    const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+    const [search, setSearch] = useState<string>("");
+
+    useEffect(() => {
+        let filtered = users;
+
+        if (search) {
+            filtered = filtered.filter((user) => 
+            user.username.toLowerCase().includes(search.toLowerCase())
+            );
+        }
+
+        setFilteredUsers(filtered);
+    }, [search, users] );
+
     return (
-        <div>
+        <div className="flex flex-col  items-center ">
+            <div>
+                {/* <Label>
+                    Wprowadz nazwe uzytkownika
+                </Label> */}
+                <Input type="text" placeholder="Nazwa uzytkownika" value={search} onChange={(e) => setSearch(e.target.value)} />
+            </div>
             <Table>
                 <TableCaption>Lista klientow</TableCaption>
                 <TableHeader>
@@ -25,8 +50,8 @@ const UserTable = ({
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {users.length > 0 ? (
-                        users.map((user) => (
+                    {filteredUsers.length > 0 ? (
+                        filteredUsers.map((user) => (
                             <TableRow key={user.username}>
                                 <TableCell>{user.username}</TableCell>
                                 <TableCell>{user.firstName}</TableCell>

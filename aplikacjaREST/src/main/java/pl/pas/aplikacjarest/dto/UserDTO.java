@@ -33,7 +33,9 @@ public class UserDTO {
     @NotNull(message = "User role cannot be null")
     private UserRole userRole;
 
-    public UserDTO(String firstName, String lastName, String username, String email, String password, UserRole userRole) {
+    private Boolean active = true;
+
+    public UserDTO(String firstName, String lastName, String username, String email, String password, UserRole userRole, boolean active) {
         this.id = new ObjectId().toString();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,6 +43,7 @@ public class UserDTO {
         this.email = email;
         this.password = password;
         this.userRole = userRole;
+        this.active = active;
     }
 
     public String getId() {
@@ -93,5 +96,13 @@ public class UserDTO {
     
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
