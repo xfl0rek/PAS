@@ -11,10 +11,12 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router";
 
 const UserTable = ({ users }: { users: User[] }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     let filtered = users;
@@ -40,6 +42,10 @@ const UserTable = ({ users }: { users: User[] }) => {
             )
           );
     }
+  };
+
+  const updateHandler = (user: User) => {
+        navigate(`/users/${user.id}`)
   };
 
   return (
@@ -81,11 +87,16 @@ const UserTable = ({ users }: { users: User[] }) => {
                     {user.active ? "Dezaktywuj" : "Aktywuj"}
                   </Button>
                 </TableCell>
+                <TableCell className="px-20 py=10">
+                    <Button onClick={() => updateHandler(user)}>
+                        Zaktualizuj dane
+                    </Button>
+                </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5}>Brak uzytkownikow</TableCell>
+              <TableCell colSpan={6}>Brak uzytkownikow</TableCell>
             </TableRow>
           )}
         </TableBody>

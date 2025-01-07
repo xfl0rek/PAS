@@ -14,7 +14,7 @@ const Login = () => {
         <div className="flex items-center justify-center w-screen min-h-screen bg-gray-100">
             <Card className="max-w-md w-full shadow-lg">
                 <CardHeader>
-                    <CardTitle className="text-center">Log in to your account!</CardTitle>
+                    <CardTitle className="text-center p-10">Log in to your account!</CardTitle>
                     <CardDescription className="text-center">Enter your username and password to log in</CardDescription>
                 </CardHeader>
                 <CardContent>
