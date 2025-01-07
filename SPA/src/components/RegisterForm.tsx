@@ -43,10 +43,10 @@ const RegisterForm = () => {
 
     return (
         <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-            <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Rejestracja</h2>
+            <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Register form</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                    <Label htmlFor="firstName">Imię</Label>
+                    <Label htmlFor="firstName">Firstname</Label>
                     <Input
                         id="firstName"
                         type="text"
@@ -56,7 +56,7 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="lastName">Nazwisko</Label>
+                    <Label htmlFor="lastName">Lastname</Label>
                     <Input
                         id="lastName"
                         type="text"
@@ -66,7 +66,7 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="username">Nazwa użytkownika</Label>
+                    <Label htmlFor="username">Username</Label>
                     <Input
                         id="username"
                         type="text"
@@ -76,7 +76,7 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="email">Adres e-mail</Label>
+                    <Label htmlFor="email">E-mail</Label>
                     <Input
                         id="email"
                         type="email"
@@ -86,7 +86,7 @@ const RegisterForm = () => {
                     />
                 </div>
                 <div className="space-y-2">
-                    <Label htmlFor="password">Hasło</Label>
+                    <Label htmlFor="password">Password</Label>
                     <Input
                         id="password"
                         type="password"
@@ -98,7 +98,7 @@ const RegisterForm = () => {
 
                 <div className="flex justify-center">
                     <Button type="submit" className="w-full">
-                        Zarejestruj się
+                        Register
                     </Button>
                 </div>
             </form>
