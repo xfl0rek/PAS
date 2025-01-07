@@ -42,7 +42,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+        <div className="p-6 bg-white shadow-lg rounded-lg max-w-xl mx-auto overflow-hidden">
             <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Register form</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
@@ -97,7 +97,7 @@ const RegisterForm = () => {
                 </div>
 
                 <div className="flex justify-center">
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-1/2">
                         Register
                     </Button>
                 </div>

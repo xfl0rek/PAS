@@ -32,7 +32,7 @@ const LoginForm = () => {
     };
 
     return (
-        <div className="p-6 bg-white shadow-lg rounded-lg justify-self-center">
+        <div className="p-6 bg-white shadow-lg rounded-lg max-w-xl mx-auto overflow-hidden">
             <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Login Form</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
@@ -43,7 +43,6 @@ const LoginForm = () => {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         required
-                        className="w-1/3"
                     />
                 </div>
                 <div className="space-y-2">
@@ -54,11 +53,10 @@ const LoginForm = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="w-1/3"
                     />
                 </div>
                 <div className="flex justify-center">
-                    <Button type="submit" className="w-1/3">
+                    <Button type="submit" className="w-1/2">
                         Login
                     </Button>
                 </div>

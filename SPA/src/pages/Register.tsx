@@ -11,11 +11,11 @@ import {Link} from "react-router";
 
 const Register = () => {
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <Card>
+        <div className="flex items-center justify-center w-screen min-h-screen bg-gray-100">
+            <Card className="max-w-md w-full shadow-lg">
                 <CardHeader>
                     <CardTitle className="text-center">Create a new account</CardTitle>
-                    <CardDescription>Please provide your details to create a user account</CardDescription>
+                    <CardDescription className="text-center">Please provide your details to create a user account</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <RegisterForm/>

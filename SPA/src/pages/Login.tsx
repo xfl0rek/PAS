@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm'
+import LoginForm from '@/components/LoginForm';
 import {
     Card,
     CardContent,
@@ -7,12 +7,12 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {Link} from "react-router";
+import { Link } from "react-router";
 
 const Login = () => {
     return (
-        <div className="w-screen">
-            <Card>
+        <div className="flex items-center justify-center w-screen min-h-screen bg-gray-100">
+            <Card className="max-w-md w-full shadow-lg">
                 <CardHeader>
                     <CardTitle className="text-center">Log in to your account!</CardTitle>
                     <CardDescription className="text-center">Enter your username and password to log in</CardDescription>
