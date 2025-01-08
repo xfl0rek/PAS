@@ -38,7 +38,8 @@ public class RoomService {
         RoomDTO newRoomDTO = new RoomDTO(
                 newRoom.getRoomNumber(),
                 newRoom.getBasePrice(),
-                newRoom.getRoomCapacity()
+                newRoom.getRoomCapacity(),
+                newRoom.getRented()
             );
         newRoomDTO.setId(roomId.toString());
         return newRoomDTO;
@@ -60,7 +61,8 @@ public class RoomService {
         RoomDTO newRoomDTO = new RoomDTO(
                 room.getRoomNumber(),
                 room.getBasePrice(),
-                room.getRoomCapacity()
+                room.getRoomCapacity(),
+                room.getRented()
         );
         newRoomDTO.setId(room.getId().toString());
         return newRoomDTO;
@@ -82,7 +84,8 @@ public class RoomService {
                     RoomDTO roomDTO = new RoomDTO(
                             room.getRoomNumber(),
                             room.getBasePrice(),
-                            room.getRoomCapacity()
+                            room.getRoomCapacity(),
+                            room.getRented()
                     );
                     roomDTO.setId(room.getId().toString());
                     return roomDTO;
@@ -97,7 +100,8 @@ public class RoomService {
                     RoomDTO roomDTO = new RoomDTO(
                             room.getRoomNumber(),
                             room.getBasePrice(),
-                            room.getRoomCapacity()
+                            room.getRoomCapacity(),
+                            room.getRented()
                     );
                     roomDTO.setId(room.getId().toString());
                     return roomDTO;
@@ -112,7 +116,8 @@ public class RoomService {
                     RoomDTO roomDTO = new RoomDTO(
                             room.getRoomNumber(),
                             room.getBasePrice(),
-                            room.getRoomCapacity()
+                            room.getRoomCapacity(),
+                            room.getRented()
                     );
                     roomDTO.setId(room.getId().toString());
                     return roomDTO;

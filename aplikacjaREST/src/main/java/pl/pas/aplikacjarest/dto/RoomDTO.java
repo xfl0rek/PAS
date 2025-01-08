@@ -18,10 +18,13 @@ public class RoomDTO {
     @Max(value = 5, message = "Room capacity must be less than 5")
     private int roomCapacity;
 
-    public RoomDTO(int roomNumber, int basePrice, int roomCapacity) {
+    private int isRented;
+
+    public RoomDTO(int roomNumber, int basePrice, int roomCapacity, int isRented) {
         this.roomNumber = roomNumber;
         this.basePrice = basePrice;
         this.roomCapacity = roomCapacity;
+        this.isRented = isRented;;
     }
 
     public String getId() {

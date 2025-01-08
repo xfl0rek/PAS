@@ -42,7 +42,7 @@ public class RoomTest {
 
     @Test
     void roomCreatePositiveTest() {
-        RoomDTO roomDTO = new RoomDTO(1, 1000, 2);
+        RoomDTO roomDTO = new RoomDTO(1, 1000, 2, 0);
         RestAssured.given()
                 .body(roomDTO)
                 .contentType("application/json")
@@ -60,7 +60,7 @@ public class RoomTest {
         Room room = new Room(1, 1000, 2);
         ObjectId roomID = roomRepository.save(room);
 
-        RoomDTO roomDTOUpdated = new RoomDTO(1, 2000, 3);
+        RoomDTO roomDTOUpdated = new RoomDTO(1, 2000, 3, 0);
         RestAssured.given()
                 .pathParams("id", roomID.toString())
                 .body(roomDTOUpdated)
@@ -177,7 +177,7 @@ public class RoomTest {
 
     @Test
     void invalidArgumentsPassedTest() {
-        RoomDTO roomDTO = new RoomDTO(0, 10, -1);
+        RoomDTO roomDTO = new RoomDTO(0, 10, -1, 0);
         RestAssured.given()
                 .body(roomDTO)
                 .contentType("application/json")
@@ -189,7 +189,7 @@ public class RoomTest {
 
     @Test
     void roomCreateNegativeTest() {
-        RoomDTO roomDTO1 = new RoomDTO(1, 1000, 2);
+        RoomDTO roomDTO1 = new RoomDTO(1, 1000, 2, 0);
         RestAssured.given()
                 .body(roomDTO1)
                 .contentType("application/json")
@@ -197,7 +197,7 @@ public class RoomTest {
                 .post("/")
                 .then()
                 .statusCode(201);
-        RoomDTO roomDTO2 = new RoomDTO(1, 1000, 3);
+        RoomDTO roomDTO2 = new RoomDTO(1, 1000, 3, 0);
         RestAssured.given()
                 .body(roomDTO2)
                 .contentType("application/json")
@@ -212,7 +212,7 @@ public class RoomTest {
         Room room = new Room(1, 1000, 2);
         ObjectId roomID = roomRepository.save(room);
 
-        RoomDTO roomDTOUpdated = new RoomDTO(1, 2000, 3);
+        RoomDTO roomDTOUpdated = new RoomDTO(1, 2000, 3, 0);
         RestAssured.given()
                 .pathParams("id", "zleid")
                 .body(roomDTOUpdated)
