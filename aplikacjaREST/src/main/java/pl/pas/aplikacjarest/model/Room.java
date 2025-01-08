@@ -76,4 +76,8 @@ public class Room {
     public int getRented() {
         return rented;
     }
+
+    public void setRented(int rented) {
+        this.rented = rented;
+    }
 }
