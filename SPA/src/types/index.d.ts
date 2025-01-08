@@ -15,4 +15,5 @@ type Room = {
     roomNumber: number;
     basePrice: number;
     roomCapacity: number;
+    isRented: number;
 }
