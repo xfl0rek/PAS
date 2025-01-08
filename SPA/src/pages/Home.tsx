@@ -20,6 +20,11 @@ const Home = () => {
                             Rent room
                         </BreadcrumbLink>
                     </BreadcrumbItem>
+                    <BreadcrumbItem>
+                        <BreadcrumbLink href="/rents">
+                            Rent list
+                        </BreadcrumbLink>
+                    </BreadcrumbItem>
                 </Breadcrumb>
             </div>
 
@@ -37,8 +42,13 @@ const Home = () => {
                             </a>
                         </li>
                         <li>
-                            <a href="#" className="text-blue-500 hover:underline">
+                            <a href="/rooms" className="text-blue-500 hover:underline">
                                 Rent a Room
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/rents" className="text-blue-500 hover:underline">
+                                Rent List
                             </a>
                         </li>
                     </ul>

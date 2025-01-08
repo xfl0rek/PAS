@@ -54,7 +54,7 @@ const RoomList = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to rent the room");
+        console.error("Failed to rent the room");
       }
 
       alert("Room rented successfully!");
@@ -123,7 +123,7 @@ const RoomList = () => {
               type="datetime-local"
               value={beginTime}
               onChange={(e) => setBeginTime(e.target.value)}
-              className="mt-1 p-2 border border-gray-300 rounded-md text-white"
+              className="mt-1 p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mt-4 w-1/3">

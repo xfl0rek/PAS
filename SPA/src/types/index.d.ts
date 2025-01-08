@@ -17,3 +17,11 @@ type Room = {
     roomCapacity: number;
     isRented: number;
 }
+
+type Rent = {
+    id: number;
+    clientUsername: string;
+    roomNumber: number;
+    beginTime: string;
+    endTime: string;
+}
