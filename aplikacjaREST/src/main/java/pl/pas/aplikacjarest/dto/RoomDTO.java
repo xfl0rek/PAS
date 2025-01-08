@@ -58,4 +58,12 @@ public class RoomDTO {
     public void setId(String id) {
         this.id = id;
     }
+
+    public int getIsRented() {
+        return isRented;
+    }
+
+    public void setIsRented(int isRented) {
+        this.isRented = isRented;
+    }
 }
