@@ -48,6 +48,7 @@ const LoginForm = () => {
                     general: error?.message || "Invalid username or password.",
                 }));
             } else {
+                localStorage.setItem('username', username);
                 alert('Login successful!');
                 navigate('/');
             }

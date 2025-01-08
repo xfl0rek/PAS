@@ -10,3 +10,9 @@ type User = {
     active: boolean;
     userRole: UserRole;
 };
+
+type Room = {
+    roomNumber: number;
+    basePrice: number;
+    roomCapacity: number;
+}

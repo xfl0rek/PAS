@@ -7,6 +7,7 @@ import Login from "./pages/Login.tsx"
 import Home from "./pages/Home.tsx"
 import { BrowserRouter, Routes, Route } from 'react-router'
 import UpdateUser from "./pages/UpdateUser.tsx"
+import Rooms from "./pages/Rooms.tsx"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/login" element={<Login />}/>
             <Route path="/" element={<Home />}/>
             <Route path="/users/:id" element={<UpdateUser/>}/>
+            <Route path="/rooms" element={<Rooms/>}/>
         </Routes>
     </BrowserRouter>
   </StrictMode>,
