@@ -103,7 +103,7 @@ public class RentController {
         return ResponseEntity.ok(rentDTO);
     }
 
-    @GetMapping("/getAllRents")
+    @GetMapping("/")
     public ResponseEntity<List<RentDTO>> getAllRents() {
         List<RentDTO> rentDTOs = rentService.findAll();
         return ResponseEntity.ok(rentDTOs);
