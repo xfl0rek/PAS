@@ -8,6 +8,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 
 const RentList = () => {
     const [rents, setRents] = useState<Rent[]>([]);
@@ -54,7 +55,9 @@ const RentList = () => {
             alert("Room returned successfully!");
             setEndTime("");
             setRentId(null);
-            setRents((prevRents) => prevRents.filter((rent) => rent.id !== rentId));
+            setRents((prevRents) => prevRents.map((rent) =>
+                rent.id === rentId ? { ...rent, endTime } : rent
+            ));
         } catch (err) {
             console.log(err);
             alert("Failed to return the room");
@@ -72,39 +75,56 @@ const RentList = () => {
                         <TableHead className="px-6 py-4">Username</TableHead>
                         <TableHead className="px-6 py-4">Room Number</TableHead>
                         <TableHead className="px-6 py-4">Begin Time</TableHead>
+                        <TableHead className="px-6 py-4">End Time</TableHead>
                         <TableHead className="px-6 py-4">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {rents.length > 0 ? (
-                        rents
-                            .filter((rent) => !rent.endTime)
-                            .map((rent) => (
-                                <TableRow key={rent.id}>
-                                    <TableCell className="px-6 py-4">{rent.id}</TableCell>
-                                    <TableCell className="px-6 py-4">{rent.clientUsername}</TableCell>
-                                    <TableCell className="px-6 py-4">{rent.roomNumber}</TableCell>
-                                    <TableCell className="px-6 py-4">
-                                        {new Date(rent.beginTime).toLocaleString()}
-                                    </TableCell>
-                                    <TableCell className="px-6 py-4">
-                                        {username && rent.clientUsername === username ? (
-                                            <Button
-                                                onClick={() => {
-                                                    setRentId(rent.id);
-                                                }}
-                                            >
-                                                Select for Return
-                                            </Button>
-                                        ) : (
-                                            <span className="text-gray-500">Not your rent</span>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))
+                        rents.map((rent) => (
+                            <TableRow key={rent.id}>
+                                <TableCell className="px-6 py-4">{rent.id}</TableCell>
+                                <TableCell className="px-6 py-4">{rent.clientUsername}</TableCell>
+                                <TableCell className="px-6 py-4">{rent.roomNumber}</TableCell>
+                                <TableCell className="px-6 py-4">
+                                    {new Date(rent.beginTime).toLocaleString()}
+                                </TableCell>
+                                <TableCell className="px-6 py-4">
+                                    {rent.endTime
+                                        ? new Date(rent.endTime).toLocaleString()
+                                        : ""}
+                                </TableCell>
+                                <TableCell className="px-6 py-4">
+                                    {username && rent.clientUsername === username && !rent.endTime ? (
+                                        <Button
+                                            onClick={() => {
+                                                setRentId(rent.id);
+                                            }}
+                                        >
+                                            Select for Return
+                                        </Button>
+                                    ) : (
+                                        <TooltipProvider>
+                                            <Tooltip>
+                                                <TooltipTrigger asChild>
+                                                    <Button className="opacity-50 cursor-not-allowed">
+                                                        Select for Return
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    <p>
+                                                        You can only return rented room.
+                                                    </p>
+                                                </TooltipContent>
+                                            </Tooltip>
+                                        </TooltipProvider>
+                                    )}
+                                </TableCell>
+                            </TableRow>
+                        ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={5} className="text-center">No rents available</TableCell>
+                            <TableCell colSpan={6} className="text-center">No rents available</TableCell>
                         </TableRow>
                     )}
                 </TableBody>
