@@ -23,6 +23,9 @@ const Users = () => {
         <Sidebar />
       </div>
       <div className="flex-grow">
+        <p className="text-center">
+          Logged as {localStorage.getItem("username")}
+        </p>
         <UserTable users={users} />
       </div>
     </div>

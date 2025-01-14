@@ -8,6 +8,9 @@ const Rooms = () => {
         <Sidebar />
       </div>
       <div>
+        <p className="text-center">
+          Logged as {localStorage.getItem("username")}
+        </p>
         <RoomList />
       </div>
     </div>

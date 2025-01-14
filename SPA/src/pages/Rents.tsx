@@ -30,6 +30,9 @@ const Rents = () => {
         <Sidebar />
       </div>
       <div>
+        <p className="text-center">
+          Logged as {localStorage.getItem("username")}
+        </p>
         <RentList rents={rents} setRents={setRents} />
       </div>
     </div>

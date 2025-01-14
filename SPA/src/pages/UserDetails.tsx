@@ -30,6 +30,9 @@ const UserDetails = () => {
         <Sidebar />
       </div>
       <div className="flex flex-col items-center w-full h-full p-10">
+        <p className="text-center">
+          Logged as {localStorage.getItem("username")}
+        </p>
         <UserDetailsTab user={user} />
         <RentList rents={rents} setRents={setRents} />
       </div>
