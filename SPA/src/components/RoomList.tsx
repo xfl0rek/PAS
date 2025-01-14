@@ -38,6 +38,11 @@ const RoomList = () => {
       return;
     }
 
+    if (!beginTime) {
+      alert("Please select a start date");
+      return;
+    }
+
     const rentData = {
       clientUsername: username,
       roomNumber: roomNumber,
@@ -53,8 +58,12 @@ const RoomList = () => {
         body: JSON.stringify(rentData),
       });
 
+      setSelectedRoom(null);
+
       if (!response.ok) {
-        console.error("Failed to rent the room");
+        const data = await response.text();
+        alert(data);
+        return;
       }
 
       alert("Room rented successfully!");
@@ -65,7 +74,6 @@ const RoomList = () => {
         )
       );
 
-      setSelectedRoom(null);
 
     } catch (err) {
       console.log(err);

@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
 import {Input} from "@/components/ui/input"
+import { useNavigate } from "react-router";
 
 const RegisterForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -10,6 +11,7 @@ const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({ firstName: "", lastName: "", username: "", email: "", password: "", general: "" });
+    const navigate = useNavigate();
 
     const validateInputs = () => {
         let isValid = true;
@@ -73,7 +75,7 @@ const RegisterForm = () => {
                     general: error?.message || "Username already exists.",
                 }));
             } else {
-                alert('OK');
+                navigate('/login');
             }
         } catch (err) {
             setErrors((prev) => ({

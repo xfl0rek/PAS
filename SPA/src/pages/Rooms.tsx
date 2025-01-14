@@ -9,7 +9,9 @@ const Rooms = () => {
       </div>
       <div>
         <p className="text-center">
-          Logged as {localStorage.getItem("username")}
+          {localStorage.getItem("username") === null
+            ? "Not logged in"
+            : "Logged in as " + localStorage.getItem("username")}
         </p>
         <RoomList />
       </div>

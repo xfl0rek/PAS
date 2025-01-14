@@ -22,9 +22,11 @@ const Users = () => {
       <div className="w-40 h-full">
         <Sidebar />
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow overflow-auto">
         <p className="text-center">
-          Logged as {localStorage.getItem("username")}
+          {localStorage.getItem("username") === null
+            ? "Not logged in"
+            : "Logged in as " + localStorage.getItem("username")}
         </p>
         <UserTable users={users} />
       </div>

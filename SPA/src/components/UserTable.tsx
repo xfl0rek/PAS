@@ -31,33 +31,32 @@ const UserTable = ({ users }: { users: User[] }) => {
   }, [search, users]);
 
   const activeHandler = async (user: User) => {
-    const url = user.active ? `/api/users/deactivateAccount/${user.id}` : `/api/users/activateAccount/${user.id}`;
+    const url = user.active
+      ? `/api/users/deactivateAccount/${user.id}`
+      : `/api/users/activateAccount/${user.id}`;
     const response = await fetch(url, {
-        method: 'POST',
+      method: "POST",
     });
     if (response.ok) {
-        setFilteredUsers((prevUsers) =>
-            prevUsers.map((u) =>
-              u.id === user.id ? { ...u, active: !u.active } : u
-            )
-          );
+      setFilteredUsers((prevUsers) =>
+        prevUsers.map((u) =>
+          u.id === user.id ? { ...u, active: !u.active } : u
+        )
+      );
     }
   };
 
   const updateHandler = (user: User) => {
-        navigate(`/users/update/${user.id}`)
+    navigate(`/users/update/${user.id}`);
   };
 
   const detailsHandler = (user: User) => {
-      navigate(`/users/${user.id}`)
+    navigate(`/users/${user.id}`);
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-full">
+    <div className="flex flex-col items-center w-full ">
       <div className="w-3/4 my-4">
-        {/* <Label>
-                    Wprowadz nazwe uzytkownika
-                </Label> */}
         <Input
           type="text"
           placeholder="Username"
@@ -66,40 +65,39 @@ const UserTable = ({ users }: { users: User[] }) => {
           className="w-1/4"
         />
       </div>
-      {/* <div className="w-full flex items-center"> */}
       <Table className="table-fixed w-3/4 justify-self-center">
         <TableCaption>Client list</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-10 py=10">Username</TableHead>
-            <TableHead className="px-20 py=10">Firstname</TableHead>
-            <TableHead className="px-20 py=10">Lastname</TableHead>
-            <TableHead className="px-20 py=10">Active</TableHead>
-            <TableHead className="px-20 py=10"></TableHead>
+            <TableHead className="px-15 py=10">Username</TableHead>
+            <TableHead className="px-15 py=10">Firstname</TableHead>
+            <TableHead className="px-15 py=10">Lastname</TableHead>
+            <TableHead className="px-15 py=10">Active</TableHead>
+            <TableHead className="px-15 py=10"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
               <TableRow key={user.username}>
-                <TableCell className="px-20 py=10">{user.username}</TableCell>
-                <TableCell className="px-20 py=10">{user.firstName}</TableCell>
-                <TableCell className="px-20 py=10">{user.lastName}</TableCell>
-                <TableCell className="px-20 py=10">{`${user.active}`}</TableCell>
-                <TableCell className="px-20 py=10">
+                <TableCell className="px-15 py=10">{user.username}</TableCell>
+                <TableCell className="px-15 py=10">{user.firstName}</TableCell>
+                <TableCell className="px-15 py=10">{user.lastName}</TableCell>
+                <TableCell className="px-15 py=10">{`${user.active}`}</TableCell>
+                <TableCell className="px-15 py=10">
                   <Button onClick={() => activeHandler(user)}>
                     {user.active ? "Deactivate" : "Activate"}
                   </Button>
                 </TableCell>
-                <TableCell className="px-20 py=10">
-                    <Button onClick={() => updateHandler(user)}>
-                        Update data
-                    </Button>
+                <TableCell className="px-15 py=10">
+                  <Button onClick={() => updateHandler(user)}>
+                    Update data
+                  </Button>
                 </TableCell>
-                <TableCell className="px-20 py=10">
-                    <Button onClick={() => detailsHandler(user)}>
-                        User details
-                    </Button>
+                <TableCell className="px-15 py=10">
+                  <Button onClick={() => detailsHandler(user)}>
+                    User details
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
@@ -110,7 +108,6 @@ const UserTable = ({ users }: { users: User[] }) => {
           )}
         </TableBody>
       </Table>
-      {/* </div> */}
     </div>
   );
 };

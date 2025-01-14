@@ -38,8 +38,9 @@ const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]
       );
 
       if (!response.ok) {
+        const data = await response.text();
         console.error("Failed to return room");
-        alert("Failed to return the room");
+        alert(data);
         return;
       }
 
@@ -59,7 +60,7 @@ const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg">
+    <div className="p-6 bg-white rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Rent List</h2>
 
       <Table className="table-fixed w-full justify-self-center">

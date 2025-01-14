@@ -29,12 +29,16 @@ const UserDetails = () => {
       <div className="w-40 h-full">
         <Sidebar />
       </div>
-      <div className="flex flex-col items-center w-full h-full p-10">
+      <div className="flex-grow overflow-auto">
         <p className="text-center">
-          Logged as {localStorage.getItem("username")}
+          {localStorage.getItem("username") === null
+            ? "Not logged in"
+            : "Logged in as " + localStorage.getItem("username")}
         </p>
-        <UserDetailsTab user={user} />
-        <RentList rents={rents} setRents={setRents} />
+        <div className="flex overflow-y-auto flex-col items-center p-10">
+          <UserDetailsTab user={user} />
+          <RentList rents={rents} setRents={setRents} />
+        </div>
       </div>
     </div>
   ) : (

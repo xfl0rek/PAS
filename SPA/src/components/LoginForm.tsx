@@ -49,7 +49,6 @@ const LoginForm = () => {
                 }));
             } else {
                 localStorage.setItem('username', username);
-                alert('Login successful!');
                 navigate('/');
             }
         } catch (err) {

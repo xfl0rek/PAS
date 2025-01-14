@@ -15,7 +15,6 @@ const Rents = () => {
         }
         const data = await response.json();
         setRents(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -31,7 +30,9 @@ const Rents = () => {
       </div>
       <div>
         <p className="text-center">
-          Logged as {localStorage.getItem("username")}
+          {localStorage.getItem("username") === null
+            ? "Not logged in"
+            : "Logged in as " + localStorage.getItem("username")}
         </p>
         <RentList rents={rents} setRents={setRents} />
       </div>

@@ -51,9 +51,14 @@ const UserUpdateForm = ({user} : {user : User}) => {
         });
 
         if (!response.ok) {
-            console.log(response);
+            const data = await response.text();
+            alert(data);
         }
         navigate('/');
+    };
+
+    const handleCancel = () => {
+        navigate('/users');
     };
 
     return (
@@ -101,9 +106,16 @@ const UserUpdateForm = ({user} : {user : User}) => {
                     )}
                     />
                     </div>
-                    <div className="flex justify-center">
+                    <div className="flex justify-between">
                     <Button type="submit">Confirm changes</Button>
-                    </div>
+                    <Button
+                        type="button"
+                        onClick={handleCancel}
+                        className="bg-gray-500 hover:bg-gray-600"
+                    >
+                        Cancel
+                    </Button>
+                </div>
             </form>
         </Form>
     );
