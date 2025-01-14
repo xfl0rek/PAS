@@ -45,7 +45,11 @@ const UserTable = ({ users }: { users: User[] }) => {
   };
 
   const updateHandler = (user: User) => {
-        navigate(`/users/${user.id}`)
+        navigate(`/users/update/${user.id}`)
+  };
+
+  const detailsHandler = (user: User) => {
+      navigate(`/users/${user.id}`)
   };
 
   return (
@@ -90,6 +94,11 @@ const UserTable = ({ users }: { users: User[] }) => {
                 <TableCell className="px-20 py=10">
                     <Button onClick={() => updateHandler(user)}>
                         Zaktualizuj dane
+                    </Button>
+                </TableCell>
+                <TableCell className="px-20 py=10">
+                    <Button onClick={() => detailsHandler(user)}>
+                        Szczegoly
                     </Button>
                 </TableCell>
               </TableRow>

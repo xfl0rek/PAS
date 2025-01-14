@@ -1,32 +1,9 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@/components/ui/breadcrumb";
+import Sidebar from "@/components/Sidebar";
 
 const Home = () => {
     return (
         <div className="flex h-screen">
-            <div className="w-40 p-6 bg-gray-800 text-white shadow-md">
-                <Breadcrumb className="flex flex-col space-y-2">
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/">
-                            Home
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/users">
-                            User list
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/rooms">
-                            Rent room
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem>
-                        <BreadcrumbLink href="/rents">
-                            Rent list
-                        </BreadcrumbLink>
-                    </BreadcrumbItem>
-                </Breadcrumb>
-            </div>
+            <Sidebar />
 
             <div className="flex-1 p-6 bg-white">
                 <h1 className="text-3xl font-bold text-gray-800 mb-4">Welcome to the Home Page!</h1>

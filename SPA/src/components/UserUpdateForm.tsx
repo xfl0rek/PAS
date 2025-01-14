@@ -8,7 +8,6 @@ import {
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
   } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router";
@@ -34,7 +33,7 @@ const UserUpdateForm = ({user} : {user : User}) => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         const requestBody = {
-            firstName: values.firstName,  // Correctly accessing values from the form
+            firstName: values.firstName,  
             lastName: values.lastName,
             username: values.username,
             email: values.email,
@@ -60,20 +59,6 @@ const UserUpdateForm = ({user} : {user : User}) => {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="mb-5">
-                <FormField 
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Nazwa uzytkownika</FormLabel>
-                            <FormControl>
-                                <Input placeholder="" {...field}/>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                    />
-                    </div>
                     <div className="mb-5">
                     <FormField 
                     control={form.control}
