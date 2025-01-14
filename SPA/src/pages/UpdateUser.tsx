@@ -30,7 +30,7 @@ const UpdateUser = () => {
     return (
         <div className="flex items-center justify-center w-screen min-h-screen bg-gray-100">
             <Card className="max-w-md w-full shadow-lg">
-                <CardTitle className="text-center p-10">Akutalizacja danych</CardTitle>
+                <CardTitle className="text-center p-10">User data update</CardTitle>
                 <CardContent>
                     <UserUpdateForm user={user}/>
                 </CardContent>

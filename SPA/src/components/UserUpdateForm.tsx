@@ -42,7 +42,7 @@ const UserUpdateForm = ({user} : {user : User}) => {
         };
 
 
-        const respone = await fetch(`/api/users/${user.id}`, {
+        const response = await fetch(`/api/users/${user.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,8 +50,8 @@ const UserUpdateForm = ({user} : {user : User}) => {
             body: JSON.stringify(requestBody),
         });
 
-        if (!respone.ok) {
-            console.log('Dodac wyjatek');
+        if (!response.ok) {
+            console.log(response);
         }
         navigate('/');
     };
@@ -65,7 +65,7 @@ const UserUpdateForm = ({user} : {user : User}) => {
                     name="firstName"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Imie</FormLabel>
+                            <FormLabel>First name</FormLabel>
                             <FormControl>
                                 <Input placeholder="" {...field}/>
                             </FormControl>
@@ -79,7 +79,7 @@ const UserUpdateForm = ({user} : {user : User}) => {
                     name="lastName"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Nazwisko</FormLabel>
+                            <FormLabel>Last name</FormLabel>
                             <FormControl>
                                 <Input placeholder="" {...field}/>
                             </FormControl>
@@ -102,7 +102,7 @@ const UserUpdateForm = ({user} : {user : User}) => {
                     />
                     </div>
                     <div className="flex justify-center">
-                    <Button type="submit">Zatwierdz zmiany</Button>
+                    <Button type="submit">Confirm changes</Button>
                     </div>
             </form>
         </Form>

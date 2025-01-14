@@ -32,10 +32,10 @@ const UserTable = ({ users }: { users: User[] }) => {
 
   const activeHandler = async (user: User) => {
     const url = user.active ? `/api/users/deactivateAccount/${user.id}` : `/api/users/activateAccount/${user.id}`;
-    const respone = await fetch(url, {
+    const response = await fetch(url, {
         method: 'POST',
     });
-    if (respone.ok) {
+    if (response.ok) {
         setFilteredUsers((prevUsers) =>
             prevUsers.map((u) =>
               u.id === user.id ? { ...u, active: !u.active } : u
@@ -60,7 +60,7 @@ const UserTable = ({ users }: { users: User[] }) => {
                 </Label> */}
         <Input
           type="text"
-          placeholder="Nazwa uzytkownika"
+          placeholder="Username"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-1/4"
@@ -68,13 +68,13 @@ const UserTable = ({ users }: { users: User[] }) => {
       </div>
       {/* <div className="w-full flex items-center"> */}
       <Table className="table-fixed w-3/4 justify-self-center">
-        <TableCaption>Lista klientow</TableCaption>
+        <TableCaption>Client list</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-10 py=10">Nazwa uzytkownika</TableHead>
-            <TableHead className="px-20 py=10">Imie</TableHead>
-            <TableHead className="px-20 py=10">Nazwisko</TableHead>
-            <TableHead className="px-20 py=10">Aktywny</TableHead>
+            <TableHead className="px-10 py=10">Username</TableHead>
+            <TableHead className="px-20 py=10">Firstname</TableHead>
+            <TableHead className="px-20 py=10">Lastname</TableHead>
+            <TableHead className="px-20 py=10">Active</TableHead>
             <TableHead className="px-20 py=10"></TableHead>
           </TableRow>
         </TableHeader>
@@ -88,24 +88,24 @@ const UserTable = ({ users }: { users: User[] }) => {
                 <TableCell className="px-20 py=10">{`${user.active}`}</TableCell>
                 <TableCell className="px-20 py=10">
                   <Button onClick={() => activeHandler(user)}>
-                    {user.active ? "Dezaktywuj" : "Aktywuj"}
+                    {user.active ? "Deactivate" : "Activate"}
                   </Button>
                 </TableCell>
                 <TableCell className="px-20 py=10">
                     <Button onClick={() => updateHandler(user)}>
-                        Zaktualizuj dane
+                        Update data
                     </Button>
                 </TableCell>
                 <TableCell className="px-20 py=10">
                     <Button onClick={() => detailsHandler(user)}>
-                        Szczegoly
+                        User details
                     </Button>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6}>Brak uzytkownikow</TableCell>
+              <TableCell colSpan={6}>No users</TableCell>
             </TableRow>
           )}
         </TableBody>
