@@ -157,6 +157,14 @@ public class RentRepository extends AbstractMongoRepository {
         collection.deleteOne(query);
     }
 
+    public List<Rent> findAllRentsForUser(ObjectId userId) {
+        ArrayList<Rent> rents = new ArrayList<>();
+        Bson filter = Filters.eq("client._id", userId);
+        MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);
+        collection.find(filter).into(rents);
+        return rents;
+    }
+
     public List<Rent> readAll() {
         ArrayList<Rent> rents = new ArrayList<>();
         MongoCollection<Rent> collection = getDatabase().getCollection("rents", Rent.class);

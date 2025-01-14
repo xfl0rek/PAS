@@ -31,14 +31,14 @@ public class RentController {
 
     @PostMapping("/returnRoom/{id}")
     public ResponseEntity<RentDTO> returnRoom(@PathVariable String id,
-                                              @RequestParam LocalDateTime endTime) {
+                                              @Valid @RequestBody RentDTO rentDTO) {
         ObjectId rentID;
         try {
             rentID = new ObjectId(id);
         } catch (Exception e) {
             throw new RentNotFoundException("Rent not found");
         }
-        RentDTO rent = rentService.returnRoom(rentID, endTime);
+        RentDTO rent = rentService.returnRoom(rentID, rentDTO);
         return ResponseEntity.ok(rent);
 
     }
@@ -100,6 +100,13 @@ public class RentController {
     public ResponseEntity<List<RentDTO>> getAllArchiveRentsForRoom(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForRoom(userID);
+        return ResponseEntity.ok(rentDTO);
+    }
+
+    @GetMapping("/getAllRentsForUser/{id}")
+    public ResponseEntity<List<RentDTO>> getAllRentsForUser(@PathVariable String id) {
+        ObjectId userID = new ObjectId(id);
+        List<RentDTO> rentDTO = rentService.getAllRentsForUser(userID);
         return ResponseEntity.ok(rentDTO);
     }
 

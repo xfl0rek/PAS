@@ -53,8 +53,8 @@ const UserTable = ({ users }: { users: User[] }) => {
   };
 
   return (
-    <div className="flex flex-col items-center  min-h-screen">
-      <div className="w-3/4 mb-4 mt-4">
+    <div className="flex flex-col items-center w-full h-full">
+      <div className="w-3/4 my-4">
         {/* <Label>
                     Wprowadz nazwe uzytkownika
                 </Label> */}

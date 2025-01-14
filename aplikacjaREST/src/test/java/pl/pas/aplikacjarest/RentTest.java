@@ -71,9 +71,13 @@ public class RentTest {
         Rent rent = new Rent(client, room, LocalDateTime.of(2023, 11, 18, 14, 30, 0));
         ObjectId rentID = rentRepository.create(rent);
 
+        RentDTO rentDTO = new RentDTO("jhymel", 1,
+                LocalDateTime.of(2023, 11, 18, 14, 30, 0),
+                LocalDateTime.of(2023, 11, 19, 14, 30, 0));
+
         RestAssured.given()
                 .pathParam("id", rentID.toString())
-                .queryParam("endTime", "2023-11-19T14:30:00")
+                .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/returnRoom/{id}")
@@ -356,9 +360,13 @@ public class RentTest {
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0));
         ObjectId rentID = rentRepository.create(rent);
 
+        RentDTO rentDTO = new RentDTO("jhymel", 1,
+                LocalDateTime.of(2023, 11, 26, 14, 30, 0),
+                LocalDateTime.of(2023, 11, 19, 14, 30, 0));
+
         RestAssured.given()
                 .pathParam("id", rentID.toString())
-                .queryParam("endTime", "2023-11-19T14:30:00")
+                .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/returnRoom/{id}")
@@ -367,7 +375,7 @@ public class RentTest {
 
         RestAssured.given()
                 .pathParam("id", rentID.toString())
-                .queryParam("endTime", "2023-11-19T14:30:00")
+                .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/returnRoom/{id}")
@@ -413,9 +421,13 @@ public class RentTest {
                 LocalDateTime.of(2023, 11, 18, 14, 30, 0));
         ObjectId rentID = rentRepository.create(rent);
 
+        RentDTO rentDTO = new RentDTO("jhymel", 1,
+                LocalDateTime.of(2023, 11, 26, 14, 30, 0),
+                LocalDateTime.of(2023, 11, 19, 14, 30, 0));
+
         RestAssured.given()
                 .pathParam("id", rentID.toString())
-                .queryParam("endTime", "2023-11-19T14:30:00")
+                .body(rentDTO)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/returnRoom/{id}")

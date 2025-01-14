@@ -26,10 +26,12 @@ const UserDetails = () => {
 
   return user ? (
     <div className="w-screen h-screen flex">
-      <Sidebar />
-      <div className="flex flex-col items-center  w-full h-full p-10">
-      <UserDetailsTab user={user} />
-      <RentList rents={rents} setRents={setRents} />
+      <div className="w-40 h-full">
+        <Sidebar />
+      </div>
+      <div className="flex flex-col items-center w-full h-full p-10">
+        <UserDetailsTab user={user} />
+        <RentList rents={rents} setRents={setRents} />
       </div>
     </div>
   ) : (

@@ -48,23 +48,25 @@ public class RentService {
         return rentDTO;
     }
 
-    public RentDTO returnRoom(ObjectId rentID, LocalDateTime endTime) {
+    public RentDTO returnRoom(ObjectId rentID, RentDTO rentDTO) {
         Rent rent = rentRepository.findByID(rentID);
         if (rent == null)
             throw new RentNotFoundException("Rent not found");
         if (rent.isArchive())
             throw new RentAlreadyEndedException("Rent already ended");
+        if (rentDTO.getEndTime() == null)
+            throw new RentTransactionException("End time cannot be null");
 
-        rent.endRent(endTime);
-        RentDTO rentDTO = new RentDTO(
+        rent.endRent(rentDTO.getEndTime());
+        RentDTO returnRentDTO = new RentDTO(
                 rent.getClient().getUsername(),
                 rent.getRoom().getRoomNumber(),
                 rent.getBeginTime(),
                 rent.getEndTime()
         );
-        rentDTO.setId(rentID.toString());
+        returnRentDTO.setId(rentID.toString());
         rentRepository.update(rent);
-        return rentDTO;
+        return returnRentDTO;
     }
 
     public void updateRent(ObjectId rentID, RentDTO rentDTO) {
@@ -172,6 +174,21 @@ public class RentService {
 
     public List<RentDTO> findAll() {
         return rentRepository.readAll().stream()
+                .map(rent -> {
+                    RentDTO rentDTO = new RentDTO(
+                            rent.getClient().getUsername(),
+                            rent.getRoom().getRoomNumber(),
+                            rent.getBeginTime(),
+                            rent.getEndTime()
+                    );
+                    rentDTO.setId(rent.getId().toString());
+                    return rentDTO;
+                })
+                .toList();
+    }
+
+    public List<RentDTO> getAllRentsForUser(ObjectId userID) {
+        return rentRepository.findAllRentsForUser(userID).stream()
                 .map(rent -> {
                     RentDTO rentDTO = new RentDTO(
                             rent.getClient().getUsername(),
