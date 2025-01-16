@@ -55,7 +55,7 @@ const UserTable = ({ users }: { users: User[] }) => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full ">
+    <div className="flex flex-col items-center overflow-auto w-full ">
       <div className="w-3/4 my-4">
         <Input
           type="text"
@@ -65,36 +65,38 @@ const UserTable = ({ users }: { users: User[] }) => {
           className="w-1/4"
         />
       </div>
-      <Table className="table-fixed w-3/4 justify-self-center">
+      <Table className="w-3/4 overflow-auto justify-self-center">
         <TableCaption>Client list</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="px-15 py=10">Username</TableHead>
-            <TableHead className="px-15 py=10">Firstname</TableHead>
-            <TableHead className="px-15 py=10">Lastname</TableHead>
-            <TableHead className="px-15 py=10">Active</TableHead>
-            <TableHead className="px-15 py=10"></TableHead>
+            <TableHead className="py=10">Username</TableHead>
+            <TableHead className="py=10">Firstname</TableHead>
+            <TableHead>Lastname</TableHead>
+            <TableHead>Active</TableHead>
+            <TableHead></TableHead>
+            <TableHead></TableHead>
+            <TableHead></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
               <TableRow key={user.username}>
-                <TableCell className="px-15 py=10">{user.username}</TableCell>
-                <TableCell className="px-15 py=10">{user.firstName}</TableCell>
-                <TableCell className="px-15 py=10">{user.lastName}</TableCell>
-                <TableCell className="px-15 py=10">{`${user.active}`}</TableCell>
-                <TableCell className="px-15 py=10">
+                <TableCell>{user.username}</TableCell>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{`${user.active}`}</TableCell>
+                <TableCell>
                   <Button onClick={() => activeHandler(user)}>
                     {user.active ? "Deactivate" : "Activate"}
                   </Button>
                 </TableCell>
-                <TableCell className="px-15 py=10">
+                <TableCell>
                   <Button onClick={() => updateHandler(user)}>
                     Update data
                   </Button>
                 </TableCell>
-                <TableCell className="px-15 py=10">
+                <TableCell>
                   <Button onClick={() => detailsHandler(user)}>
                     User details
                   </Button>
@@ -103,7 +105,7 @@ const UserTable = ({ users }: { users: User[] }) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={6}>No users</TableCell>
+              <TableCell colSpan={7}>No users</TableCell>
             </TableRow>
           )}
         </TableBody>

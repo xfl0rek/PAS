@@ -19,7 +19,7 @@ const Users = () => {
 
   return (
     <div className="h-screen w-screen flex">
-      <div className="w-40 h-full">
+      <div className="w-40 sm:w-40 h-full">
         <Sidebar />
       </div>
       <div className="flex-grow overflow-auto">
@@ -28,7 +28,9 @@ const Users = () => {
             ? "Not logged in"
             : "Logged in as " + localStorage.getItem("username")}
         </p>
+        <div className="overflow-auto">
         <UserTable users={users} />
+        </div>
       </div>
     </div>
   );
