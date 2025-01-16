@@ -4,7 +4,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-40 h-screen p-6 bg-gray-800 text-white shadow-md">
+    <div className="w-20 h-screen p-6 bg-gray-800 text-white shadow-md">
       <ul className="flex flex-col space-y-2">
         <li>
           <a href="/" className="hover:underline">Home</a>
