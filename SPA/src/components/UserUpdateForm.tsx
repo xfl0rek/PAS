@@ -32,6 +32,10 @@ const UserUpdateForm = ({user} : {user : User}) => {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        if (!confirm("Are you sure you want to update this user?")) {
+            return;
+          }
+
         const requestBody = {
             firstName: values.firstName,  
             lastName: values.lastName,

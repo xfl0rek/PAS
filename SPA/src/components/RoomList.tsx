@@ -43,6 +43,10 @@ const RoomList = () => {
       return;
     }
 
+    if (!confirm("Are you sure you want to rent this room?")) {
+      return;
+    }
+
     const rentData = {
       clientUsername: username,
       roomNumber: roomNumber,

@@ -8,9 +8,10 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch("/api/users/");
-      // if (!response.ok) {
-      //
-      // }
+      if (!response.ok) {
+        console.error("Failed to fetch users");
+        return;
+      }
       const data = await response.json();
       setUsers(data);
     };

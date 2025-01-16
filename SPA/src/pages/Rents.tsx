@@ -28,7 +28,7 @@ const Rents = () => {
       <div className="w-40 h-full">
         <Sidebar />
       </div>
-      <div>
+      <div className="overflow-auto flex-grow p-10">
         <p className="text-center">
           {localStorage.getItem("username") === null
             ? "Not logged in"

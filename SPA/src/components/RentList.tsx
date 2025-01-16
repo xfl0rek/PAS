@@ -25,6 +25,10 @@ const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]
       return;
     }
 
+    if (!confirm("Are you sure you want to return this room?")) {
+      return;
+    }
+
     try {
       const response = await fetch(
         `/api/rents/returnRoom/${selectedRent?.id}`,

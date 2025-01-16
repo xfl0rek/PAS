@@ -42,7 +42,7 @@ const UserDetails = () => {
       </div>
     </div>
   ) : (
-    <div></div> //TODO DODAC
+    <div></div> 
   );
 };
 
