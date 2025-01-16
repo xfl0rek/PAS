@@ -26,7 +26,7 @@ const UserDetails = () => {
 
   return user ? (
     <div className="w-screen h-screen flex">
-      <div className="w-40 h-full">
+      <div className="w-20 sm:w-40 h-full">
         <Sidebar />
       </div>
       <div className="flex-grow overflow-auto">
@@ -35,14 +35,16 @@ const UserDetails = () => {
             ? "Not logged in"
             : "Logged in as " + localStorage.getItem("username")}
         </p>
-        <div className="flex overflow-y-auto flex-col items-center p-10">
+        <div className="flex overflow-auto flex-col items-center p-10">
           <UserDetailsTab user={user} />
+        </div>
+        <div className="overflow-auto">
           <RentList rents={rents} setRents={setRents} />
         </div>
       </div>
     </div>
   ) : (
-    <div></div> //TODO DODAC
+    <div></div>
   );
 };
 

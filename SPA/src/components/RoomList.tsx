@@ -73,8 +73,6 @@ const RoomList = () => {
           r.roomNumber === roomNumber ? { ...r, isRented: 1 } : r
         )
       );
-
-
     } catch (err) {
       console.log(err);
       alert("Failed to rent the room");
@@ -82,45 +80,49 @@ const RoomList = () => {
   };
 
   return (
-    <div className="p-6 bg-white shadow-lg rounded-lg">
+    <div className="p-6 bg-white shadow-lg overflow-auto rounded-lg">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4">Room List</h2>
 
-      <Table className="table-fixed w-full justify-self-center">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="px-6 py-4">Room number</TableHead>
-            <TableHead className="px-6 py-4">Price</TableHead>
-            <TableHead className="px-6 py-4">Room capacity</TableHead>
-            <TableHead className="px-6 py-4">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {rooms.length > 0 ? (
-            rooms.map((room) => (
-              <TableRow key={room.roomNumber}>
-                <TableCell className="px-6 py-4">{room.roomNumber}</TableCell>
-                <TableCell className="px-6 py-4">${room.basePrice}</TableCell>
-                <TableCell className="px-6 py-4">{room.roomCapacity}</TableCell>
-                <TableCell className="px-6 py-4">
-                  {room.isRented === 0 ? (
-                    <Button onClick={() => setSelectedRoom(room.roomNumber)}>
-                      Rent Room
-                    </Button>
-                  ) : (
-                    <p>Room is rented</p>
-                  )}
+      <div className="w-full overflow-auto">
+        <Table className="overflow-auto w-full justify-self-center">
+          <TableHeader>
+            <TableRow>
+              <TableHead className="px-6 py-4">Room number</TableHead>
+              <TableHead className="px-6 py-4">Price</TableHead>
+              <TableHead className="px-6 py-4">Room capacity</TableHead>
+              <TableHead className="px-6 py-4">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {rooms.length > 0 ? (
+              rooms.map((room) => (
+                <TableRow key={room.roomNumber}>
+                  <TableCell className="px-6 py-4">{room.roomNumber}</TableCell>
+                  <TableCell className="px-6 py-4">${room.basePrice}</TableCell>
+                  <TableCell className="px-6 py-4">
+                    {room.roomCapacity}
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
+                    {room.isRented === 0 ? (
+                      <Button onClick={() => setSelectedRoom(room.roomNumber)}>
+                        Rent Room
+                      </Button>
+                    ) : (
+                      <p>Room is rented</p>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={4} className="text-center">
+                  No rooms available
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={4} className="text-center">
-                No rooms available
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       {selectedRoom && (
         <div className="mt-4">

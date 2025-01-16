@@ -24,17 +24,19 @@ const Rents = () => {
   }, []);
 
   return (
-    <div className="flex h-screen">
-      <div className="w-40 h-full">
+    <div className="w-screen h-screen flex">
+      <div className="w-20 sm:w-40 h-full">
         <Sidebar />
       </div>
-      <div>
+      <div className="flex-grow overflow-auto">
         <p className="text-center">
           {localStorage.getItem("username") === null
             ? "Not logged in"
             : "Logged in as " + localStorage.getItem("username")}
         </p>
-        <RentList rents={rents} setRents={setRents} />
+        <div className="overflow-auto">
+          <RentList rents={rents} setRents={setRents} />
+        </div>
       </div>
     </div>
   );

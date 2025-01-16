@@ -8,9 +8,10 @@ const Users = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await fetch("/api/users/");
-      // if (!response.ok) {
-      //
-      // }
+      if (!response.ok) {
+        console.error("Failed to fetch users");
+        return;
+      }
       const data = await response.json();
       setUsers(data);
     };
@@ -19,7 +20,7 @@ const Users = () => {
 
   return (
     <div className="h-screen w-screen flex">
-      <div className="w-40 sm:w-40 h-full">
+      <div className="w-20 sm:w-40 h-full">
         <Sidebar />
       </div>
       <div className="flex-grow overflow-auto">
@@ -29,7 +30,7 @@ const Users = () => {
             : "Logged in as " + localStorage.getItem("username")}
         </p>
         <div className="overflow-auto">
-        <UserTable users={users} />
+          <UserTable users={users} />
         </div>
       </div>
     </div>
