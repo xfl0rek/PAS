@@ -96,7 +96,7 @@ public abstract class AbstractMongoRepository implements AutoCloseable {
                                 password: {
                                     bsonType: "string",
                                     "minLength": 8,
-                                    "maxLength": 30
+                                    "maxLength": 100
                                 },
                                 username: {
                                     bsonType: "string",

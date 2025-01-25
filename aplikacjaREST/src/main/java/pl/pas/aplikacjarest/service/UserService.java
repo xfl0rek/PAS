@@ -2,6 +2,10 @@ package pl.pas.aplikacjarest.service;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.pas.aplikacjarest.converter.UserConverter;
 import pl.pas.aplikacjarest.dto.*;
@@ -14,13 +18,15 @@ import pl.pas.aplikacjarest.repository.UserRepository;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     UserRepository userRepository;
     UserConverter userConverter = new UserConverter();
+    PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO login(LoginDTO loginDTO) {
@@ -28,18 +34,19 @@ public class UserService {
         if (user == null)
             throw new UserNotFoundException("User not found");
 
-        if (!user.getPassword().equals(loginDTO.getPassword()))
+        if (!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword()))
             throw new WrongPasswordException("Invalid password");
 
         return userConverter.convertUserToDTO(user);
     }
 
     public UserDTO registerUser(UserDTO userDTO) {
-        User user = userConverter.convertDTOToUser(userDTO);
         User user2 = userRepository.findByUsername(userDTO.getUsername());
         if (user2 != null) {
             throw new UsernameAlreadyInUseException("Username is already in use");
         }
+        User user = userConverter.convertDTOToUser(userDTO);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         userRepository.save(user);
         return userConverter.convertUserToDTO(user);
     }
@@ -106,5 +113,14 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setUserRole(userDTO.getUserRole());
         userRepository.update(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        return new UserPrincipal(user);
     }
 }
