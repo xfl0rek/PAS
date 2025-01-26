@@ -2,6 +2,7 @@ package pl.pas.aplikacjarest.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,7 +20,10 @@ public class JwtUtils {
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claims(claims)
-                .setI
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .signWith(getSignInKey()) //TODO jakis algorytm encrypthWith
+                .compact();
     }
 
     public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
