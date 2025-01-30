@@ -16,4 +16,5 @@ public class JwtBlackList {
     public boolean isTokenBlacklisted(String token) {
         return blacklistedTokens.contains(token);
     }
+
 }
