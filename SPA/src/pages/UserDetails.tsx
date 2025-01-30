@@ -75,7 +75,7 @@ const UserDetails = () => {
             <Input
               type="password"
               placeholder="Enter new password"
-              value={oldPassword}
+              value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               className="p-2 mb-2 border rounded"
             />

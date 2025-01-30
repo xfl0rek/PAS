@@ -12,11 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import api from "@/lib/api.ts";
+import {jwtDecode} from "jwt-decode";
 
 const UserTable = ({ users }: { users: User[] }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+  const loggedInUser = jwtDecode(token).sub;
+  const role = jwtDecode(token).roles;
 
   useEffect(() => {
     let filtered = users;
@@ -86,19 +90,19 @@ const UserTable = ({ users }: { users: User[] }) => {
                 <TableCell className="px-15 py=10">{user.lastName}</TableCell>
                 <TableCell className="px-15 py=10">{`${user.active}`}</TableCell>
                 <TableCell className="px-15 py=10">
-                  <Button onClick={() => activeHandler(user)}>
+                  {(role == "ROLE_ADMIN" || role == "ROLE_MANAGER") && (<Button onClick={() => activeHandler(user)}>
                     {user.active ? "Deactivate" : "Activate"}
-                  </Button>
+                  </Button>)}
                 </TableCell>
                 <TableCell className="px-15 py=10">
-                  <Button onClick={() => updateHandler(user)}>
+                  {(user.username == loggedInUser || role == "ROLE_ADMIN" || role == "ROLE_MANAGER") && (<Button onClick={() => updateHandler(user)}>
                     Update data
-                  </Button>
+                  </Button>)}
                 </TableCell>
                 <TableCell className="px-15 py=10">
-                  <Button onClick={() => detailsHandler(user)}>
+                  {(user.username == loggedInUser || role == "ROLE_ADMIN" || role == "ROLE_MANAGER") && (<Button onClick={() => detailsHandler(user)}>
                     User details
-                  </Button>
+                  </Button>)}
                 </TableCell>
               </TableRow>
             ))
