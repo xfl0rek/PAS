@@ -11,6 +11,7 @@ import {
   } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router";
+import api from "@/lib/api.ts";
 
 const formSchema = z.object({
     username: z.string().min(5).max(30),
@@ -45,20 +46,12 @@ const UserUpdateForm = ({user} : {user : User}) => {
             userRole: user.userRole,
         };
 
-
-        const response = await fetch(`/api/users/${user.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestBody),
-        });
-
-        if (!response.ok) {
-            const data = await response.text();
-            alert(data);
+        try {
+            await api.put(`/users/${user.id}`, requestBody);
+            navigate('/');
+        } catch (error: any) {
+            alert(error.response?.data || "An error occurred");
         }
-        navigate('/');
     };
 
     const handleCancel = () => {

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
+import api from "@/lib/api.ts";
 
 const UserTable = ({ users }: { users: User[] }) => {
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -32,17 +33,20 @@ const UserTable = ({ users }: { users: User[] }) => {
 
   const activeHandler = async (user: User) => {
     const url = user.active
-      ? `/api/users/deactivateAccount/${user.id}`
-      : `/api/users/activateAccount/${user.id}`;
-    const response = await fetch(url, {
-      method: "POST",
-    });
-    if (response.ok) {
-      setFilteredUsers((prevUsers) =>
-        prevUsers.map((u) =>
-          u.id === user.id ? { ...u, active: !u.active } : u
-        )
-      );
+      ? `/users/deactivateAccount/${user.id}`
+      : `/users/activateAccount/${user.id}`;
+
+    try {
+      const response = await api.post(url);
+      // if (response.status == 200) {
+        setFilteredUsers((prevUsers) =>
+            prevUsers.map((u) =>
+                u.id === user.id ? { ...u, active: !u.active } : u
+            )
+        );
+      //}
+    } catch (err) {
+      console.error(err);
     }
   };
 

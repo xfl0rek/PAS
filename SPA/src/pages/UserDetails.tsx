@@ -3,6 +3,7 @@ import Sidebar from "@/components/Sidebar";
 import UserDetailsTab from "@/components/UserDetailsTab";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import api from "@/lib/api.ts";
 
 const UserDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,14 +12,21 @@ const UserDetails = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`/api/users/${id}`);
-      const data = await response.json();
-      setUser(data);
+      console.log(id);
+      try {
+        const response = await api.get(`/users/${id}`)
+        setUser(response.data)
+      } catch (err) {
+        console.error(err);
+      }
     };
     const fetchRents = async () => {
-      const response = await fetch(`/api/rents/getAllRentsForUser/${id}`);
-      const data = await response.json();
-      setRents(data);
+      try {
+        const response = await api.get(`/rents/getAllRentsForUser/${id}`);
+        setRents(response.data)
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchUser();
     fetchRents();

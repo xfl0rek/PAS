@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
 import {Input} from "@/components/ui/input"
 import { useNavigate } from "react-router";
+import api from "@/lib/api.ts";
 
 const RegisterForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -56,31 +57,16 @@ const RegisterForm = () => {
             username,
             email,
             password,
-            userRole: 'CLIENT',
+            userRole: 'ROLE_CLIENT',
         };
 
         try {
-            const response = await fetch('/api/users/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody),
-            });
-
-            if (!response.ok) {
-                const error = await response.json().catch(() => null);
-                setErrors((prev) => ({
-                    ...prev,
-                    general: error?.message || "Username already exists.",
-                }));
-            } else {
-                navigate('/login');
-            }
-        } catch (err) {
+            await api.post('/users/register', requestBody);
+            navigate('/login');
+        } catch (error) {
             setErrors((prev) => ({
                 ...prev,
-                general: "An error occurred. Please try again later.",
+                general: error.response?.data?.message || "Username already exists.",
             }));
         }
     };

@@ -2,15 +2,19 @@ import UserUpdateForm from "@/components/UserUpdateForm";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import api from "@/lib/api.ts";
 
 const UpdateUser = () => {
   const { id } = useParams<{ id: string }>();
   const [user, setUser] = useState<User>();
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch(`/api/users/${id}`);
-      const data = await response.json();
-      setUser(data);
+      try {
+        const response = await api.get(`/users/${id}`);
+        setUser(response.data);
+      } catch (err) {
+        console.error(err);
+      }
     };
     fetchUser();
   }, [id]);

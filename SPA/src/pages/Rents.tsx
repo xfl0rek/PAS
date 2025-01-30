@@ -1,6 +1,7 @@
 import RentList from "@/components/RentList";
 import Sidebar from "@/components/Sidebar";
 import { useEffect, useState } from "react";
+import api from "@/lib/api.ts";
 
 const Rents = () => {
   const [rents, setRents] = useState<Rent[]>([]);
@@ -8,13 +9,8 @@ const Rents = () => {
   useEffect(() => {
     const fetchRents = async () => {
       try {
-        const response = await fetch("/api/rents/");
-        if (!response.ok) {
-          console.error("Failed to fetch rents");
-          return;
-        }
-        const data = await response.json();
-        setRents(data);
+        const response = await api.get("/rents/");
+        setRents(response.data);
       } catch (err) {
         console.log(err);
       }

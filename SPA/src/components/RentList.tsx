@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import api from "@/lib/api.ts";
 
 const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]) => void; }) => {
   const username = localStorage.getItem("username");
@@ -30,23 +31,8 @@ const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]
     }
 
     try {
-      const response = await fetch(
-        `/api/rents/returnRoom/${selectedRent?.id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(selectedRent), 
-        }
-      );
-
-      if (!response.ok) {
-        const data = await response.text();
-        console.error("Failed to return room");
-        alert(data);
-        return;
-      }
+      const response = await api.post(
+        `/rents/returnRoom/${selectedRent?.id}`);
 
       alert("Room returned successfully!");
       setSelectedRent(null); 

@@ -1,19 +1,21 @@
 import UserTable from "@/components/UserTable";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import api from "@/lib/api.ts";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await fetch("/api/users/");
-      if (!response.ok) {
-        console.error("Failed to fetch users");
-        return;
-      }
-      const data = await response.json();
-      setUsers(data);
+        try {
+            const response = await api.get("/users/");
+
+            setUsers(response.data);
+        } catch (err) {
+            console.error(err);
+        }
+
     };
     fetchUsers();
   }, []);

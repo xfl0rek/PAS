@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api.ts";
 
 const RoomList = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -17,12 +18,8 @@ const RoomList = () => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await fetch("/api/rooms/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch rooms");
-        }
-        const data = await response.json();
-        setRooms(data);
+        const response = await api.get("/rooms/");
+        setRooms(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -54,22 +51,9 @@ const RoomList = () => {
     };
 
     try {
-      const response = await fetch("/api/rents/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(rentData),
-      });
+      const response = await api.post("/rents/", rentData);
 
       setSelectedRoom(null);
-
-      if (!response.ok) {
-        const data = await response.text();
-        alert(data);
-        return;
-      }
-
       alert("Room rented successfully!");
 
       setRooms((prevRooms) =>
