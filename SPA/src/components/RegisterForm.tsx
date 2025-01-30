@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button"
 import {Label} from "@/components/ui/label"
 import {Input} from "@/components/ui/input"
 import { useNavigate } from "react-router";
-import api from "@/lib/api.ts";
+import api, {auth} from "@/lib/api.ts";
 
 const RegisterForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -61,7 +61,7 @@ const RegisterForm = () => {
         };
 
         try {
-            await api.post('/users/register', requestBody);
+            await auth.post('/users/register', requestBody);
             navigate('/login');
         } catch (error) {
             setErrors((prev) => ({

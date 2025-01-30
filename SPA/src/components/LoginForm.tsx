@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router";
-import api from "@/lib/api.ts";
+import api, {auth} from "@/lib/api.ts";
 
 const LoginForm = () => {
     const [username, setUsername] = useState("");
@@ -33,8 +33,7 @@ const LoginForm = () => {
         event.preventDefault();
         if (!validateInputs()) return;
         try {
-            const { data } = await api.post('/users/login', { username, password });
-
+            const { data } = await auth.post('/users/login', { username, password });
                 window.localStorage.setItem('token', data.token);
                 navigate('/');
 

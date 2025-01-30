@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import api from "@/lib/api.ts";
 import {Button} from "@/components/ui/button.tsx";
+import LoginInfo from "@/components/LoginInfo.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {Rent, User} from "@/types";
 
 const UserDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -57,20 +60,10 @@ const UserDetails = () => {
         <Sidebar />
       </div>
       <div className="flex-grow overflow-auto">
-        <p className="text-center">
-          {localStorage.getItem("username") === null
-            ? "Not logged in"
-            : "Logged in as " + localStorage.getItem("username")}
-        </p>
+        <LoginInfo />
         <div className="flex overflow-y-auto flex-col items-center p-10">
           <UserDetailsTab user={user} />
           <RentList rents={rents} setRents={setRents} />
-          {/*<Button*/}
-          {/*    onClick={changePassword}*/}
-          {/*    className="mt-4 bg-blue-500 text-white p-2 rounded"*/}
-          {/*>*/}
-          {/*  Change password*/}
-          {/*</Button>*/}
           <div>
             <Input
               type="password"

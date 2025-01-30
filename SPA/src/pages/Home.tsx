@@ -1,15 +1,12 @@
 import Sidebar from "@/components/Sidebar";
+import LoginInfo from "@/components/LoginInfo.tsx";
 
 const Home = () => {
   return (
     <div className="flex h-screen w-screen">
       <Sidebar />
       <div className="flex-1 px-6 bg-white">
-        <p className="text-center">
-          {localStorage.getItem("username") === null
-            ? "Not logged in"
-            : "Logged in as " + localStorage.getItem("username")}
-        </p>
+        <LoginInfo />
         <h1 className="text-3xl font-bold text-gray-800 mb-4">
           Welcome to the Home Page!
         </h1>

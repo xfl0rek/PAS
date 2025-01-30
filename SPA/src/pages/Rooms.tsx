@@ -1,5 +1,6 @@
 import RoomList from "@/components/RoomList";
 import Sidebar from "@/components/Sidebar";
+import LoginInfo from "@/components/LoginInfo.tsx";
 
 const Rooms = () => {
   return (
@@ -8,11 +9,7 @@ const Rooms = () => {
         <Sidebar />
       </div>
       <div>
-        <p className="text-center">
-          {localStorage.getItem("username") === null
-            ? "Not logged in"
-            : "Logged in as " + localStorage.getItem("username")}
-        </p>
+        <LoginInfo />
         <RoomList />
       </div>
     </div>
