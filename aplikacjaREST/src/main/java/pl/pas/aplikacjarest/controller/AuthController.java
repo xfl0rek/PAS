@@ -47,14 +47,10 @@ public class AuthController {
         return ResponseEntity.ok(new TokenResponseDTO(jwtToken));
     }
 
-<<<<<<< HEAD
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
     public void logout(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         userService.logout(authHeader);
     }
-=======
-
->>>>>>> cbe29ba3eb1fb851ee283e81526946e016a29094
 }
