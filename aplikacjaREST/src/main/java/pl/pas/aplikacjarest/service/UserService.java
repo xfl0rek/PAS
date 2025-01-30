@@ -43,7 +43,7 @@ public class UserService implements UserDetailsService {
         return userConverter.convertUserToDTO(user);
     }
 
-    public UserDTO registerUser(UserDTO userDTO) {
+    public UserDTO registerUser(UserRegisterDTO userDTO) {
         User user2 = userRepository.findByUsername(userDTO.getUsername());
         if (user2 != null) {
             throw new UsernameAlreadyInUseException("Username is already in use");
@@ -111,7 +111,7 @@ public class UserService implements UserDetailsService {
         if (user == null)
             throw new UserNotFoundException("User not found");
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+//        user.setPassword(userDTO.getPassword());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setUserRole(userDTO.getUserRole());

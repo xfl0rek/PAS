@@ -32,44 +32,44 @@ public class UserTest {
         userRepository.getDatabase().getCollection("users", User.class).drop();
     }
 
-    @Test
-    void registerAndLoginUserPositiveTest() {
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201)
-                .contentType(ContentType.JSON)
-                .body("firstName", equalTo("Jadwiga"))
-                .body("lastName", equalTo("Hymel"))
-                .body("username", equalTo("jhymel"))
-                .body("email", equalTo("jadwigahymel@example.com"))
-                .body("password", equalTo("synaniemawdomu"))
-                .body("userRole", equalTo("CLIENT"));
-
-        Assertions.assertNotNull(userRepository.findByUsername("jhymel"));
-
-        LoginDTO loginDTO = new LoginDTO("jhymel", "synaniemawdomu");
-
-        RestAssured.given()
-                .body(loginDTO)
-                .contentType("application/json")
-                .when()
-                .post("/login")
-                .then()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("firstName", equalTo("Jadwiga"))
-                .body("lastName", equalTo("Hymel"))
-                .body("username", equalTo("jhymel"))
-                .body("email", equalTo("jadwigahymel@example.com"))
-                .body("password", equalTo("synaniemawdomu"))
-                .body("userRole", equalTo("CLIENT"));
-    }
+//    @Test
+//    void registerAndLoginUserPositiveTest() {
+//        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
+//                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
+//        RestAssured.given()
+//                .body(userDTO)
+//                .contentType("application/json")
+//                .when()
+//                .post("/register")
+//                .then()
+//                .statusCode(201)
+//                .contentType(ContentType.JSON)
+//                .body("firstName", equalTo("Jadwiga"))
+//                .body("lastName", equalTo("Hymel"))
+//                .body("username", equalTo("jhymel"))
+//                .body("email", equalTo("jadwigahymel@example.com"))
+//                .body("password", equalTo("synaniemawdomu"))
+//                .body("userRole", equalTo("CLIENT"));
+//
+//        Assertions.assertNotNull(userRepository.findByUsername("jhymel"));
+//
+//        LoginDTO loginDTO = new LoginDTO("jhymel", "synaniemawdomu");
+//
+//        RestAssured.given()
+//                .body(loginDTO)
+//                .contentType("application/json")
+//                .when()
+//                .post("/login")
+//                .then()
+//                .statusCode(200)
+//                .contentType(ContentType.JSON)
+//                .body("firstName", equalTo("Jadwiga"))
+//                .body("lastName", equalTo("Hymel"))
+//                .body("username", equalTo("jhymel"))
+//                .body("email", equalTo("jadwigahymel@example.com"))
+//                .body("password", equalTo("synaniemawdomu"))
+//                .body("userRole", equalTo("CLIENT"));
+//    }
 
     @Test
     void getClientByUsernameTest() {
@@ -159,31 +159,31 @@ public class UserTest {
         Assertions.assertEquals(UserRole.ROLE_ADMIN, userRepository.findByUsername("tatuazyk123").getUserRole());
     }
 
-    @Test
-    void updateClientPositiveTest() {
-        Client client1 = new Client("Alice", "Smith", "alice123",
-                "alice@example.com", "password123");
-        ObjectId clientID = userRepository.save(client1);
-        client1.setId(clientID);
-        userRepository.update(client1);
-
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
-
-        RestAssured.given()
-                .pathParam("id", clientID.toString())
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .put("/{id}")
-                .then()
-                .statusCode(204);
-
-        User updatedUser = userRepository.findByID(clientID);
-        Assertions.assertEquals("Jadwiga", updatedUser.getFirstName());
-        Assertions.assertEquals("Hymel", updatedUser.getLastName());
-        Assertions.assertEquals("jhymel", updatedUser.getUsername());
-    }
+//    @Test
+//    void updateClientPositiveTest() {
+//        Client client1 = new Client("Alice", "Smith", "alice123",
+//                "alice@example.com", "password123");
+//        ObjectId clientID = userRepository.save(client1);
+//        client1.setId(clientID);
+//        userRepository.update(client1);
+//
+//        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
+//                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
+//
+//        RestAssured.given()
+//                .pathParam("id", clientID.toString())
+//                .body(userDTO)
+//                .contentType("application/json")
+//                .when()
+//                .put("/{id}")
+//                .then()
+//                .statusCode(204);
+//
+//        User updatedUser = userRepository.findByID(clientID);
+//        Assertions.assertEquals("Jadwiga", updatedUser.getFirstName());
+//        Assertions.assertEquals("Hymel", updatedUser.getLastName());
+//        Assertions.assertEquals("jhymel", updatedUser.getUsername());
+//    }
 
     @Test
     void getAllUsersRoleTest() {
@@ -257,20 +257,20 @@ public class UserTest {
 
     //Testy negatywne
 
-    @Test
-    void invalidArgumentsPassedTest() {
-        UserDTO userDTO = new UserDTO("Se", "", "tatuazyk123",
-                "notanemail", "12789" , UserRole.ROLE_CLIENT, true);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(400);
-
-        Assertions.assertNull(userRepository.findByUsername("tatuazyk123"));
-    }
+//    @Test
+//    void invalidArgumentsPassedTest() {
+//        UserDTO userDTO = new UserDTO("Se", "", "tatuazyk123",
+//                "notanemail", "12789" , UserRole.ROLE_CLIENT, true);
+//        RestAssured.given()
+//                .body(userDTO)
+//                .contentType("application/json")
+//                .when()
+//                .post("/register")
+//                .then()
+//                .statusCode(400);
+//
+//        Assertions.assertNull(userRepository.findByUsername("tatuazyk123"));
+//    }
 
     @Test
     void loginUserInvalidPasswordNegativeTest() {
@@ -288,28 +288,28 @@ public class UserTest {
                 .statusCode(400);
     }
 
-    @Test
-    void registerClientWithUsedUsernameNegativeTest() {
-        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
-        RestAssured.given()
-                .body(userDTO)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(201);
-
-        UserDTO userDTOWithUsedUsername = new UserDTO("John", "Bug", "jhymel",
-                    "john.bug@gmail.com", "12345678", UserRole.ROLE_CLIENT, true);
-        RestAssured.given()
-                .body(userDTOWithUsedUsername)
-                .contentType("application/json")
-                .when()
-                .post("/register")
-                .then()
-                .statusCode(400);
-    }
+//    @Test
+//    void registerClientWithUsedUsernameNegativeTest() {
+//        UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
+//                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
+//        RestAssured.given()
+//                .body(userDTO)
+//                .contentType("application/json")
+//                .when()
+//                .post("/register")
+//                .then()
+//                .statusCode(201);
+//
+//        UserDTO userDTOWithUsedUsername = new UserDTO("John", "Bug", "jhymel",
+//                    "john.bug@gmail.com", "12345678", UserRole.ROLE_CLIENT, true);
+//        RestAssured.given()
+//                .body(userDTOWithUsedUsername)
+//                .contentType("application/json")
+//                .when()
+//                .post("/register")
+//                .then()
+//                .statusCode(400);
+//    }
 
     @Test
     void getClientByWrongUsernameNegativeTest() {

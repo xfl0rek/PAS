@@ -1,6 +1,7 @@
 package pl.pas.aplikacjarest.converter;
 
 import pl.pas.aplikacjarest.dto.UserDTO;
+import pl.pas.aplikacjarest.dto.UserRegisterDTO;
 import pl.pas.aplikacjarest.model.*;
 
 import java.util.List;
@@ -19,7 +20,6 @@ public class UserConverter {
                 user.getLastName(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword(),
                 user.getUserRole(),
                 user.isActive()
         );
@@ -27,7 +27,7 @@ public class UserConverter {
         return newUserDTO;
     }
 
-    public User convertDTOToUser(UserDTO userDTO) {
+    public User convertDTOToUser(UserRegisterDTO userDTO) {
         if (userDTO.getUserRole() == UserRole.ROLE_CLIENT) {
             Client client = new Client(
                     userDTO.getFirstName(),
