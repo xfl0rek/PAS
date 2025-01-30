@@ -34,11 +34,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String login;
         final String jwtToken;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer")) {
+            jwtToken = authHeader.substring(7);
+        } else {
             filterChain.doFilter(request, response);
             return;
         }
-        jwtToken = authHeader.substring(7);
+
 
         if (jwtBlackList.isTokenBlacklisted(jwtToken)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -46,7 +48,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        login = jwtUtils.extractUsername(jwtToken);
+
+        try {
+            login = jwtUtils.extractUsername(jwtToken);
+        } catch (Exception e) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.loadUserByUsername(login);
             if (jwtUtils.validateToken(jwtToken, userDetails)) {
