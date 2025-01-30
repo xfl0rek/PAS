@@ -39,8 +39,20 @@ const UserDetails = () => {
   }, [id]);
 
   const changePassword = async () => {
+
+    if (oldPassword.length < 8) {
+      alert("Wrong password.")
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      alert("Password must have at least 8 characters.")
+      return;
+    }
+
     if (oldPassword == newPassword) {
       alert("New password cannot be the same.")
+      return;
     }
 
     try {
