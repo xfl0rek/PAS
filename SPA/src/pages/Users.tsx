@@ -2,6 +2,8 @@ import UserTable from "@/components/UserTable";
 import { useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import api from "@/lib/api.ts";
+import LoginInfo from "@/components/LoginInfo.tsx";
+import {User} from "@/types";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -26,11 +28,7 @@ const Users = () => {
         <Sidebar />
       </div>
       <div className="flex-grow overflow-auto">
-        <p className="text-center">
-          {localStorage.getItem("username") === null
-            ? "Not logged in"
-            : "Logged in as " + localStorage.getItem("username")}
-        </p>
+        <LoginInfo/>
         <UserTable users={users} />
       </div>
     </div>

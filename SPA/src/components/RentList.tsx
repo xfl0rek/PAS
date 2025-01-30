@@ -15,9 +15,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import api from "@/lib/api.ts";
+import {jwtDecode} from "jwt-decode";
 
 const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]) => void; }) => {
-  const username = localStorage.getItem("username");
+  const token = window.localStorage.getItem("token");
+  const username = jwtDecode(token!).sub;
   const [selectedRent, setSelectedRent] = useState<Rent | null>(null);
 
   const handleReturnRoom = async () => {
@@ -31,9 +33,9 @@ const RentList = ({ rents, setRents }: { rents: Rent[]; setRents: (rents: Rent[]
     }
 
     try {
-      const response = await api.post(
-        `/rents/returnRoom/${selectedRent?.id}`);
 
+      const response = await api.post(
+        `/rents/returnRoom/${selectedRent?.id}`, selectedRent);
       alert("Room returned successfully!");
       setSelectedRent(null); 
 
