@@ -32,7 +32,6 @@ const LoginForm = () => {
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         if (!validateInputs()) return;
-
         try {
             const { data } = await api.post('/users/login', { username, password });
 

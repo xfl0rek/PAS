@@ -25,3 +25,10 @@ type Rent = {
     beginTime: string;
     endTime: string;
 }
+
+export interface DecodedToken {
+    username: string;
+    role: UserRole;
+    iat: number;
+    exp: number;
+}

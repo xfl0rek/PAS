@@ -10,19 +10,22 @@ import UpdateUser from "./pages/UpdateUser.tsx"
 import Rooms from "./pages/Rooms.tsx"
 import Rents from "./pages/Rents.tsx"
 import UserDetails from './pages/UserDetails.tsx'
+import ProtectedRoute from "@/components/ProtectedRoute.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <BrowserRouter>
             <Routes>
-                <Route path="/users" element={<Users />}/>
                 <Route path="/register" element={<Register />}/>
                 <Route path="/login" element={<Login />}/>
-                <Route path="/" element={<Home />}/>
-                <Route path="/users/update/:id" element={<UpdateUser/>}/>
-                <Route path="/users/:id" element={<UserDetails/>}/>
-                <Route path="/rooms" element={<Rooms/>}/>
-                <Route path="/rents" element={<Rents/>}/>
+                <Route element={<ProtectedRoute/>}>
+                    <Route path="/users" element={<Users />}/>
+                    <Route path="/" element={<Home />}/>
+                    <Route path="/users/update/:id" element={<UpdateUser/>}/>
+                    <Route path="/users/:id" element={<UserDetails/>}/>
+                    <Route path="/rooms" element={<Rooms/>}/>
+                    <Route path="/rents" element={<Rents/>}/>
+                </Route>
             </Routes>
         </BrowserRouter>
     </StrictMode>,
