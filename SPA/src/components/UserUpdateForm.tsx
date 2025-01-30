@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input"
 import { useNavigate } from "react-router";
 import api from "@/lib/api.ts";
 import {User} from "@/types";
-import { SourceTextModule } from "vm";
 
 const formSchema = z.object({
     username: z.string().min(5).max(30),

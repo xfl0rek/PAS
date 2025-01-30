@@ -3,6 +3,7 @@ package pl.pas.aplikacjarest.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,13 +12,16 @@ import java.util.Map;
 
 @Component
 public class Jws {
-    private static final String SECRET_KEY = "superSecureJwsKeySuperSecureJwsKey";
 
-    private static SecretKey getSignInKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    @Value("${JWS_SECRET}")
+    private String SECRET_KEY;
+
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = SECRET_KEY.getBytes();
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public static String generateJws(String userId) {
+    public String generateJws(String userId) {
         return Jwts.builder()
                 .claims(Map.of("id", userId))
                 .issuedAt(new Date())
@@ -25,7 +29,7 @@ public class Jws {
                 .compact();
     }
 
-    public static boolean validateJws(String jws, String expectedId) {
+    public boolean validateJws(String jws, String expectedId) {
         try {
             String idFromToken = Jwts.parser()
                     .verifyWith(getSignInKey())

@@ -23,7 +23,7 @@ const ProtectedRoute = ({ requiredRoles }: { requiredRoles?: UserRole[] }) => {
                     }
 
                     const data = await response.json();
-                    const role: UserRole = data.role; // Zakładamy, że backend zwraca rolę
+                    const role: UserRole = data.role;
                     setUserRole(role);
                     setIsAuthenticated(true);
                 } catch (error) {
@@ -39,10 +39,9 @@ const ProtectedRoute = ({ requiredRoles }: { requiredRoles?: UserRole[] }) => {
     }, []);
 
     if (isAuthenticated === null) {
-        return <div>Loading...</div>; // Opcjonalny spinner ładowania
+        return <div>Loading...</div>;
     }
 
-    // Sprawdź, czy użytkownik jest zalogowany i ma wymagane uprawnienia
     if (!isAuthenticated || (requiredRoles && !requiredRoles.includes(userRole!))) {
         return <Navigate to="/login" replace />;
     }

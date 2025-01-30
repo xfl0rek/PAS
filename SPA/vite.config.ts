@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from "path"
+import mkcert from'vite-plugin-mkcert'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), mkcert()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -14,8 +15,9 @@ export default defineConfig({
     port: 5173,
     proxy: {
       "/api": {
-        target: "http://localhost:8080",
+        target: "https://localhost:8443",
         changeOrigin: true,
+        secure: false
       },
     },
   },

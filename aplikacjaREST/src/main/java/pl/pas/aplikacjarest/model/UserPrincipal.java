@@ -28,8 +28,7 @@ public class UserPrincipal implements UserDetails {
     public String getUsername() {
         return user.getUsername();
     }
-
-    //TODO: ogarnac czy zostawic czy nie
+    
     @Override
     public boolean isAccountNonExpired() {
         return user.isActive();
