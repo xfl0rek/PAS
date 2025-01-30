@@ -1,10 +1,10 @@
 package pl.pas.aplikacjarest.model;
 
 public enum UserRole {
-    ADMIN, MANAGER, CLIENT;
+    ROLE_ADMIN, ROLE_MANAGER, ROLE_CLIENT;
 
     @Override
     public String toString() {
-        return "ROLE_" + this.name();
+        return this.name();
     }
 }

@@ -2,37 +2,40 @@ package pl.pas.aplikacjarest.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+@Component
 public class JwtUtils {
 
-    private String SECRET_KEY = "secret"; //TODO chyba zmienic
+    private final String SECRET_KEY = "secretsecretsecretsecretsecretsecretsecret"; // TODO zmienic
 
-    private String createToken(Map<String, Object> claims, UserDetails userDetails) {
+    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(authority -> authority.getAuthority())
+                .collect(Collectors.toList());
+        claims.put("roles", roles);
+
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claims(claims)
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .signWith(getSignInKey()) //TODO jakis algorytm encrypthWith
+                .signWith(getSignInKey())
                 .compact();
     }
 
-    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
-        return createToken(claims, userDetails);
-    }
-
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userDetails);
+        return generateToken(new HashMap<>(), userDetails);
     }
 
     public String extractUsername(String token) {
@@ -40,8 +43,7 @@ public class JwtUtils {
     }
 
     private boolean isTokenExpired(String token) {
-        Claims claims = extractAllClaims(token);
-        return claims.getExpiration().before(new Date());
+        return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -55,7 +57,11 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().verifyWith(getSignInKey()).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser()
+                .verifyWith(getSignInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private SecretKey getSignInKey() {

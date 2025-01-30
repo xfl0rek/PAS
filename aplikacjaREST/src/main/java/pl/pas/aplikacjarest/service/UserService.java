@@ -123,4 +123,13 @@ public class UserService implements UserDetailsService {
         }
         return new UserPrincipal(user);
     }
+
+    public void changePassword(ObjectId userId, ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findByID(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        user.setPassword(changePasswordDTO.getPassword());
+        userRepository.update(user);
+    }
 }

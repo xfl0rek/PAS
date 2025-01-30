@@ -35,7 +35,7 @@ public class UserTest {
     @Test
     void registerAndLoginUserPositiveTest() {
         UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT, true);
+                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
         RestAssured.given()
                 .body(userDTO)
                 .contentType("application/json")
@@ -156,7 +156,7 @@ public class UserTest {
                 .then()
                 .statusCode(204);
 
-        Assertions.assertEquals(UserRole.ADMIN, userRepository.findByUsername("tatuazyk123").getUserRole());
+        Assertions.assertEquals(UserRole.ROLE_ADMIN, userRepository.findByUsername("tatuazyk123").getUserRole());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class UserTest {
         userRepository.update(client1);
 
         UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT, true);
+                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
 
         RestAssured.given()
                 .pathParam("id", clientID.toString())
@@ -260,7 +260,7 @@ public class UserTest {
     @Test
     void invalidArgumentsPassedTest() {
         UserDTO userDTO = new UserDTO("Se", "", "tatuazyk123",
-                "notanemail", "12789" , UserRole.CLIENT, true);
+                "notanemail", "12789" , UserRole.ROLE_CLIENT, true);
         RestAssured.given()
                 .body(userDTO)
                 .contentType("application/json")
@@ -291,7 +291,7 @@ public class UserTest {
     @Test
     void registerClientWithUsedUsernameNegativeTest() {
         UserDTO userDTO = new UserDTO("Jadwiga", "Hymel", "jhymel",
-                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.CLIENT, true);
+                "jadwigahymel@example.com", "synaniemawdomu" , UserRole.ROLE_CLIENT, true);
         RestAssured.given()
                 .body(userDTO)
                 .contentType("application/json")
@@ -301,7 +301,7 @@ public class UserTest {
                 .statusCode(201);
 
         UserDTO userDTOWithUsedUsername = new UserDTO("John", "Bug", "jhymel",
-                    "john.bug@gmail.com", "12345678", UserRole.CLIENT, true);
+                    "john.bug@gmail.com", "12345678", UserRole.ROLE_CLIENT, true);
         RestAssured.given()
                 .body(userDTOWithUsedUsername)
                 .contentType("application/json")
@@ -375,7 +375,7 @@ public class UserTest {
                 .then()
                 .statusCode(404);
 
-        Assertions.assertEquals(UserRole.CLIENT, userRepository.findByID(clientID).getUserRole());
+        Assertions.assertEquals(UserRole.ROLE_CLIENT, userRepository.findByID(clientID).getUserRole());
     }
 
     @Test

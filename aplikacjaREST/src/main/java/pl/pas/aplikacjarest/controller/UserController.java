@@ -3,7 +3,9 @@ package pl.pas.aplikacjarest.controller;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.pas.aplikacjarest.dto.ChangePasswordDTO;
 import pl.pas.aplikacjarest.dto.UserDTO;
 import pl.pas.aplikacjarest.exception.UserNotFoundException;
 import pl.pas.aplikacjarest.model.UserRole;
@@ -22,19 +24,22 @@ public class UserController {
     }
 
     @GetMapping("/getUser")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<UserDTO> getClient(@RequestParam String username) {
         UserDTO userDTO = userService.getUser(username);
         return ResponseEntity.ok(userDTO);
     }
 
     @GetMapping("/getUsersByPartialUsername")
-    @CrossOrigin(origins = "http://localhost:9090")
+//    @CrossOrigin(origins = "http://localhost:9090") //TODO: do usuniecia
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
         List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
         return ResponseEntity.ok(userDTOs);
     }
 
     @PostMapping("/activateAccount/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> activateAccount(@PathVariable String id) {
         ObjectId userID;
         try {
@@ -47,6 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/deactivateAccount/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> deactivateAccount(@PathVariable String id) {
         ObjectId userID;
         try {
@@ -59,6 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/changeUserRole/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> changeUserRole(@PathVariable String id, @RequestParam UserRole userRole) {
         ObjectId userID;
         try {
@@ -71,18 +78,21 @@ public class UserController {
     }
 
     @GetMapping("/getAllUsersByRole")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserDTO>> getAllUsersByRole(@RequestParam UserRole userRole) {
         List<UserDTO> userDTOs = userService.findAllByRole(userRole);
         return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> userDTOs = userService.findAll();
         return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDTO> getUserByID(@PathVariable String id) {
         ObjectId userID;
         try {
@@ -95,6 +105,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
         ObjectId userID;
         try {
@@ -106,4 +117,16 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/changePassword/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> changePassword(@PathVariable String id, @RequestBody ChangePasswordDTO changePasswordDTO) {
+        ObjectId userId;
+        try {
+            userId = new ObjectId(id);
+        } catch (Exception e) {
+            throw new UserNotFoundException("User not found");
+        }
+        userService.changePassword(userId, changePasswordDTO);
+        return ResponseEntity.noContent().build();
+    }
 }

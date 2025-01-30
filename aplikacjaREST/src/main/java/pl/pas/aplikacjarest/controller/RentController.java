@@ -5,6 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.RentDTO;
 import pl.pas.aplikacjarest.exception.RentNotFoundException;
@@ -24,12 +25,14 @@ public class RentController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT')")
     public ResponseEntity<RentDTO> rentRoom(@Valid @RequestBody RentDTO rentDTO) {
         RentDTO rent = rentService.rentRoom(rentDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(rent);
     }
 
     @PostMapping("/returnRoom/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_CLIENT')")
     public ResponseEntity<RentDTO> returnRoom(@PathVariable String id,
                                               @Valid @RequestBody RentDTO rentDTO) {
         ObjectId rentID;
@@ -44,6 +47,7 @@ public class RentController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> updateRent(@PathVariable String id, @Valid @RequestBody RentDTO rentDTO) {
         ObjectId rentID;
         try {
@@ -57,6 +61,7 @@ public class RentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_MANAGER')")
     public ResponseEntity<Void> deleteRent(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         rentService.deleteRent(rentID);
@@ -64,6 +69,7 @@ public class RentController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<RentDTO> getRentByID(@PathVariable String id) {
         ObjectId rentID;
         try {
@@ -76,6 +82,7 @@ public class RentController {
     }
 
     @GetMapping("/getAllActiveRentsForUser/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllActiveRentsForUser(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllActiveRentsForUser(userID);
@@ -83,6 +90,7 @@ public class RentController {
     }
 
     @GetMapping("/getAllArchiveRentsForUser/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllArchiveRentsForUser(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForUser(userID);
@@ -90,6 +98,7 @@ public class RentController {
     }
 
     @GetMapping("/getAllActiveRentsForRoom/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllActiveRentsForRoom(@PathVariable String id) {
         ObjectId rentID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllActiveRentsForRoom(rentID);
@@ -97,6 +106,7 @@ public class RentController {
     }
 
     @GetMapping("/getAllArchiveRentsForRoom/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllArchiveRentsForRoom(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllArchiveRentsForRoom(userID);
@@ -104,6 +114,7 @@ public class RentController {
     }
 
     @GetMapping("/getAllRentsForUser/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllRentsForUser(@PathVariable String id) {
         ObjectId userID = new ObjectId(id);
         List<RentDTO> rentDTO = rentService.getAllRentsForUser(userID);
@@ -111,6 +122,7 @@ public class RentController {
     }
 
     @GetMapping("/")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<RentDTO>> getAllRents() {
         List<RentDTO> rentDTOs = rentService.findAll();
         return ResponseEntity.ok(rentDTOs);

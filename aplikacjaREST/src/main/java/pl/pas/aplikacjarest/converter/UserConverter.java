@@ -28,7 +28,7 @@ public class UserConverter {
     }
 
     public User convertDTOToUser(UserDTO userDTO) {
-        if (userDTO.getUserRole() == UserRole.CLIENT) {
+        if (userDTO.getUserRole() == UserRole.ROLE_CLIENT) {
             Client client = new Client(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
@@ -38,7 +38,7 @@ public class UserConverter {
             );
             client.setActive(userDTO.getActive());
             return client;
-        } else if (userDTO.getUserRole() == UserRole.MANAGER) {
+        } else if (userDTO.getUserRole() == UserRole.ROLE_MANAGER) {
             Manager manager = new Manager(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
@@ -48,7 +48,7 @@ public class UserConverter {
             );
             manager.setActive(userDTO.getActive());
             return manager;
-        } else if (userDTO.getUserRole() == UserRole.ADMIN) {
+        } else if (userDTO.getUserRole() == UserRole.ROLE_ADMIN) {
             Admin admin = new Admin(
                     userDTO.getFirstName(),
                     userDTO.getLastName(),
