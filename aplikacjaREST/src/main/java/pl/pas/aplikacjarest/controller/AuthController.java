@@ -1,5 +1,6 @@
 package pl.pas.aplikacjarest.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,10 @@ public class AuthController {
         return ResponseEntity.ok(new TokenResponseDTO(jwtToken));
     }
 
-    @GetMapping
+    @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
-    public 
+    public void logout(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        userService.logout(authHeader);
+    }
 }

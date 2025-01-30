@@ -20,10 +20,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserService userService;
     private final JwtUtils jwtUtils;
+    private final JwtBlackList jwtBlackList;
 
-    public JwtAuthFilter(UserService userService, JwtUtils jwtUtils) {
+    public JwtAuthFilter(UserService userService, JwtUtils jwtUtils, JwtBlackList jwtBlackList) {
         this.userService = userService;
         this.jwtUtils = jwtUtils;
+        this.jwtBlackList = jwtBlackList;
     }
 
     @Override
@@ -37,6 +39,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         jwtToken = authHeader.substring(7);
+
+        if (jwtBlackList.isTokenBlacklisted(jwtToken)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token is blacklisted");
+            return;
+        }
+
         login = jwtUtils.extractUsername(jwtToken);
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.loadUserByUsername(login);

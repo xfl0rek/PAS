@@ -14,6 +14,7 @@ import pl.pas.aplikacjarest.exception.UsernameAlreadyInUseException;
 import pl.pas.aplikacjarest.exception.WrongPasswordException;
 import pl.pas.aplikacjarest.model.*;
 import pl.pas.aplikacjarest.repository.UserRepository;
+import pl.pas.aplikacjarest.security.JwtBlackList;
 
 import java.util.List;
 
@@ -22,11 +23,13 @@ public class UserService implements UserDetailsService {
     UserRepository userRepository;
     UserConverter userConverter = new UserConverter();
     PasswordEncoder passwordEncoder;
+    JwtBlackList jwtBlackList;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtBlackList jwtBlackList) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtBlackList = jwtBlackList;
     }
 
     public UserDTO login(LoginDTO loginDTO) {
@@ -136,5 +139,12 @@ public class UserService implements UserDetailsService {
 
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         userRepository.update(user);
+    }
+
+    public void logout(String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String jwtToken = authHeader.substring(7);
+            jwtBlackList.blacklistToken(jwtToken);
+        }
     }
 }
