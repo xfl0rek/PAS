@@ -9,6 +9,7 @@ import pl.pas.aplikacjarest.dto.ChangePasswordDTO;
 import pl.pas.aplikacjarest.dto.UserDTO;
 import pl.pas.aplikacjarest.exception.UserNotFoundException;
 import pl.pas.aplikacjarest.model.UserRole;
+import pl.pas.aplikacjarest.security.Jws;
 import pl.pas.aplikacjarest.service.UserService;
 
 import java.util.List;
@@ -17,10 +18,12 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
+    private final Jws jws;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, Jws jws) {
         this.userService = userService;
+        this.jws = jws;
     }
 
     @GetMapping("/getUser")
@@ -31,7 +34,6 @@ public class UserController {
     }
 
     @GetMapping("/getUsersByPartialUsername")
-//    @CrossOrigin(origins = "http://localhost:9090") //TODO: do usuniecia
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserDTO>> getUsersByPartialUsername(@RequestParam String partialUsername) {
         List<UserDTO> userDTOs = userService.getUsersByPartialUsername(partialUsername);
@@ -100,19 +102,23 @@ public class UserController {
         } catch (Exception e) {
             throw new UserNotFoundException("User not found");
         }
+        String generatedJws = jws.generateJws(id);
         UserDTO userDTO = userService.getUserByID(userID);
-        return ResponseEntity.ok(userDTO);
+        return ResponseEntity.ok()
+                .header("JWS", generatedJws)
+                .body(userDTO);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+    public ResponseEntity<Void> updateUser(@PathVariable String id, @RequestBody UserDTO userDTO, @RequestHeader("JWS") String jwsHeader) {
         ObjectId userID;
         try {
             userID = new ObjectId(id);
         } catch (Exception e) {
             throw new UserNotFoundException("User not found");
         }
+        boolean isValid = jws.validateJws(jwsHeader, id);
         userService.updateUser(userID, userDTO);
         return ResponseEntity.noContent().build();
     }
