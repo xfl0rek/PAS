@@ -129,7 +129,12 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UserNotFoundException("User not found");
         }
-        user.setPassword(changePasswordDTO.getPassword());
+
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            throw new RuntimeException("Wrong password");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         userRepository.update(user);
     }
 }

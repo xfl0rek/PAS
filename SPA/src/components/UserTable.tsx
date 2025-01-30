@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 import api from "@/lib/api.ts";
@@ -38,13 +37,11 @@ const UserTable = ({ users }: { users: User[] }) => {
 
     try {
       const response = await api.post(url);
-      // if (response.status == 200) {
         setFilteredUsers((prevUsers) =>
             prevUsers.map((u) =>
                 u.id === user.id ? { ...u, active: !u.active } : u
             )
         );
-      //}
     } catch (err) {
       console.error(err);
     }

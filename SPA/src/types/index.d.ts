@@ -1,4 +1,4 @@
-type UserRole = 'ADMIN' | 'MANAGER' | 'CLIENT';
+type UserRole = 'ROLE_ADMIN' | 'ROLE_MANAGER' | 'ROLE_CLIENT';
 
 type User = {
     id: string;
