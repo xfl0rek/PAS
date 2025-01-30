@@ -46,7 +46,5 @@ public class AuthController {
         return ResponseEntity.ok(new TokenResponseDTO(jwtToken));
     }
 
-    @GetMapping
-    @PreAuthorize("isAuthenticated()")
-    public 
+
 }
