@@ -8,11 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.*;
+import pl.pas.aplikacjarest.model.User;
+import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.security.JwtUtils;
 import pl.pas.aplikacjarest.service.UserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -47,14 +53,28 @@ public class AuthController {
         return ResponseEntity.ok(new TokenResponseDTO(jwtToken));
     }
 
-<<<<<<< HEAD
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
     public void logout(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
         userService.logout(authHeader);
     }
-=======
 
->>>>>>> cbe29ba3eb1fb851ee283e81526946e016a29094
+
+    @GetMapping("/checkAuth")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<AuthResponseDto> checkAuth(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String jwtToken = authHeader.substring(7);
+
+        String username = jwtUtils.extractUsername(jwtToken);
+        UserDetails userDetails = userService.loadUserByUsername(username);
+
+
+        UserDTO user = userService.getUser(username);
+        UserRole role = user.getUserRole();
+
+        AuthResponseDto authResponseDto = new AuthResponseDto(username, role);
+        return ResponseEntity.ok(authResponseDto);
+    }
 }

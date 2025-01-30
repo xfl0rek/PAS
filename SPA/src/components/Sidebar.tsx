@@ -1,6 +1,23 @@
+import api from "@/lib/api.ts";
+
 const Sidebar = () => {
-  const handleLogout = () => {
-    localStorage.removeItem("username");
+  const handleLogout = async () => {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        await api.post(`/users/logout`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+      } catch (err) {
+        console.error(err);
+      }
+
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+    }
   };
 
   return (
@@ -10,7 +27,7 @@ const Sidebar = () => {
           <a href="/" className="hover:underline">Home</a>
         </li>
         <br />
-        {localStorage.getItem("username") === null ? (
+        {localStorage.getItem("token") === null ? (
           <>
             <li>
               <a href="/login" className="hover:underline">Login</a>

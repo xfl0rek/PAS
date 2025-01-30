@@ -27,8 +27,8 @@ type Rent = {
 }
 
 export interface DecodedToken {
-    username: string;
-    role: UserRole;
+    sub: string;
+    roles: UserRole;
     iat: number;
     exp: number;
 }

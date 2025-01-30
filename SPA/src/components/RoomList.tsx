@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import api from "@/lib/api.ts";
+import {jwtDecode} from "jwt-decode";
 
 const RoomList = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -29,7 +30,8 @@ const RoomList = () => {
   }, []);
 
   const handleRentRoom = async (roomNumber: number) => {
-    const username = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
+    const username = jwtDecode(token).sub;
     if (!username) {
       alert("Please log in to rent a room");
       return;

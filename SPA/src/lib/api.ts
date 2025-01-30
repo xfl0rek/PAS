@@ -1,5 +1,12 @@
 import axios from "axios";
 
+const auth = axios.create({
+    baseURL: "/api",
+    headers: {
+        "Content-Type": "application/json",
+    },
+});
+
 const api = axios.create({
     baseURL: "/api",
     headers: {
@@ -16,3 +23,5 @@ api.interceptors.request.use((config) => {
 })
 
 export default api;
+
+export { auth };

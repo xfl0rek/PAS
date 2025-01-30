@@ -2,6 +2,7 @@ import RentList from "@/components/RentList";
 import Sidebar from "@/components/Sidebar";
 import { useEffect, useState } from "react";
 import api from "@/lib/api.ts";
+import LoginInfo from "@/components/LoginInfo.tsx";
 
 const Rents = () => {
   const [rents, setRents] = useState<Rent[]>([]);
@@ -25,11 +26,7 @@ const Rents = () => {
         <Sidebar />
       </div>
       <div className="overflow-auto flex-grow p-10">
-        <p className="text-center">
-          {localStorage.getItem("username") === null
-            ? "Not logged in"
-            : "Logged in as " + localStorage.getItem("username")}
-        </p>
+        <LoginInfo />
         <RentList rents={rents} setRents={setRents} />
       </div>
     </div>

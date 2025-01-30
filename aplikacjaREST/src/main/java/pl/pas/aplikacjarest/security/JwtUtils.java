@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
 
-    private final String SECRET_KEY = "secretsecretsecretsecretsecretsecretsecret"; // TODO zmienic
+    private final String SECRET_KEY = "secretsecretsecretsecretsecretse"; // TODO zmienic
 
     public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
         List<String> roles = userDetails.getAuthorities().stream()
