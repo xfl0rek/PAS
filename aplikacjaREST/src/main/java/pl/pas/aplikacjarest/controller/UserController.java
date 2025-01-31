@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.pas.aplikacjarest.dto.ChangePasswordDTO;
 import pl.pas.aplikacjarest.dto.UserDTO;
+import pl.pas.aplikacjarest.exception.JwsException;
 import pl.pas.aplikacjarest.exception.UserNotFoundException;
 import pl.pas.aplikacjarest.model.UserRole;
 import pl.pas.aplikacjarest.security.Jws;
@@ -118,7 +119,10 @@ public class UserController {
         } catch (Exception e) {
             throw new UserNotFoundException("User not found");
         }
-        boolean isValid = jws.validateJws(jwsHeader, id);
+        if (!jws.validateJws(jwsHeader, id)) {
+            throw new JwsException("Wrong JWS");
+        }
+
         userService.updateUser(userID, userDTO);
         return ResponseEntity.noContent().build();
     }

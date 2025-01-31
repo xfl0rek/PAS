@@ -76,4 +76,9 @@ public class RestExceptionHandler {
     public ResponseEntity<String> handleInactiveUserException(InactiveUserException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(JwsException.class)
+    public ResponseEntity<String> handleJwsException(JwsException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
