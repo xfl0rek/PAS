@@ -42,8 +42,12 @@ const ProtectedRoute = ({ requiredRoles }: { requiredRoles?: UserRole[] }) => {
         return <div>Loading...</div>;
     }
 
-    if (!isAuthenticated || (requiredRoles && !requiredRoles.includes(userRole!))) {
+    if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
+    }
+
+    if (requiredRoles && !requiredRoles.includes(userRole!)) {
+        return <Navigate to="/unauthorized" replace />;
     }
 
     return <Outlet />;

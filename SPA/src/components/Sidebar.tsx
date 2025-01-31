@@ -1,9 +1,15 @@
 import api from "@/lib/api.ts";
+import { jwtDecode } from "jwt-decode";
 
 const Sidebar = () => {
+
+  const token = localStorage.getItem("token");
+  const role = jwtDecode(token).roles;
+
   const handleLogout = async () => {
 
-    const token = localStorage.getItem("token");
+    
+
     if (token) {
       try {
         await api.post(`/users/logout`, {
@@ -51,6 +57,11 @@ const Sidebar = () => {
         <li>
           <a href="/rents" className="hover:underline">Rent list</a>
         </li>
+        {role == "ROLE_ADMIN"  ? (
+          <li>
+            <a href = "/adminPage" className="hover:underline">Admin page</a>
+          </li>
+        ) : null}
       </ul>
     </div>
   );

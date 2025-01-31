@@ -11,6 +11,8 @@ import Rooms from "./pages/Rooms.tsx"
 import Rents from "./pages/Rents.tsx"
 import UserDetails from './pages/UserDetails.tsx'
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
+import AdminPage from './pages/AdminPage.tsx'
+import Unauthorized from './pages/Unauthorized.tsx'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -19,12 +21,16 @@ createRoot(document.getElementById('root')!).render(
                 <Route path="/register" element={<Register />}/>
                 <Route path="/login" element={<Login />}/>
                 <Route element={<ProtectedRoute/>}>
+                    <Route path="/unauthorized" element={<Unauthorized />}/>
                     <Route path="/users" element={<Users />}/>
                     <Route path="/" element={<Home />}/>
                     <Route path="/users/update/:id" element={<UpdateUser/>}/>
                     <Route path="/users/:id" element={<UserDetails/>}/>
                     <Route path="/rooms" element={<Rooms/>}/>
                     <Route path="/rents" element={<Rents/>}/>
+                </Route>
+                <Route element={<ProtectedRoute requiredRoles={["ROLE_ADMIN"]}/>}>
+                    <Route path="/adminPage" element={<AdminPage/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
